@@ -1,0 +1,9 @@
+.item-details {
+  color: white;
+  padding: 1px;
+}
+
+.item-details:hover {
+  font-weight: bold;
+  color: rgb(248, 246, 246);
+}

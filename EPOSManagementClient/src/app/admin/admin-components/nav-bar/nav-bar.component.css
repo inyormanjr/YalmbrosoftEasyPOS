@@ -1,0 +1,10 @@
+* {
+  color: white;
+}
+
+.nav-link.active {
+  color: white;
+  border-bottom: 5px solid;
+  border-radius: 5px;
+  font-weight: bold;
+}

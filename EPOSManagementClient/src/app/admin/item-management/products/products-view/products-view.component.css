@@ -1,0 +1,10 @@
+.edit-button i{
+  font-size: 16px;
+}
+
+.edit-button i:hover {
+  font-weight: bold;
+  color: grey !important;
+}
+
+

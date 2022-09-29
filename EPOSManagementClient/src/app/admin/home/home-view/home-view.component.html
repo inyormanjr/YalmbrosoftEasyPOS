@@ -1,0 +1,61 @@
+<div class="container pt-4">
+  <app-page-title [title]="'Dashboard'"></app-page-title>
+  <div class="row mt-5">
+    <div class="col-md-9">
+      <div class="container">
+        <div class="row mb-3">
+          <div class="col-md-4">
+          <app-card [title]="'Items'" [biIcon]="'bi bi-card-list'">
+            <div title>Users</div>
+            <app-dashboard-counter content [count]="55"></app-dashboard-counter>
+          </app-card>
+          </div>
+          <div class="col-md-4">
+          <app-card [title]="'Users'" [biIcon]="'bi bi-people-fill'">
+            <app-dashboard-counter content [count]="5"></app-dashboard-counter>
+          </app-card>
+          </div>
+          <div class="col-md-4">
+          <app-card [title]="'Sales'" [biIcon]="'bi bi-bar-chart-line-fill'">
+            <app-dashboard-counter content [count]="2150" [isCurrency]="true"></app-dashboard-counter>
+          </app-card>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <app-card [title]="'Transactions'" [biIcon]="'bi bi-file-earmark'">
+              <app-dashboard-transaction-line content [transDetails]="'User One Updated Inventory'" [trasnDate]="'21-04-22'"></app-dashboard-transaction-line>
+              <app-dashboard-transaction-line content [transDetails]="'User One Logged In'" [trasnDate]="'21-04-22'">
+              </app-dashboard-transaction-line>
+              <app-dashboard-transaction-line content [transDetails]="'User One added new item'" [trasnDate]="'21-04-22'">
+              </app-dashboard-transaction-line>
+              <app-dashboard-transaction-line content [transDetails]="'User One Updated Inventory'" [trasnDate]="'21-04-22'">
+              </app-dashboard-transaction-line>
+              <app-dashboard-transaction-line content [transDetails]="'User One Updated Inventory'" [trasnDate]="'21-04-22'">
+              </app-dashboard-transaction-line>
+              <app-dashboard-transaction-line content [transDetails]="'User One Updated Inventory'" [trasnDate]="'21-04-22'">
+              </app-dashboard-transaction-line>
+            </app-card>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+       <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <app-card [title]="'Notifications'" [biIcon]="'bi bi-bell'">
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
+            </app-card>
+          </div>
+        </div>
+       </div>
+    </div>
+  </div>
+</div>

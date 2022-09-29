@@ -1,0 +1,41 @@
+<div class="container-fluid p-4 h-100 d-flex flex-column">
+  <section class="sub-view-menu d-flex flex-row justify-content-between mb-3">
+    <div class="title">
+      <h5 class="display-5">Inventory</h5>
+    </div>
+  </section>
+  <section class="item-list flex-fill d-flex flex-column">
+    <div class="container-fluid ">
+    <div class="input-group mb-3">
+      <input style="width: 40px !important; background-color: transparent; color:white;" type="text" class="form-control"
+        placeholder="Search Product" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-light" type="button">Search</button>
+      </div>
+    </div>
+    </div>
+
+    <div class="card-container container-fluid flex-fill">
+        <div class="row  ">
+          <div *ngFor="let item of items" class="col-3 mb-3">
+            <app-card>
+              <div content class="d-flex flex-column  align-items-center">
+                 <div  class="image mb-2">
+                  <img src="../../../../../assets/stockitemimage.jpeg" height="80" alt="" srcset="">
+                 </div>
+                 <div class="item-name">
+                  <strong>Item One</strong>
+                 </div>
+                 <div class="supplier-name">
+                  <small>(Supplier One)</small>
+                 </div>
+                  <div class="supplier-name">
+                    <small>QTY: 23</small> <a name="" id="" class="btn" href="#" role="button"><i class="bi bi-plus-circle "></i></a>
+                  </div>
+              </div>
+            </app-card>
+          </div>
+        </div>
+    </div>
+  </section>
+</div>

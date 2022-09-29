@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row  text-center">
+    <h5 style="font-weight:bolder;" class="display-4">
+    <ng-container *ngIf="isCurrency; else elseTemplate">
+        <small style="font-size: 5vh;">{{count | currency}}</small>
+    </ng-container>
+    <ng-template #elseTemplate>
+      {{count }}
+    </ng-template>
+
+    </h5>
+  </div>
+</div>
