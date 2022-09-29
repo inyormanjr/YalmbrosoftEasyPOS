@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
   displayName: String,
+  companyName: String,
   firstName: {
     type: String,
     required: [true, 'first name is required'],
@@ -27,8 +28,6 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     maxlength: [50, 'Name can not be more than 50 characters'],
   },
-  nickName: String,
-  suffix: String,
   gender: {
     type: String,
     enum: ['Male', 'Female']
