@@ -1,0 +1,50 @@
+<div class="container d-flex h-100 overflow-auto">
+  <div class="container mt-3 pt-5 mb-5">
+    <div class="row justify-content-center">
+       <div class="col-md-6 col-lg-6 col-xl-6">
+          <div class="card glassify">
+              <div class="card-body">
+                  <div class="text-center m-auto">
+                     <h4 class="text-uppercase text-center">CREATE ACCOUNT</h4>
+                  </div>
+                  <form [formGroup]="registerForm">
+                     <input type="hidden" name="csrftoken" value="ea49375f43c7e6a59c77df1e4de562b3f1350124eeb70e5d5124e4ce3b5251c2b4d12e9aaf2a3ddc618c178c8dc4620b">
+                      <div class="form-group mb-3">
+                        <label for="fname">Company Name</label>
+                        <input type="text" name="companyName" formControlName="companyName"  placeholder="Company" class="form-control" required="">
+                      </div>
+                     <div class="form-group mb-3">
+                        <label for="fname">FIRST NAME </label>
+                        <input type="text" name="firstName" formControlName="firstName" placeholder="First Name" class="form-control" required="">
+                     </div>
+                     <div class="form-group mb-3">
+                        <label for="fname">LAST NAME </label>
+                        <input type="text" name="lname" formControlName="lastName" placeholder="Last Name" class="form-control" required="">
+                     </div>
+                     <div class="form-group mb-3">
+                        <label for="emailaddress">EMAIL </label>
+                        <input type="email" name="email" formControlName="username" placeholder="Enter Email" class="form-control" required="">
+                     </div>
+                     <div class="form-group mb-3">
+                        <label for="password">PASSWORD</label>
+                        <div class="input-group " id="show_hide_password">
+                           <input type="password" class="form-control" formControlName="password" id="password" value="" name="password" placeholder="Enter Password" required="">
+                        </div>
+                     </div>
+                     <div class="form-group mb-4">
+                        <label for="password">CONFIRM PASSWORD</label>
+                        <div class="input-group " id="show_hide_password">
+                           <input type="password" class="form-control" id="confirm-password" value="" name="password" placeholder="Confirm Password" required="">
+                        </div>
+                     </div>
+                     <div class="form-group mb-0 d-flex justify-content-between">
+                        <button class="btn  btn-block" type="button" (click)="register()" name="submit" id="submit">Sign Up </button>
+                        <p class="muted pt-2">Back to <a [routerLink]="'/login'" class="theme-secondary-text">Log In  →</a></p>
+                     </div>
+                  </form>
+               </div>
+          </div>
+       </div>
+    </div>
+  </div>
+</div>

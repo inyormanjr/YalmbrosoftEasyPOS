@@ -1,3 +1,4 @@
+import { AuthService } from './services/auth.service';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,6 +13,7 @@ const routes: Routes = [{path: '', component: LoginViewComponent}];
   imports: [
     CommonModule,
     RouterModule.forChild(routes)
-  ]
+  ],
+  providers: [AuthService]
 })
 export class LoginModule { }

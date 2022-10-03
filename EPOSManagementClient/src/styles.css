@@ -20,7 +20,21 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.glassify.curve {
+:root .glassify.curve {
     border-radius: 16px;
+}
+
+:root button {
+  color: white;
+  border: 2px solid white;
+}
+
+:root button:hover {
+  color: white;
+  border: 2px solid rgb(203, 203, 203) !important;
+}
+
+:root input {
+  background-color: transparent;
 }
 

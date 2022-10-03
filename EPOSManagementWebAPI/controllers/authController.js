@@ -3,13 +3,20 @@ const ErrorResponse = require('../utils/errorResponse');
 const crypto = require('crypto');
 const asyncHandler = require('../middlewares/async');
 const sendEmail = require('../utils/sendEmail');
+const Company = require('../models/company');
 const User = require('../models/user');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 //@desc     Register User
 //@route    GET /api/v1/auth/register
 //@access   public
 exports.register = asyncHandler(async (req, res, next) => {
+    const company = await Company.findOne({ companayName: req.body.companayName });
 
+    if (!company) {
+      company = await Company.create({ companyName: req.body.companyName });
+    }
+    req.body.companyId = new ObjectId(company._id);
     const user = await User.create(req.body);
     sendTokenResponse(user, 200, res);
 });

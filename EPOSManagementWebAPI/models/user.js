@@ -5,8 +5,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
-  displayName: String,
   companyName: String,
+  companyId: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Company',
+    required: true
+  },
   firstName: {
     type: String,
     required: [true, 'first name is required'],
@@ -77,7 +81,7 @@ const UserSchema = new mongoose.Schema({
  
 UserSchema.pre('save', async function (next) {
 
- this.slug = slugify(this.displayName, { lower: true });
+ this.slug = slugify(this.companyName, { lower: true });
  if(!this.isModified('password'))
   {
    next();
