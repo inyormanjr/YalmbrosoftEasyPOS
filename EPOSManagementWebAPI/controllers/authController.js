@@ -21,7 +21,7 @@ exports.register = asyncHandler(async (req, res, next) => {
          const confirmationURL = `${req.protocol}://${req.get(
            'host'
          )}/api/v1/auth/confirmation/${confirmationToken}`;
-         const message = `  Welcome to EPOS Management System, you are receiving this email to confirm you registration. Please click the link below to proceed confirmation. \n
+         const message = `  Welcome to EPOS Management System, you are receiving this email to confirm your registration. Please click the link below to proceed confirmation. \n
          ${confirmationURL} `;
           await sendEmail({
             email: `${user.username}`,
@@ -53,7 +53,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     if (!isMatch) {
          return next(new ErrorResponse('Invalid credentials', 401));
     }
-    const returnUser = await User.findOne({ username });
+    const returnUser = await User.findOne({ username }).populate('companyId');
     sendTokenResponse(returnUser, 200, res)
 });
 
