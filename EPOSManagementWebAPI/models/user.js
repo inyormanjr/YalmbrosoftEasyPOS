@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
-  companyName: String,
   companyId: {
     type: mongoose.Schema.ObjectId,
     ref: 'Company',
@@ -49,7 +48,7 @@ const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, 'Please add an email'],
-    unique: true
+    unique: [true, 'Email already registered.']
   },
   password: {
     type: String,
@@ -58,6 +57,8 @@ const UserSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
+  confirmationToken: String,
+  confirmationTokenExpiry: Date,
   contact: String,
   userType: {
     type: [String],
@@ -81,7 +82,6 @@ const UserSchema = new mongoose.Schema({
  
 UserSchema.pre('save', async function (next) {
 
- this.slug = slugify(this.companyName, { lower: true });
  if(!this.isModified('password'))
   {
    next();
@@ -108,7 +108,19 @@ UserSchema.methods.getResetPasswordToken = function () {
   this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
   return resetToken;
-
 }
+
+UserSchema.methods.getConfirmationToken = function () {
+  const resetToken = crypto.randomBytes(20).toString('hex');
+
+  this.confirmationToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  this.confirmationTokenExpiry = Date.now() + 10 * 60 * 1000;
+  return resetToken;
+};
+
+
 
 module.exports = mongoose.model('User', UserSchema);

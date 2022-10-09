@@ -6,12 +6,19 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import * as fromAppstore from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RegistrationCompleteComponent } from './confirmation/registration-complete/registration-complete.component';
 export function tokenGetter() {
   const token = localStorage.getItem('token');
   return token;
 }
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, RegistrationCompleteComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -25,6 +32,12 @@ export function tokenGetter() {
         disallowedRoutes: ['https://localhost:5001/'],
       },
     }),
+    
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
+    StoreModule.forFeature(fromAppstore.appstoreFeatureKey, fromAppstore.reducers),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

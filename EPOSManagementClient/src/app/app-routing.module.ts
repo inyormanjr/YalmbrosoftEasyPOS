@@ -1,3 +1,5 @@
+import { RegistrationCompleteComponent } from './confirmation/registration-complete/registration-complete.component';
+import { AuthGuard } from './auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -10,18 +12,24 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () =>
-      import('../app/registration/registration.module').then((x) => x.RegistrationModule),
+      import('../app/registration/registration.module').then(
+        (x) => x.RegistrationModule
+      ),
+    canActivate: [AuthGuard],
   },
+  {path: 'confirmation', component: RegistrationCompleteComponent},
   {
     path: 'admin',
     loadChildren: () =>
       import('../app/admin/admin.module').then((x) => x.AdminModule),
+    canActivate: [AuthGuard],
   },
   { path: '', redirectTo: 'admin', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }

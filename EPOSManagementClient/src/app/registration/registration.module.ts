@@ -1,3 +1,4 @@
+import { NgxModule } from './../shared/ngx-bootstrap/ngx/ngx.module';
 import { AuthService } from './../login/services/auth.service';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -15,6 +16,7 @@ const routes: Routes = [{path: '', component: RegisterViewComponent}];
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    NgxModule
   ],
   providers: [AuthService],
 })

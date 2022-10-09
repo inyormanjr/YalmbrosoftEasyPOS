@@ -11,14 +11,25 @@ var ObjectId = require('mongoose').Types.ObjectId;
 //@route    GET /api/v1/auth/register
 //@access   public
 exports.register = asyncHandler(async (req, res, next) => {
-    const company = await Company.findOne({ companayName: req.body.companayName });
-
-    if (!company) {
-      company = await Company.create({ companyName: req.body.companyName });
-    }
-    req.body.companyId = new ObjectId(company._id);
-    const user = await User.create(req.body);
+     Company.findOrCreate({
+      companyName: req.body.companyName,
+     },  async (err, result) => {
+    req.body.companyId = new ObjectId(result._id);
+         const user = await User.create(req.body);
+        const confirmationToken = user.getConfirmationToken();
+        await user.save({ validateBeforeSave: false });
+         const confirmationURL = `${req.protocol}://${req.get(
+           'host'
+         )}/api/v1/auth/confirmation/${confirmationToken}`;
+         const message = `  Welcome to EPOS Management System, you are receiving this email to confirm you registration. Please click the link below to proceed confirmation. \n
+         ${confirmationURL} `;
+          await sendEmail({
+            email: `${user.username}`,
+            subject: 'Email Confirmation',
+            message,
+          });
     sendTokenResponse(user, 200, res);
+    });
 });
 
 
@@ -29,7 +40,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-        return next(new ErrorResponse('Please provider username/password', 400));
+        return next(new ErrorResponse('Please provide username/password', 400));
     }
 
     const user = await User.findOne({ username }).select('+password');

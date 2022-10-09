@@ -1,5 +1,6 @@
+const { plugin } = require('mongoose');
 const mongoose = require('mongoose');
-
+const findOrCreate = require('mongoose-find-or-create');
 const CompanySchema = new mongoose.Schema({
   companyName: { type: String, unique: true },
   dateCreated: {
@@ -11,4 +12,6 @@ const CompanySchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+CompanySchema.plugin(findOrCreate);
 module.exports = mongoose.model('Company', CompanySchema);

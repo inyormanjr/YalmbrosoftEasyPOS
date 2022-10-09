@@ -4,13 +4,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminViewComponent } from './admin-view/admin-view.component';
 import {  RouterModule, Routes } from '@angular/router';
+import { StoreModule } from '@ngrx/store';
+import * as fromAdmin from './reducers';
 
 
 const route: Routes = [{
   path: '', component: AdminViewComponent, children: [
-    { path: 'home', loadChildren: () => import('../admin/home/home.module').then(x => x.HomeModule) },
+    { path: 'dashboard', loadChildren: () => import('../admin/home/home.module').then(x => x.HomeModule) },
     { path: 'item-management', loadChildren: () => import('../admin/item-management/item-management.module').then(x => x.ItemManagementModule)},
-    { path: '', redirectTo: 'home', pathMatch: 'full'}
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full'}
 ]}];
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ const route: Routes = [{
   imports: [
     CommonModule,
     RouterModule.forChild(route),
-    AdminComponentsModule
+    AdminComponentsModule,
+    StoreModule.forFeature(fromAdmin.adminFeatureKey, fromAdmin.adminReducer)
   ],
   exports: []
 })

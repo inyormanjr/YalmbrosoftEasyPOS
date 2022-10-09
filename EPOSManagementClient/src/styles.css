@@ -38,3 +38,6 @@ body {
   background-color: transparent;
 }
 
+:root .modal-container {
+  color: black !important;
+}

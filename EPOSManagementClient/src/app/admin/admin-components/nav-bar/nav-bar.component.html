@@ -5,10 +5,10 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <a class="navbar-brand" href="#">{{companyName}}</a>
+      <a class="navbar-brand" href="#">{{(company$ | async)}}</a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link " aria-current="page" [routerLink]="'home'" [routerLinkActive]="'active'"> Home</a>
+          <a class="nav-link " aria-current="page" [routerLink]="'dashboard'" [routerLinkActive]="'active'"> Dashboard</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="'item-management'" [routerLinkActive]="'active'">Item Management</a>
@@ -26,7 +26,7 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                user@gmail.com
+                {{(currentUser$ | async)}}
               </a>
               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                 <li><a class="dropdown-item" href="#">Action</a></li>
