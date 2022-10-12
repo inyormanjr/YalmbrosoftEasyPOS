@@ -1,3 +1,4 @@
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { RegistrationCompleteComponent } from './confirmation/registration-complete/registration-complete.component';
 import { AuthGuard } from './auth.guard';
 import { NgModule } from '@angular/core';
@@ -17,14 +18,15 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
-  {path: 'confirmation', component: RegistrationCompleteComponent},
+  { path: 'registration-complete', component: RegistrationCompleteComponent },
+  { path: 'confirmation/:id', component: ConfirmationComponent},
   {
     path: 'admin',
     loadChildren: () =>
       import('../app/admin/admin.module').then((x) => x.AdminModule),
     canActivate: [AuthGuard],
   },
-  { path: '', redirectTo: 'admin', pathMatch: 'full' },
+  { path: '**', redirectTo: 'admin', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -1,10 +1,11 @@
+const { json } = require('express');
 const ErrorResponse = require('../utils/errorResponse');
 
 const errorHandler = (err, req, res, next) => {
     let error = { ...err }
     
     error.message = err.message;
-    console.log(error);
+    console.log('Error Handler: ' + error | json);
 
     if (err.name === 'CastError') {
         const message = `Resource not found with Id ${err.value}`;

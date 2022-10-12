@@ -38,8 +38,8 @@
                         </div>
                      </div>
                      <div class="form-group mb-0 d-flex justify-content-between">
-                        <button class="btn  btn-block" type="button" (click)="register()" name="submit" id="submit">Sign Up </button>
-                        <p class="muted pt-2">Back to <a [routerLink]="'/login'" class="theme-secondary-text">Log In  →</a></p>
+                        <button [disabled]="isLoading" class="btn  btn-block" type="button" (click)="register()" name="submit" id="submit">Sign Up </button>
+                        <p class="muted pt-2">Back to <a [routerLink]="'/login'" class="text-white">Log In  →</a></p>
                      </div>
                   </form>
                </div>

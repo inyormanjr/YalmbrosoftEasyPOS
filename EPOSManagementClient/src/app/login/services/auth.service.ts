@@ -19,4 +19,8 @@ export class AuthService {
   login(username: string, password: string): Observable<any> {
     return this.httpClient.post(this.baseURL + '/login', { username, password }).pipe(map((x: any) => x));
   }
+
+  confirmation(token: String): Observable<any> {
+    return this.httpClient.put(this.baseURL + '/confirmation/'+ token, {}).pipe(map((x: any) => x));
+  }
 }

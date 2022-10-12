@@ -20,7 +20,7 @@ exports.register = asyncHandler(async (req, res, next) => {
         await user.save({ validateBeforeSave: false });
          const confirmationURL = `${req.protocol}://${req.get(
            'host'
-         )}/api/v1/auth/confirmation/${confirmationToken}`;
+         )}/confirmation/${confirmationToken}`;
          const message = `  Welcome to EPOS Management System, you are receiving this email to confirm your registration. Please click the link below to proceed confirmation. \n
          ${confirmationURL} `;
           await sendEmail({
@@ -28,7 +28,7 @@ exports.register = asyncHandler(async (req, res, next) => {
             subject: 'Email Confirmation',
             message,
           });
-    sendTokenResponse(user, 200, res);
+         sendTokenResponse(user, 200, res);
     });
 });
 
@@ -49,10 +49,17 @@ exports.login = asyncHandler(async (req, res, next) => {
             new ErrorResponse('Invalid credentials', 401)
          );
     }
+
+    if (user.confirmationToken) {
+         return next(new ErrorResponse('Email confirmation is pending', 401));
+    }
+
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
          return next(new ErrorResponse('Invalid credentials', 401));
     }
+
+    
     const returnUser = await User.findOne({ username }).populate('companyId');
     sendTokenResponse(returnUser, 200, res)
 });
@@ -104,6 +111,27 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     user.resetPasswordExpire = undefined;
     await user.save({validateBeforeSave: false});
     sendTokenResponse(user, 200, res);
+});
+
+exports.confirmation = asyncHandler(async (req, res, next) => {
+    console.log(req.params.confirmationToken);
+     const confirmationToken = await crypto
+       .createHash('sha256')
+       .update(req.params.confirmationToken)
+       .digest('hex');
+    console.log(confirmationToken);
+      const user = await User.findOne({
+        confirmationToken
+      });
+    console.log(user);
+      if (!user) {
+        return next(new ErrorResponse('Invalid token', 400));
+      }
+     
+     user.confirmationToken = undefined;
+     user.confirmationTokenExpiry = undefined;
+     await user.save({ validateBeforeSave: false });
+     sendTokenResponse(user, 200, res);
 });
 
 

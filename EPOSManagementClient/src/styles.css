@@ -7,8 +7,7 @@ body {
   padding: 0;
   margin: 0;
   height: 100vh;
-  background: rgb(186, 19, 219);
-    background: linear-gradient(193deg, rgba(186, 19, 219, 1) 0%, rgba(227, 200, 188, 1) 100%);
+  background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
 }
 
 :root .glassify {
@@ -40,4 +39,13 @@ body {
 
 :root .modal-container {
   color: black !important;
+}
+
+:root .modal .modal-content {
+  color: white;
+    background: rgba(255, 255, 255, 0.13);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.1px);
+    -webkit-backdrop-filter: blur(5.1px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
 }

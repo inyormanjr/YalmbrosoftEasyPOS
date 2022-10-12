@@ -56,7 +56,7 @@ export class RegisterViewComponent implements OnInit {
     this.authService.register(user).subscribe(
       (x) => {
         this.isLoading = false;
-        this.router.navigate(['confirmation']);
+        this.router.navigate(['registration-complete']);
       },
       (error) => {
         console.log(error);
