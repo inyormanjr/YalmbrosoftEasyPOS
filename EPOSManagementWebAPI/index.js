@@ -15,6 +15,7 @@ connectDb();
 
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoute');
+const supplierRoute = require('./routes/supplierRoutes');
 
 
 const app = express();
@@ -35,6 +36,7 @@ app.get('*', function (req, res) {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/suppliers', supplierRoute);
 
 
 
