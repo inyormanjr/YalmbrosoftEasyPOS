@@ -30,15 +30,15 @@ if (process.env.NODE_ENV == 'development') {
 
 app.use(fileupload());
 app.use(express.static(path.join(__dirname, 'public/')));
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'public/'));
-});
+
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/suppliers', supplierRoute);
 
-
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'public/'));
+});
 
 app.use(errorHandler);
 

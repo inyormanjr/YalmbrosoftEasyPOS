@@ -1,3 +1,4 @@
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 export function tokenGetter() {
   const token = localStorage.getItem('token');
+  console.log(token);
   return token;
 }
 @NgModule({
@@ -33,9 +35,9 @@ export function tokenGetter() {
     ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter,
-        allowedDomains: ['https://localhost:5001/api/v1'],
-        disallowedRoutes: ['https://localhost:5001/'],
+        tokenGetter: tokenGetter,
+        allowedDomains: [`${environment.allowedDomain}`],
+        disallowedRoutes: [`${environment.disallowedRoutes}`],
       },
     }),
 

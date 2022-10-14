@@ -1,0 +1,70 @@
+<div class="modal-header ">
+  <h5 class="modal-title text-white">Suppliers</h5>
+
+</div>
+<div class="modal-body " style="height: 70vh;">
+  <div class="table-responsive-lg">
+    <table class="table table-default">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Contact</th>
+          <th scope="col">Email</th>
+          <th scope="col">Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="suppliers$ | async as suppliers; else elseTemplate">
+            <tr *ngFor="let supplier of suppliers" class="">
+              <td scope="row">{{supplier.name}}</td>
+              <td scope="row">{{supplier.contact}}</td>
+              <td>{{supplier.email}}</td>
+              <td>{{supplier.address}}</td>
+            </tr>
+        </ng-container>
+        <ng-template #elseTemplate>
+
+        </ng-template>
+
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn " (click)="openModal(template)">Create New</button>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Supplier Entry Modal</h5>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <form class="text-white" [formGroup]="supplierForm">
+      <div class="mb-2">
+        <label for="" class="form-label">Name</label>
+        <input type="text" formControlName="name" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="Supplier Name">
+      </div>
+      <div class="mb-2">
+        <label for="" class="form-label">Contact</label>
+        <input type="text" formControlName="contact" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
+      </div>
+      <div class="mb-2">
+        <label for="" class="form-label">Email</label>
+        <input type="email" formControlName="email" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
+      </div>
+      <div class="mb-2">
+        <label for="" class="form-label">Address</label>
+        <textarea class="form-control" formControlName="address" rows="5"></textarea>
+      </div>
+    </form>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn " (click)="saveSupplier()">Save</button>
+  </div>
+</ng-template>

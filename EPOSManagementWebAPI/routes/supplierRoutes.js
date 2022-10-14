@@ -15,7 +15,7 @@ const advanceResult = require('../middlewares/advancedResult');
 
 const Supplier = require('../models/supplier');
 
-router.route('/').get(advanceResult(Supplier), getSuppliers).post(protect, createSupplier);
+router.route('/').get(protect, advanceResult(Supplier), getSuppliers).post(protect, createSupplier);
 
 router
   .route('/:id')

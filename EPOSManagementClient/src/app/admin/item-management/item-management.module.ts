@@ -1,8 +1,10 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { AdminComponentsModule } from './../admin-components/admin-components.module';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemManageViewComponent } from './item-manage-view/item-manage-view.component';
+import { SuppliersViewComponent } from './suppliers-view/suppliers-view.component';
 
 
 const routes: Routes = [{
@@ -14,9 +16,11 @@ const routes: Routes = [{
 @NgModule({
   declarations: [
     ItemManageViewComponent,
+    SuppliersViewComponent,
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes),
     AdminComponentsModule
   ]

@@ -5,6 +5,8 @@
 export const environment = {
   production: false,
   baseApiURL: 'http://localhost:5001/api/v1/',
+  allowedDomain: 'localhost:5001',
+  disallowedRoutes: 'localhost:5001/api/v1/auth',
 };
 
 /*

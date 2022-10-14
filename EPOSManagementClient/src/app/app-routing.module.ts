@@ -16,7 +16,6 @@ const routes: Routes = [
       import('../app/registration/registration.module').then(
         (x) => x.RegistrationModule
       ),
-    canActivate: [AuthGuard],
   },
   { path: 'registration-complete', component: RegistrationCompleteComponent },
   { path: 'confirmation/:id', component: ConfirmationComponent},
