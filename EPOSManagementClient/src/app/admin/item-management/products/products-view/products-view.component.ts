@@ -1,3 +1,4 @@
+import { CategoryViewComponent } from './../../category/category-view/category-view.component';
 import { SuppliersViewComponent } from '../../suppliers-view/suppliers-view.component';
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -16,5 +17,12 @@ export class ProductsViewComponent implements OnInit {
 
   showSuppliers() {
     this.bsModalRef = this.modalService.show(SuppliersViewComponent,Object.assign({}, { class: 'modal-lg' }));
+  }
+
+  showCategories() {
+    this.bsModalRef = this.modalService.show(
+      CategoryViewComponent,
+      Object.assign({}, { class: 'modal-lg' })
+    );
   }
 }

@@ -1,1 +1,68 @@
-<p>category-view works!</p>
+<div class="modal-header d-flex flex-row justify-content-between">
+    <h5 class="modal-title text-white"><i class="bi bi-tag mr-2"></i> Categories</h5>
+</div>
+<div class="modal-body overflow-auto" style="height: 70vh; "
+    *ngIf="(categories$ | async) as categories; else elseTemplate1">
+    <ng-container *ngIf="categories.length > 0; else elseTemplate">
+        <div class="table-responsive-lg">
+            <table class="table table-default">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let supplier of categories" class="">
+                        <td scope="row">{{supplier.name}}</td>
+                        <td class="text-end"><a name="" id="" class="btn " role="button" (click)="update(supplier,template)">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+    <ng-template #elseTemplate>
+        <div class="d-flex h-100 flex-fill  flex-column justify-content-center align-items-center">
+            <h1 class="display-1"><i class="bi bi-exclamation-octagon"></i></h1>
+            <h5>No Category's yet? Why dont you create one.</h5>
+        </div>
+    </ng-template>
+
+
+</div>
+<ng-template #elseTemplate1>
+    <div class="d-flex flex-fill flex-column justify-content-center align-items-center m-5">
+        <h5>Loading Data</h5>
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</ng-template>
+<div class="modal-footer">
+    <button type="button" class="btn " (click)="openModal(template)">Create New</button>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h5 class="modal-title pull-left">Category Entry Modal</h5>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="text-white" [formGroup]="categoryForm">
+            <div class="mb-2">
+                <label for="" class="form-label">Name</label>
+                <input type="text" formControlName="name" class="form-control" name="" id=""
+                    aria-describedby="nameHelpId" placeholder="">
+            </div>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn " (click)="save()">Save</button>
+    </div>
+</ng-template>
