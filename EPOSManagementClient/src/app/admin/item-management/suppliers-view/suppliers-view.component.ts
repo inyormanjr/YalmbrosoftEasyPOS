@@ -20,11 +20,13 @@ export class SuppliersViewComponent implements OnInit {
     private authService: AuthService,
     private fB: FormBuilder, private supplierService: SupplierService) {
     this.supplierForm = fB.group({
-      name: ['test'],
+      _id: [''],
+      name: [''],
       contact: [''],
       address: [''],
       email: [''],
       company: [''],
+      dateCreated: [''],
       creator: ['']
     });
   }
@@ -46,11 +48,42 @@ export class SuppliersViewComponent implements OnInit {
     });
   }
 
+  updateSupplier(supplier: Supplier, template: TemplateRef<any>) {
+    this.supplierForm.reset();
+     this.supplierForm = this.fB.group({
+       _id: [supplier._id],
+       name: [supplier.name],
+       contact: [supplier.contact],
+       address: [supplier.address],
+       email: [supplier.email],
+       company: [supplier.company],
+       dateCreated: [supplier.dateCreated],
+       creator: [supplier.creator],
+     });
+    this.openModal(template);
+  }
+
   saveSupplier() {
     const newSupplier = Object.assign({}, this.supplierForm.value);
-    this.supplierService.create(newSupplier).subscribe((x: any) => {
-      this.modalRef?.hide();
-      this.fetchSuppliers();
-    }, err => console.log(err));
+    if (newSupplier._id) {
+      this.supplierService.update(newSupplier._id, newSupplier).subscribe(
+        (x: any) => {
+          this.supplierForm.reset();
+          this.modalRef?.hide();
+          this.fetchSuppliers();
+        },
+        (err) => console.log(err)
+      );
+    }
+    else {
+    this.supplierService.create(newSupplier).subscribe(
+      (x: any) => {
+        this.supplierForm.reset();
+        this.modalRef?.hide();
+        this.fetchSuppliers();
+      },
+      (err) => console.log(err)
+    );
+    }
   }
 }

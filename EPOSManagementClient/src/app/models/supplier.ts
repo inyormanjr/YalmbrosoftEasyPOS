@@ -1,5 +1,5 @@
 export interface Supplier {
-  id: String;
+  _id: String;
   name: String;
   company: String;
   contact: String;

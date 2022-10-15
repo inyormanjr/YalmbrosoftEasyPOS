@@ -1,6 +1,6 @@
 <div class="d-flex  flex-column h-100 ">
 <app-nav-bar></app-nav-bar>
-<section class="flex-fill overflow-auto">
-<router-outlet></router-outlet>
+<section class="flex-fill overflow-auto" [@slideInAnimation]="o.isActivated ? o.activatedRoute : ''">
+<router-outlet #o="outlet"></router-outlet>
 </section>
 </div>

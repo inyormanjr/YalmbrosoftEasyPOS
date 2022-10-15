@@ -31,7 +31,7 @@ exports.createSupplier = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateSupplier = asyncHandler(async (req, res, next) => {
-  const supplier = await User.findByIdAndUpdate(req.params.id, req.body, {
+  const supplier = await Supplier.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
@@ -42,7 +42,7 @@ exports.updateSupplier = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteSupplier = asyncHandler(async (req, res, next) => {
-  const supplier = await User.findByIdAndDelete(req.params.id);
+  const supplier = await Supplier.findByIdAndDelete(req.params.id);
   if (!supplier) {
     return next(
       new ErrorResponse(`Supplier not found with Id ${req.params.id}`, 404)

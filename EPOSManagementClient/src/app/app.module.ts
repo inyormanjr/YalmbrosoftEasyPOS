@@ -1,4 +1,4 @@
-import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,7 +18,6 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 export function tokenGetter() {
   const token = localStorage.getItem('token');
-  console.log(token);
   return token;
 }
 @NgModule({
@@ -29,6 +28,7 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
@@ -45,13 +45,12 @@ export function tokenGetter() {
     EffectsModule.forRoot([]),
     StoreModule.forFeature(
       fromAppstore.appstoreFeatureKey,
-      fromAppstore.reducers
+      fromAppstore.appReducer
     ),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
     }),
-    BrowserAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

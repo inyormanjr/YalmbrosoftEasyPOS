@@ -1,5 +1,5 @@
 <div class="modal-header ">
-  <h5 class="modal-title text-white">Suppliers</h5>
+  <h5 class="modal-title text-white"><i class="bi bi-truck mr-2"></i> Suppliers</h5>
 
 </div>
 <div class="modal-body " style="height: 70vh;">
@@ -11,6 +11,7 @@
           <th scope="col">Contact</th>
           <th scope="col">Email</th>
           <th scope="col">Address</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -20,6 +21,10 @@
               <td scope="row">{{supplier.contact}}</td>
               <td>{{supplier.email}}</td>
               <td>{{supplier.address}}</td>
+              <td><a name="" id="" class="btn "  role="button" (click)="updateSupplier(supplier,template)">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+            </td>
             </tr>
         </ng-container>
         <ng-template #elseTemplate>

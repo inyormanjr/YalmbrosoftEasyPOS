@@ -1,3 +1,4 @@
+import { slideInAnimation } from './../../animation';
 
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -7,7 +8,8 @@ import { AdminModel } from '../stateModels/admin.model';
 @Component({
   selector: 'app-admin-view',
   templateUrl: './admin-view.component.html',
-  styleUrls: ['./admin-view.component.css']
+  styleUrls: ['./admin-view.component.css'],
+  animations: [slideInAnimation]
 })
 export class AdminViewComponent implements OnInit {
 
