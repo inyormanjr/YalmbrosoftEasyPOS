@@ -14,6 +14,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RegistrationCompleteComponent } from './confirmation/registration-complete/registration-complete.component';
+import { ToastrModule } from 'ngx-toastr';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 export function tokenGetter() {
@@ -29,6 +30,7 @@ export function tokenGetter() {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     AppRoutingModule,
     FormsModule,
     HttpClientModule,

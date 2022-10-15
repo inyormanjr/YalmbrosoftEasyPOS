@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Supplier } from 'src/app/models/supplier';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-suppliers-view',
@@ -18,9 +19,9 @@ export class SuppliersViewComponent implements OnInit {
   supplierForm: FormGroup;
   constructor(private modalService: BsModalService,
     private authService: AuthService,
-    private fB: FormBuilder, private supplierService: SupplierService) {
+    private fB: FormBuilder, private supplierService: SupplierService, private toastr: ToastrService) {
     this.supplierForm = fB.group({
-      _id: [''],
+      _id: [],
       name: [''],
       contact: [''],
       address: [''],
@@ -71,8 +72,9 @@ export class SuppliersViewComponent implements OnInit {
           this.supplierForm.reset();
           this.modalRef?.hide();
           this.fetchSuppliers();
+          this.toastr.success('Supplier details updated.', 'System');
         },
-        (err) => console.log(err)
+        (err) => this.toastr.error(err)
       );
     }
     else {
@@ -81,8 +83,9 @@ export class SuppliersViewComponent implements OnInit {
         this.supplierForm.reset();
         this.modalRef?.hide();
         this.fetchSuppliers();
+        this.toastr.success('New Supplier created.', 'System');
       },
-      (err) => console.log(err)
+      (err) => this.toastr.error(err)
     );
     }
   }

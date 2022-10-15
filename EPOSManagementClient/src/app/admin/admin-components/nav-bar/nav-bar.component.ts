@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { selectAppIsNavigating } from './../../../reducers/index';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
@@ -16,11 +17,17 @@ export class NavBarComponent implements OnInit {
   currentUser$: Observable<String>;
   company$: Observable<String>;
   isNavigating$: Observable<boolean>;
-  constructor(private appStore: Store<AppState>, private adminStore: Store<AdminModel>) {
+  constructor(private appStore: Store<AppState>, private adminStore: Store<AdminModel>, private router: Router) {
     this.isNavigating$ = appStore.select(selectAppIsNavigating);
     this.currentUser$ = adminStore.select(DashboardSelectorTypes.selectCurrentUser);
     this.company$ = adminStore.select(DashboardSelectorTypes.selectCompanyName);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  signOut() {
+    localStorage.clear();
+    this.router.navigateByUrl('login');
+
+  }
 }

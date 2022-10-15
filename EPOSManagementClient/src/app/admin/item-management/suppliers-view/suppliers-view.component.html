@@ -2,7 +2,7 @@
   <h5 class="modal-title text-white"><i class="bi bi-truck mr-2"></i> Suppliers</h5>
 
 </div>
-<div class="modal-body " style="height: 70vh;">
+<div class="modal-body overflow-auto" style="height: 70vh;">
   <div class="table-responsive-lg">
     <table class="table table-default">
       <thead>
@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngIf="suppliers$ | async as suppliers; else elseTemplate">
+        <ng-container *ngIf="(suppliers$ | async) as suppliers; else elseTemplate">
             <tr *ngFor="let supplier of suppliers" class="">
               <td scope="row">{{supplier.name}}</td>
               <td scope="row">{{supplier.contact}}</td>
@@ -28,7 +28,9 @@
             </tr>
         </ng-container>
         <ng-template #elseTemplate>
-
+          <div class="d-flex flex-fill flex-column justify-content-center align-items-center">
+                <h5>Loading Data</h5>
+          </div>
         </ng-template>
 
 

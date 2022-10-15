@@ -35,10 +35,13 @@ body {
 
 :root input {
   background-color: transparent;
+  color:white;
 }
+
 
 :root textarea {
   background-color: transparent;
+  color: white;
 }
 
 :root .modal-container {
