@@ -16,6 +16,7 @@ connectDb();
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoute');
 const supplierRoute = require('./routes/supplierRoutes');
+const categoryRoute = require('./routes/categoryRoutes');
 
 
 const app = express();
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public/')));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/suppliers', supplierRoute);
+app.use('/api/v1/categories', categoryRoute);
 
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'public/'));
