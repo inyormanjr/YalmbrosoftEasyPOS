@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemManageViewComponent } from './item-manage-view/item-manage-view.component';
 import { SuppliersViewComponent } from './suppliers-view/suppliers-view.component';
+import { CategoryViewComponent } from './category/category-view/category-view.component';
 
 
 const routes: Routes = [{
@@ -17,6 +18,7 @@ const routes: Routes = [{
   declarations: [
     ItemManageViewComponent,
     SuppliersViewComponent,
+    CategoryViewComponent,
   ],
   imports: [
     CommonModule,

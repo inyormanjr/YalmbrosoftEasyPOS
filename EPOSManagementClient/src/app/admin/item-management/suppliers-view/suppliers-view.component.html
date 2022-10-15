@@ -1,44 +1,51 @@
-<div class="modal-header ">
+<div class="modal-header d-flex flex-row justify-content-between">
   <h5 class="modal-title text-white"><i class="bi bi-truck mr-2"></i> Suppliers</h5>
-
 </div>
-<div class="modal-body overflow-auto" style="height: 70vh;">
+<div class="modal-body overflow-auto" style="height: 70vh; " *ngIf="(suppliers$ | async) as suppliers; else elseTemplate1">
+  <ng-container *ngIf="suppliers.length > 0; else elseTemplate">
   <div class="table-responsive-lg">
-    <table class="table table-default">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Contact</th>
-          <th scope="col">Email</th>
-          <th scope="col">Address</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngIf="(suppliers$ | async) as suppliers; else elseTemplate">
-            <tr *ngFor="let supplier of suppliers" class="">
-              <td scope="row">{{supplier.name}}</td>
-              <td scope="row">{{supplier.contact}}</td>
-              <td>{{supplier.email}}</td>
-              <td>{{supplier.address}}</td>
-              <td><a name="" id="" class="btn "  role="button" (click)="updateSupplier(supplier,template)">
-                <i class="bi bi-pencil-square"></i>
-              </a>
-            </td>
-            </tr>
-        </ng-container>
-        <ng-template #elseTemplate>
-          <div class="d-flex flex-fill flex-column justify-content-center align-items-center">
-                <h5>Loading Data</h5>
-          </div>
-        </ng-template>
+  <table class="table table-default">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Email</th>
+        <th scope="col">Address</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let supplier of suppliers" class="">
+        <td scope="row">{{supplier.name}}</td>
+        <td scope="row">{{supplier.contact}}</td>
+        <td>{{supplier.email}}</td>
+        <td>{{supplier.address}}</td>
+        <td><a name="" id="" class="btn " role="button" (click)="updateSupplier(supplier,template)">
+            <i class="bi bi-pencil-square"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <div class="d-flex h-100 flex-fill  flex-column justify-content-center align-items-center">
+      <h1 class="display-1"><i class="bi bi-exclamation-octagon"></i></h1>
+      <h5>No supplier's yet? Why dont you create one.</h5>
+    </div>
+  </ng-template>
 
-
-      </tbody>
-    </table>
-  </div>
 
 </div>
+<ng-template #elseTemplate1>
+  <div class="d-flex flex-fill flex-column justify-content-center align-items-center m-5">
+    <h5>Loading Data</h5>
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
 <div class="modal-footer">
   <button type="button" class="btn " (click)="openModal(template)">Create New</button>
 </div>
