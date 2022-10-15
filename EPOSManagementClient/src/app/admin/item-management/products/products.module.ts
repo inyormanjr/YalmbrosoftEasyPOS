@@ -6,12 +6,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgxModule } from 'src/app/shared/ngx-bootstrap/ngx/ngx.module';
 import { StoreModule } from '@ngrx/store';
 import * as fromProducts from './reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { ProductEffects } from './effect/product.effects';
 
 
 const routes: Routes = [{ path: '', component: ProductsViewComponent }];
 @NgModule({
   declarations: [ProductsViewComponent],
   imports: [CommonModule, RouterModule.forChild(routes), NgxModule,
-    StoreModule.forFeature(fromProducts.productsFeatureKey, fromProducts.productReducer)],
+    StoreModule.forFeature(fromProducts.productsFeatureKey, fromProducts.productReducer),
+    EffectsModule.forFeature([ProductEffects])],
 })
 export class ProductsModule {}

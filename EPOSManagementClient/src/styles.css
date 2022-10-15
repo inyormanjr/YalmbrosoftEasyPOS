@@ -33,10 +33,11 @@ body {
   border: 2px solid rgb(203, 203, 203) !important;
 }
 
-:root input {
+:root input, select.form-select, textarea {
   background-color: transparent;
   color:white;
 }
+
 
 
 :root textarea {

@@ -6,7 +6,7 @@
       <div class="view-menu d-flex flex-row ">
           <button type="button" class="btn btn-outline-light me-2" (click)="showSuppliers()"><i class="bi bi-truck"></i> Suppliers </button>
           <button type="button" class="btn btn-outline-light me-2" (click)="showCategories()"><i class="bi bi-tag"></i> Categories </button>
-          <button type="button" class="btn btn-outline-light"><i class="bi bi-file-earmark-plus "></i> New Item </button>
+          <button type="button" class="btn btn-outline-light" (click)="showItemEntry()"><i class="bi bi-file-earmark-plus "></i> New Item </button>
       </div>
   </section>
   <section class="item-list flex-fill d-flex flex-column " >
@@ -22,19 +22,17 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Barcode</th>
+              <th scope="col">Name</th>
               <th scope="col">Description</th>
-              <th scope="col">Supplier</th>
+              <th scope="col">Category</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of items">
-              <th scope="row">{{item}}</th>
-              <td>04240042</td>
-              <td>Product {{item}}</td>
-              <td>Supplier 1</td>
+            <tr *ngFor="let product of (products$ | async)">
+              <th scope="row">{{product.name}}</th>
+              <td>{{product.description}}</td>
+              <td> {{product.category}}</td>
               <td>
                 <a name="" id="" class="btn edit-button" href="#" role="button"><i class="bi bi-pencil-square"></i></a>
               </td>

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ItemManageViewComponent } from './item-manage-view/item-manage-view.component';
 import { SuppliersViewComponent } from './suppliers-view/suppliers-view.component';
 import { CategoryViewComponent } from './category/category-view/category-view.component';
+import { ItemEntryComponent } from './item-entry/item-entry.component';
 
 
 const routes: Routes = [{
@@ -19,6 +20,7 @@ const routes: Routes = [{
     ItemManageViewComponent,
     SuppliersViewComponent,
     CategoryViewComponent,
+    ItemEntryComponent,
   ],
   imports: [
     CommonModule,
