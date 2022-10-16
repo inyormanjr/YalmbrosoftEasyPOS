@@ -138,7 +138,7 @@ export class ItemEntryComponent implements OnInit {
       (x: any) => {
         this.isProcessing = false;
         this.productStore.dispatch(ProductActionTypes.loadProductss());
-        this.toastr.success(' Item Updated.', 'System');
+        this.toastr.success(' Item Updated Successfully.', 'System');
       },
       (err) => {
         this.isProcessing = false;
