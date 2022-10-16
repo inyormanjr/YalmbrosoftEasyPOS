@@ -2,7 +2,6 @@ const advanceResults = (model, populate) => async (req, res, next) => {
 
     let query;
     const reqQuery = { ...req.query };
-
     const removeFields = ['select', 'sort', 'limit'];
 
     removeFields.forEach((param) => delete reqQuery[param]);
@@ -14,6 +13,7 @@ const advanceResults = (model, populate) => async (req, res, next) => {
         (match) => `$${match}`
     );
 
+
     query = model.find(JSON.parse(queryStr));
 
     if (req.query.select) {
@@ -23,7 +23,6 @@ const advanceResults = (model, populate) => async (req, res, next) => {
 
     if (req.query.sort) {
         const sortBy = req.query.sort.split(',').join(' ');
-        console.log(sortBy);
         query = query.sort(sortBy);
     } else {
         query = query.sort('-dateCreated');

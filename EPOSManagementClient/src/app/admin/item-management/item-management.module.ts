@@ -1,3 +1,4 @@
+import { NgxModule } from 'src/app/shared/ngx-bootstrap/ngx/ngx.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminComponentsModule } from './../admin-components/admin-components.module';
 import { Routes, RouterModule } from '@angular/router';
@@ -25,6 +26,7 @@ const routes: Routes = [{
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    NgxModule,
     RouterModule.forChild(routes),
     AdminComponentsModule
   ]

@@ -10,13 +10,22 @@
   <form [formGroup]="itemForm" method="post">
     <div class="container-fluid">
       <div class="row mt-3 mb-4">
-              <div class="col-6">
+              <div class="col-4">
+                <label for="" class="form-label">Item Type</label>
+                <div class="input-group">
+                <select formControlName="itemType" class="form-select" aria-label="Default select example">
+                  <option selected>Open this select menu</option>
+                  <option [ngValue]="'Component'">Components</option>
+                  <option [ngValue]="'Product'" >Product</option>
+                </select>
+                </div>
+              </div>
+              <div class="col-4">
                 <label for="" class="form-label">Category</label>
               <div class="input-group" >
               <select formControlName="category" class="form-select" aria-label="Default select example">
                 <option selected>Select Category</option>
                 <ng-container *ngIf="(categories$ | async) as categories; else elseTemplate">
-
                   <ng-container *ngIf="categories.length > 0; else elseTemplate1">
                         <option *ngFor="let category of categories" [ngValue]="category.name">{{category.name}}</option>
                   </ng-container>
@@ -32,7 +41,7 @@
               </select>
               </div>
               </div>
-              <div class="col-6">
+              <div class="col-4">
                 <label for="" class="form-label">Supplier(Optional)</label>
                 <div class="input-group ">
                 <select formControlName="supplier" class="form-select" aria-label="Default select example">
@@ -78,40 +87,52 @@
             <label for="" class="form-label">Description *</label>
             <input type="text" class="form-control" formControlName="description" name="" id="" aria-describedby="nameHelpId" placeholder="">
           </div>
-        </div>
-
-        <ng-container formArrayName="variants" *ngIf="this.itemForm.controls.variants.value.length > 0">
-          <div class="card glassify container p-3 mb-3" *ngFor="let item of this.itemForm.controls.variants.value; let itemIndex= index; trackBy: trackByFn"
-         [formGroupName]="itemIndex">
-         <div class="header d-flex flex-row justify-content-between">
-            <ng-container>{{"Variant-" + (itemIndex + 1)}}</ng-container>
-            <button type="button" class="btn-close" (click)="removeVariant(itemIndex)" aria-label="Close"></button>
          </div>
-              <div class="row mb-3">
-                <div class="col-6">
-                  <label for="" class="form-label">Unit Type</label>
-                  <input type="text" formControlName="unitType" class="form-control" name="" id="" aria-describedby="nameHelpId"
-                    placeholder="">
+
+        <ng-container  formArrayName="variants" *ngIf="this.itemForm.controls.variants.value.length > 0">
+          <tabset>
+              <tab *ngFor="let item of this.itemForm.controls.variants.value; let itemIndex= index; trackBy: trackByFn"
+           [formGroupName]="itemIndex"  [id]=" itemIndex.toString()" customClass="text-white glassify">
+            <ng-template class="glassify" tabHeading>
+              <span class=" text-dark ">{{'Variant-' + (itemIndex + 1)}}</span>
+            </ng-template>
+                <div class="card glassify container  p-3  ">
+                  <div class="header d-flex flex-row justify-content-end mb-1">
+                    <button type="button" class="btn-close" (click)="removeVariant(itemIndex)" aria-label="Close"></button>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-6">
+                      <label for="" class="form-label">Unit Type</label>
+                      <input type="text" formControlName="unitType" class="form-control" name="" id="" aria-describedby="nameHelpId"
+                        placeholder="">
+                    </div>
+                    <div class="col-6">
+                      <label for="" class="form-label">Unit Value</label>
+                      <input type="text" formControlName="unitValue" class="form-control" name="" id="" aria-describedby="nameHelpId"
+                        placeholder="">
+                    </div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-4">
+                      <label for="" class="form-label">Unit Cost</label>
+                      <input type="number" formControlName="unitCost" class="form-control" name="" id="" aria-describedby="nameHelpId"
+                        placeholder="">
+                    </div>
+                    <div class="col-4">
+                      <label for="" class="form-label">Unit Price</label>
+                      <input step="0.01" type="number" formControlName="unitPrice" class="form-control" name="" id=""
+                        aria-describedby="nameHelpId" placeholder="">
+                    </div>
+                    <div class="col-4">
+                      <label for="" class="form-label">Quantity (Optional)</label>
+                      <input [readonly]="item._id !== null" step="0.01" type="number" formControlName="quantity" class="form-control"
+                        name="" id="" aria-describedby="nameHelpId" placeholder="">
+                    </div>
+                  </div>
                 </div>
-                <div class="col-6">
-                  <label for="" class="form-label">Unit Value</label>
-                  <input type="text" formControlName="unitValue" class="form-control" name="" id="" aria-describedby="nameHelpId"
-                    placeholder="">
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-6">
-                  <label for="" class="form-label">Unit Cost</label>
-                  <input type="number" formControlName="unitCost" class="form-control" name="" id="" aria-describedby="nameHelpId"
-                    placeholder="">
-                </div>
-                <div class="col-6">
-                  <label for="" class="form-label">Unit Price</label>
-                  <input step="0.01" type="number" formControlName="unitPrice" class="form-control" name="" id=""
-                    aria-describedby="nameHelpId" placeholder="">
-                </div>
-              </div>
-          </div>
+              </tab>
+          </tabset>
+
         </ng-container>
 
     </div>
@@ -122,5 +143,5 @@
   <button [disabled]="isProcessing" type="button" class="btn " (click)="addNewVariant()">
 
     Add Variant</button>
-  <button [disabled]="isProcessing" type="button" class="btn " (click)="save()">Save</button>
+  <button [disabled]="isProcessing" type="button" class="btn " (click)="save()">{{saveButtonText}}</button>
 </div>

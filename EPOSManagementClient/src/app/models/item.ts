@@ -6,9 +6,10 @@ export interface Item {
   company: string;
   supplier?: string;
   barcode: string;
+  itemType: string;
   description: string;
   itemCode: string;
-  Variants: Variants[];
+  variants: Variants[];
   dateCreated: Date;
   creator: string;
 }
@@ -19,4 +20,5 @@ export interface Variants {
   unitValue: string;
   unitCost: Number;
   unitPrice: Number;
+  quantity: Number;
 }

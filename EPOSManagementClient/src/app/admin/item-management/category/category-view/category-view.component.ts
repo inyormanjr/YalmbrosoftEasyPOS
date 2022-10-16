@@ -33,7 +33,9 @@ export class CategoryViewComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {this.fetch()}
+  ngOnInit(): void {
+    this.fetch();
+  }
   fetch() {
     this.categories$ = this.categoryService
       .getMany()
@@ -44,6 +46,11 @@ export class CategoryViewComponent implements OnInit {
     this.modalRef = this.modalService.show(template, {
       class: 'modal-md mt-3',
     });
+  }
+
+  newItem(template: TemplateRef<any>) {
+    this.categoryForm.reset();
+    this.openModal(template);
   }
 
   update(category: Category, template: TemplateRef<any>) {
@@ -63,8 +70,6 @@ export class CategoryViewComponent implements OnInit {
     if (newObj._id) {
       this.categoryService.update(newObj._id, newObj).subscribe(
         (x: any) => {
-          this.categoryForm.reset();
-          this.modalRef?.hide();
           this.fetch();
           this.toastr.success('Category details updated.', 'System');
         },

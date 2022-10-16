@@ -3,7 +3,7 @@ import { Item } from 'src/app/models/item';
 import { Supplier } from 'src/app/models/supplier';
 
 export const loadProductss = createAction(
-  '[Products] Load Productss'
+  '[Products] Load Productss', props <{searchString: any}>()
 );
 
 export const loadSuppliers = createAction('[Products] Load Suppliers'

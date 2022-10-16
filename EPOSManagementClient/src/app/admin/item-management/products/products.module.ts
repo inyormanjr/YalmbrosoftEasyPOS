@@ -1,3 +1,4 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,9 @@ const routes: Routes = [{ path: '', component: ProductsViewComponent }];
 @NgModule({
   declarations: [ProductsViewComponent],
   imports: [CommonModule, RouterModule.forChild(routes), NgxModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxModule,
     StoreModule.forFeature(fromProducts.productsFeatureKey, fromProducts.productReducer),
     EffectsModule.forFeature([ProductEffects])],
 })

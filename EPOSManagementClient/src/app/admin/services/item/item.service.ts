@@ -16,10 +16,14 @@ export class ItemService {
     private authService: AuthService
   ) {}
 
-  getMany(): Observable<any> {
+  getMany(searchString?: string): Observable<any> {
     let params = new HttpParams();
     params = params.set('company', this.authService.companyId());
 
+    if (searchString) {
+      const test = JSON.stringify({ $regex: searchString });
+      params = params.append('name', test);
+    }
     return this.httpClient
       .get(this.baseURL, { params })
       .pipe(map((x: any) => x));

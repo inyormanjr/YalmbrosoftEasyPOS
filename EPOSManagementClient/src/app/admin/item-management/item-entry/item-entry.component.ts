@@ -19,6 +19,8 @@ import { ProductActionTypes } from '../products/actions/products.action.types';
   styleUrls: ['./item-entry.component.css'],
 })
 export class ItemEntryComponent implements OnInit {
+  isUpdate = false;
+  saveButtonText = 'Save';
   isProcessing: boolean = false;
   itemForm: FormGroup;
   categories$: Observable<Category[]> | undefined;
@@ -41,12 +43,11 @@ export class ItemEntryComponent implements OnInit {
         supplier: [],
         description: [''],
         itemCode: [''],
+        itemType: [],
         barcode: [''],
         variants: this.fB.array([]),
         creator: [''],
       });
-
-    this.addNewVariant();
   }
 
   createForm() {
@@ -58,6 +59,7 @@ export class ItemEntryComponent implements OnInit {
       supplier: [],
       description: [''],
       itemCode: [''],
+      itemType: [],
       barcode: [''],
       variants: this.fB.array([]),
       creator: [''],
@@ -67,16 +69,22 @@ export class ItemEntryComponent implements OnInit {
   get createVariantDetailsControl(): FormGroup {
     return this.fB.group(
       {
+        _id: [],
         unitType: [''],
         unitValue: [''],
         unitCost: [0.0],
         unitPrice: [0.0],
+        quantity: []
       },
     );
   }
 
   get variantControl(): FormArray {
     return this.itemForm.controls.variants as FormArray;
+  }
+
+  parseToInt(value: string) {
+    return Number.parseInt(value);
   }
 
   addNewVariant() {
@@ -89,15 +97,21 @@ export class ItemEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.categories$ = this.categoryService
       .getMany()
       .pipe(map((x: any) => x.data));
     this.suppliers$ = this.supplierService
       .getMany()
       .pipe(map((x: any) => x.data));
-    if(this.initialItem)
-    this.itemForm.patchValue(this.initialItem);
+    if (this.initialItem) {
+      this.isUpdate = true;
+      this.saveButtonText = 'Update';
+       this.initialItem.variants.forEach((element) => {
+        this.addNewVariant()});
+       this.itemForm.patchValue(this.initialItem);
+    }
+    else
+    this.addNewVariant();
   }
 
   generateItemCode() {
@@ -125,7 +139,8 @@ export class ItemEntryComponent implements OnInit {
       (x: any) => {
         this.isProcessing = false;
         this.createForm();
-        this.productStore.dispatch(ProductActionTypes.loadProductss());
+        this.addNewVariant();
+        this.productStore.dispatch(ProductActionTypes.loadProductss({searchString: null}));
         this.toastr.success('New Item created.', 'System');
       },
       (err) => {
@@ -137,7 +152,7 @@ export class ItemEntryComponent implements OnInit {
       this.itemService.update(newObj._id, newObj).subscribe(
       (x: any) => {
         this.isProcessing = false;
-        this.productStore.dispatch(ProductActionTypes.loadProductss());
+        this.productStore.dispatch(ProductActionTypes.loadProductss({searchString: null}));
         this.toastr.success(' Item Updated Successfully.', 'System');
       },
       (err) => {

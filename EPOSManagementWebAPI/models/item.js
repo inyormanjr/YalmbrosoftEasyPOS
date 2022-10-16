@@ -10,6 +10,7 @@ const ItemSchema = new mongoose.Schema({
   },
   barcode: { type: String },
   itemCode: { type: String },
+  itemType: { type: String},
   description: { type: String },
   variants:  [
       {
@@ -17,6 +18,7 @@ const ItemSchema = new mongoose.Schema({
         unitValue: { type: String },
         unitCost: { type: Number },
         unitPrice: { type: Number },
+        quantity: {type: Number}
       },
     ],
   creator: {
@@ -28,6 +30,11 @@ const ItemSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+ItemSchema.pre(/^find/, function (next) {
+  console.log(this);
+  next();
 });
 
 module.exports = mongoose.model('Item', ItemSchema);

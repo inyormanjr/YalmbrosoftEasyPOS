@@ -16,11 +16,11 @@ import { ProductSelectorTypes } from '../selectors/products.selector.types';
   styleUrls: ['./products-view.component.css'],
 })
 export class ProductsViewComponent implements OnInit {
-
+  searchInput: string = '';
   bsModalRef?: BsModalRef;
   products$: Observable<Item[]> | undefined;
   constructor(private modalService: BsModalService, private productStore: Store<ProductsState>) {
-    productStore.dispatch(ProductActionTypes.loadProductss());
+    productStore.dispatch(ProductActionTypes.loadProductss({searchString: null}));
   }
 
   ngOnInit(): void {
@@ -53,5 +53,12 @@ export class ProductsViewComponent implements OnInit {
       class: 'modal-lg'
     };
     this.bsModalRef = this.modalService.show(ItemEntryComponent, initialState);
+  }
+
+  searchItem() {
+
+        this.productStore.dispatch(
+          ProductActionTypes.loadProductss({ searchString: this.searchInput })
+        );
   }
 }

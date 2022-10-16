@@ -17,9 +17,13 @@ export class SuppliersViewComponent implements OnInit {
   suppliers$: Observable<Supplier[]> | undefined;
   modalRef?: BsModalRef | null;
   supplierForm: FormGroup;
-  constructor(private modalService: BsModalService,
+  constructor(
+    private modalService: BsModalService,
     private authService: AuthService,
-    private fB: FormBuilder, private supplierService: SupplierService, private toastr: ToastrService) {
+    private fB: FormBuilder,
+    private supplierService: SupplierService,
+    private toastr: ToastrService
+  ) {
     this.supplierForm = fB.group({
       _id: [],
       name: [''],
@@ -28,12 +32,11 @@ export class SuppliersViewComponent implements OnInit {
       email: [''],
       company: [''],
       dateCreated: [''],
-      creator: ['']
+      creator: [''],
     });
   }
 
   ngOnInit(): void {
-
     this.fetchSuppliers();
   }
 
@@ -49,18 +52,23 @@ export class SuppliersViewComponent implements OnInit {
     });
   }
 
+  newSupplier(template: TemplateRef<any>) {
+    this.supplierForm.reset();
+     this.openModal(template);
+  }
+
   updateSupplier(supplier: Supplier, template: TemplateRef<any>) {
     this.supplierForm.reset();
-     this.supplierForm = this.fB.group({
-       _id: [supplier._id],
-       name: [supplier.name],
-       contact: [supplier.contact],
-       address: [supplier.address],
-       email: [supplier.email],
-       company: [supplier.company],
-       dateCreated: [supplier.dateCreated],
-       creator: [supplier.creator],
-     });
+    this.supplierForm = this.fB.group({
+      _id: [supplier._id],
+      name: [supplier.name],
+      contact: [supplier.contact],
+      address: [supplier.address],
+      email: [supplier.email],
+      company: [supplier.company],
+      dateCreated: [supplier.dateCreated],
+      creator: [supplier.creator],
+    });
     this.openModal(template);
   }
 
@@ -69,24 +77,21 @@ export class SuppliersViewComponent implements OnInit {
     if (newSupplier._id) {
       this.supplierService.update(newSupplier._id, newSupplier).subscribe(
         (x: any) => {
-          this.supplierForm.reset();
-          this.modalRef?.hide();
           this.fetchSuppliers();
           this.toastr.success('Supplier details updated.', 'System');
         },
         (err) => this.toastr.error(err)
       );
-    }
-    else {
-    this.supplierService.create(newSupplier).subscribe(
-      (x: any) => {
-        this.supplierForm.reset();
-        this.modalRef?.hide();
-        this.fetchSuppliers();
-        this.toastr.success('New Supplier created.', 'System');
-      },
-      (err) => this.toastr.error(err)
-    );
+    } else {
+      this.supplierService.create(newSupplier).subscribe(
+        (x: any) => {
+          this.supplierForm.reset();
+          this.modalRef?.hide();
+          this.fetchSuppliers();
+          this.toastr.success('New Supplier created.', 'System');
+        },
+        (err) => this.toastr.error(err)
+      );
     }
   }
 }

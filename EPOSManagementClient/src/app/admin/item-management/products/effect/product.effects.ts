@@ -17,7 +17,7 @@ export class ProductEffects {
       this.actions$.pipe(
         ofType(ProductActionTypes.loadProductss),
         tap((action) => {
-          this.itemService.getMany().pipe(map((data: any) => {
+          this.itemService.getMany(action.searchString).pipe(map((data: any) => {
             this.productStore.dispatch(ProductActionTypes.loadProductsSuccess({ data: data.data }));
           })).subscribe(noop, (error) => { });
         })
