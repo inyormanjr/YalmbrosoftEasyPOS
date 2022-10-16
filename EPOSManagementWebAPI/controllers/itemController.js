@@ -20,6 +20,7 @@ exports.getById = asyncHandler(async (req, res, next) => {
 });
 
 exports.create = asyncHandler(async (req, res, next) => {
+  
   req.body.company = new ObjectId(req.user.companyId);
   req.body.creator = new ObjectId(req.user._id);
   const item = await Item.create(req.body);

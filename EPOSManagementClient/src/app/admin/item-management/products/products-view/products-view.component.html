@@ -22,6 +22,7 @@
         <table class="table">
           <thead>
             <tr>
+              <th>Item Code</th>
               <th scope="col">Name</th>
               <th scope="col">Description</th>
               <th scope="col">Category</th>
@@ -30,11 +31,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let product of (products$ | async)">
+              <th scope="row">{{product.itemCode}}</th>
               <th scope="row">{{product.name}}</th>
               <td>{{product.description}}</td>
               <td> {{product.category}}</td>
               <td>
-                <a name="" id="" class="btn edit-button" href="#" role="button"><i class="bi bi-pencil-square"></i></a>
+                <a name="" id="" class="btn edit-button" (click)="updateItem(product)" role="button"><i class="bi bi-pencil-square"></i></a>
               </td>
             </tr>
           </tbody>

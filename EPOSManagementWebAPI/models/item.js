@@ -8,12 +8,17 @@ const ItemSchema = new mongoose.Schema({
     type: String,
     require: [true, 'Item name is required'],
   },
+  barcode: { type: String },
   itemCode: { type: String },
   description: { type: String },
-  unitType: { type: String },
-  unitValue: { type: String },
-  unitCost: { type: Number },
-  unitPrice: { type: Number },
+  variants:  [
+      {
+        unitType: { type: String },
+        unitValue: { type: String },
+        unitCost: { type: Number },
+        unitPrice: { type: Number },
+      },
+    ],
   creator: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',

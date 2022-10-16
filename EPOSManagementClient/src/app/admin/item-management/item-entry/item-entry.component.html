@@ -55,16 +55,21 @@
               </div>
       </div>
         <div class="row mb-2">
-            <div class="col-7">
+          <div class="col-4">
+            <label for="" class="form-label">Barcode</label>
+            <input type="text" formControlName="barcode" class="form-control" name="" id="" aria-describedby="nameHelpId"
+              placeholder="">
+          </div>
+            <div class="col-4">
               <label for="" class="form-label">Name *</label>
               <input type="text" formControlName="name" class="form-control" name="" id="" aria-describedby="nameHelpId"
                 placeholder="">
             </div>
-            <div class="col-5">
-              <label for="" class="form-label">Item Code(Requires Name)</label>
+            <div class="col-4">
+              <label for="" class="form-label">Item Code(Automated)</label>
               <div class="input-group ">
-                <input readonly type="text" formControlName="itemCode" class="form-control" placeholder="" aria-label="" aria-describedby="button-addon2">
-                <button class="btn btn-sm btn-outline-secondary" type="button" id="button-addon2">Generate</button>
+                <input readonly type="text" [ngModel]="generateItemCode() " formControlName="itemCode" class="form-control" placeholder="" aria-label="" aria-describedby="button-addon2">
+
               </div>
             </div>
         </div>
@@ -74,30 +79,48 @@
             <input type="text" class="form-control" formControlName="description" name="" id="" aria-describedby="nameHelpId" placeholder="">
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col-6">
-            <label for="" class="form-label">Unit Type</label>
-            <input type="text" formControlName="unitType" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
+
+        <ng-container formArrayName="variants" *ngIf="this.itemForm.controls.variants.value.length > 0">
+          <div class="card glassify container p-3 mb-3" *ngFor="let item of this.itemForm.controls.variants.value; let itemIndex= index; trackBy: trackByFn"
+         [formGroupName]="itemIndex">
+         <div class="header d-flex flex-row justify-content-between">
+            <ng-container>{{"Variant-" + (itemIndex + 1)}}</ng-container>
+            <button type="button" class="btn-close" (click)="removeVariant(itemIndex)" aria-label="Close"></button>
+         </div>
+              <div class="row mb-3">
+                <div class="col-6">
+                  <label for="" class="form-label">Unit Type</label>
+                  <input type="text" formControlName="unitType" class="form-control" name="" id="" aria-describedby="nameHelpId"
+                    placeholder="">
+                </div>
+                <div class="col-6">
+                  <label for="" class="form-label">Unit Value</label>
+                  <input type="text" formControlName="unitValue" class="form-control" name="" id="" aria-describedby="nameHelpId"
+                    placeholder="">
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-6">
+                  <label for="" class="form-label">Unit Cost</label>
+                  <input type="number" formControlName="unitCost" class="form-control" name="" id="" aria-describedby="nameHelpId"
+                    placeholder="">
+                </div>
+                <div class="col-6">
+                  <label for="" class="form-label">Unit Price</label>
+                  <input step="0.01" type="number" formControlName="unitPrice" class="form-control" name="" id=""
+                    aria-describedby="nameHelpId" placeholder="">
+                </div>
+              </div>
           </div>
-          <div class="col-6">
-            <label for="" class="form-label">Unit Value</label>
-            <input type="text" formControlName="unitValue" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
-          </div>
-        </div>
-        <div class="row mb-2">
-          <div class="col-6">
-            <label for="" class="form-label">Unit Cost</label>
-            <input type="number" formControlName="unitCost" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
-          </div>
-          <div class="col-6">
-            <label for="" class="form-label">Unit Price</label>
-            <input step="0.01" type="number" formControlName="unitPrice" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
-          </div>
-        </div>
+        </ng-container>
+
     </div>
   </form>
 </div>
 
 <div class="modal-footer">
+  <button [disabled]="isProcessing" type="button" class="btn " (click)="addNewVariant()">
+
+    Add Variant</button>
   <button [disabled]="isProcessing" type="button" class="btn " (click)="save()">Save</button>
 </div>

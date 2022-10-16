@@ -5,7 +5,7 @@ import { ItemEntryComponent } from './../../item-entry/item-entry.component';
 import { CategoryViewComponent } from './../../category/category-view/category-view.component';
 import { SuppliersViewComponent } from '../../suppliers-view/suppliers-view.component';
 import { Component, OnInit } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Store } from '@ngrx/store';
 import { ProductActionTypes } from '../actions/products.action.types';
 import { ProductSelectorTypes } from '../selectors/products.selector.types';
@@ -16,7 +16,7 @@ import { ProductSelectorTypes } from '../selectors/products.selector.types';
   styleUrls: ['./products-view.component.css'],
 })
 export class ProductsViewComponent implements OnInit {
-  items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
   bsModalRef?: BsModalRef;
   products$: Observable<Item[]> | undefined;
   constructor(private modalService: BsModalService, private productStore: Store<ProductsState>) {
@@ -43,5 +43,15 @@ export class ProductsViewComponent implements OnInit {
        ItemEntryComponent,
        Object.assign({}, { class: 'modal-lg' })
      );
+  }
+
+  updateItem(initialItem: Item) {
+    const initialState: ModalOptions = {
+      initialState: {
+        initialItem: initialItem,
+      },
+      class: 'modal-lg'
+    };
+    this.bsModalRef = this.modalService.show(ItemEntryComponent, initialState);
   }
 }
