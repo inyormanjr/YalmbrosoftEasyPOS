@@ -1,3 +1,4 @@
+import { Variants } from './../../../models/item';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -38,6 +39,13 @@ export class ItemService {
       return this.httpClient
         .get(this.baseURL + '/inventory', { params })
         .pipe(map((x: any) => x));
+  }
+
+  updateSingleVariant(variantId: string, variant: Variants): Observable<any> {
+    return this.httpClient.put(
+      this.baseURL + `/inventory/${variantId}`,
+      variant
+    );
   }
 
   getById(id: string): Observable<any> {

@@ -20,7 +20,7 @@ export interface Variants {
   unitValue: string;
   unitCost: Number;
   unitPrice: Number;
-  quantity: Number;
+  quantity: number;
 }
 
 export interface Inventory {

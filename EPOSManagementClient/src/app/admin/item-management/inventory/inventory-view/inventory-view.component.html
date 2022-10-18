@@ -27,11 +27,17 @@
                           <strong>{{inventory.item.name}}</strong>
                         </div>
                         <div class="unit-name">
-                          <small>({{inventory.variant.unitType + ':' + inventory.variant.unitValue}})</small>
+                          <small>({{inventory.variant.unitValue + '' + inventory.variant.unitType}})</small>
                         </div>
-                        <div class="supplier-name">
-                          <small>QTY: {{inventory.variant.quantity}}</small> <a name="" id="" class="btn" href="#" role="button"><i
-                              class="bi bi-plus-circle "></i></a>
+                          <div class="unit-name">
+                            <small>QTY: {{inventory.variant.quantity}}</small>
+                          </div>
+                        <div class="third-section d-flex flex-row justify-content-center align-items-center">
+
+                          <a name="" id="" class="btn card-button" (click)="openModal(true,inventory, template)" role="button"><i
+                              class="bi bi-plus-circle"></i></a>
+                              <a name="" id="" class="btn card-button" (click)="openModal(false, inventory,template)" role="button"><i
+                                  class="bi bi-dash-circle"></i></a>
                         </div>
                       </div>
                     </app-card>
@@ -39,6 +45,41 @@
                 </div>
               </div>
           </ng-container>
-
   </section>
 </div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">{{isStockIn ? 'Stock-In Modal': 'Stock-Out Modal'}}</h5>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="selectedInventory">
+    <div class="mb-2">
+      <label for="" class="form-label">Item Name</label>
+      <input type="text" readonly [(ngModel)]="selectedInventory.item.name" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
+    </div>
+
+    <div class="mb-2">
+      <label for="" class="form-label">Variant</label>
+      <input type="text" readonly [(ngModel)]="selectedInventory.variant.unitValue + '-' + selectedInventory.variant.unitType" class="form-control" name="" id=""
+        aria-describedby="nameHelpId" placeholder="">
+    </div>
+
+    <div class="mb-2">
+      <label for="" class="form-label">Current Quanity</label>
+      <input type="text" readonly [(ngModel)]="selectedInventory.variant.quantity" class="form-control" name="" id=""
+        aria-describedby="nameHelpId" placeholder="">
+    </div>
+      <div class="mb-2">
+        <label for="" class="form-label">Quantity</label>
+        <input type="number" [(ngModel)]="stockInOutValue"  class="form-control" name="" id="" aria-describedby="nameHelpId"
+          placeholder="">
+      </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn " (click)="updateInventory()">Submit</button>
+  </div>
+</ng-template>

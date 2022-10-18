@@ -2,6 +2,7 @@ const path = require('path');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middlewares/async');
 const Item = require('../models/item');
+const InventoryTransaction = require('../models/inventory.transaction');
 var ObjectId = require('mongoose').Types.ObjectId;
 
 exports.getMany = asyncHandler(async (req, res, next) => {
@@ -38,8 +39,10 @@ exports.create = asyncHandler(async (req, res, next) => {
   
   req.body.company = new ObjectId(req.user.companyId);
   req.body.creator = new ObjectId(req.user._id);
-  
-  console.log(req.body);
+
+  req.body.variants.forEach(variant => {
+    delete variant._id;
+  });
   const item = await Item.create(req.body);
   res.status(201).json({
     success: true,
@@ -48,6 +51,12 @@ exports.create = asyncHandler(async (req, res, next) => {
 });
 
 exports.update = asyncHandler(async (req, res, next) => {
+
+  req.body.variants.forEach((variant) => {
+    console.log(variant);
+    if(variant._id == null)
+        delete variant._id;
+  });
   const item = await Item.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -56,6 +65,21 @@ exports.update = asyncHandler(async (req, res, next) => {
     return res.status(400).json({ success: false });
   }
   res.status(200).json({ success: true, data: item });
+});
+
+exports.updateSingleQuantity = asyncHandler(async (req, res, next) => { 
+
+
+  const toBeUpdate = await Item.findOneAndUpdate(
+    {
+      "variants._id": req.params.id,
+    }, {
+      "$set": {
+        "variants.$": req.body
+      }
+  });
+  res.status(200).json({ success: true, data: {} });
+
 });
 
 exports.delete = asyncHandler(async (req, res, next) => {

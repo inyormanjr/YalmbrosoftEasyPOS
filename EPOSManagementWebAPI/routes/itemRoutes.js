@@ -15,7 +15,8 @@ router
 
   .post(protect, controller.create);
 
-router.route('/inventory').get(protect, controller.getManyInventory);
+router.route('/inventory').get(protect, controller.getManyInventory)
+router.route('/inventory/:id').put(protect, controller.updateSingleQuantity);
 
 router
   .route('/:id')

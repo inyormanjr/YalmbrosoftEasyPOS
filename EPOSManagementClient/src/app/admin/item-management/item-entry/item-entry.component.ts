@@ -132,9 +132,10 @@ export class ItemEntryComponent implements OnInit {
 
   save() {
     const newObj = Object.assign({}, this.itemForm.value);
+
     this.isProcessing = true;
 
-    if(!newObj._id)
+    if (!newObj._id)
     this.itemService.create(newObj).subscribe(
       (x: any) => {
         this.isProcessing = false;
@@ -151,7 +152,9 @@ export class ItemEntryComponent implements OnInit {
     else
       this.itemService.update(newObj._id, newObj).subscribe(
       (x: any) => {
-        this.isProcessing = false;
+          this.isProcessing = false;
+          this.itemForm.patchValue(x.data);
+          console.log(this.itemForm.value);
         this.productStore.dispatch(ProductActionTypes.loadProductss({searchString: null}));
         this.toastr.success(' Item Updated Successfully.', 'System');
       },

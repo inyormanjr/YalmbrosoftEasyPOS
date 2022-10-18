@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const VariantSchema = new mongoose.Schema({
   unitType: { type: String },
   unitValue: { type: String },
@@ -7,6 +6,8 @@ const VariantSchema = new mongoose.Schema({
   unitPrice: { type: Number },
   quantity: { type: Number },
 });
+
+
 const ItemSchema = new mongoose.Schema({
   company: { type: mongoose.Schema.ObjectId, ref: 'Company', required: true },
   category: { type: String },

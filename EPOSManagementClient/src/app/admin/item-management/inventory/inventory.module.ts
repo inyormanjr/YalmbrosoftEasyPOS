@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { AdminComponentsModule } from './../../admin-components/admin-components.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,6 +17,7 @@ const routes: Routes = [{path: '', component: InventoryViewComponent}];
   ],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule.forChild(routes),
     AdminComponentsModule,
     StoreModule.forFeature(from.inventoryFeatureKey, from.reducers),

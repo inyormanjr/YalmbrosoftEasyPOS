@@ -91,7 +91,7 @@
 
         <div  formArrayName="variants" *ngIf="this.itemForm.controls.variants.value.length > 0">
           <tabset >
-              <tab *ngFor="let item of this.itemForm.controls.variants.value; let itemIndex= index; trackBy: trackByFn"
+              <tab *ngFor="let variant of this.itemForm.controls.variants.value; let itemIndex= index; trackBy: trackByFn"
            [formGroupName]="itemIndex"  [id]=" itemIndex.toString()" customClass="tabCustomClass">
             <ng-template class="glassify" tabHeading>
               <span class=" text-dark ">{{'Variant-' + (itemIndex + 1)}}</span>
@@ -124,8 +124,8 @@
                         aria-describedby="nameHelpId" placeholder="">
                     </div>
                     <div class="col-4">
-                      <label for="" class="form-label">Quantity (Optional)</label>
-                      <input [readonly]="item._id !== null" step="0.01" type="number" formControlName="quantity" class="form-control"
+                      <label for="" class="form-label">Quantity (Optional) </label>
+                      <input [readonly]="variant._id !== null" step="0.01" type="number" formControlName="quantity" class="form-control"
                         name="" id="" aria-describedby="nameHelpId" placeholder="">
                     </div>
                   </div>

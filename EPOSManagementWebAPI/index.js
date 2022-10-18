@@ -11,8 +11,13 @@ const connectDb = require('./config/db');
 
 dotnev.config({ path: './config.env' });
 
-connectDb();
 
+ if (process.env.NODE_ENV == 'development') {
+   connectDb(process.env.MONGO_URI_DEV);
+ } else {
+   connectDb(process.env.MONGO_URI);
+ }
+ 
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoute');
 const supplierRoute = require('./routes/supplierRoutes');
