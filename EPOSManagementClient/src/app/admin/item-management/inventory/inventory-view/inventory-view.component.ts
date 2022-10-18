@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class InventoryViewComponent implements OnInit {
   isStockIn = true;
+  isLoading = false;
   stockInOutValue = 0;
   inventory$: Observable<Inventory[]> | undefined;
   modalRef?: BsModalRef | null;
@@ -50,6 +51,7 @@ export class InventoryViewComponent implements OnInit {
   }
 
   updateInventory() {
+    this.isLoading = true;
     if (this.isStockIn && this.selectedInventory) {
       this.stockInInventory(this.selectedInventory?.variant);
     }
@@ -64,11 +66,15 @@ export class InventoryViewComponent implements OnInit {
     this.itemService.updateSingleVariant(newVariant._id, newVariant).subscribe(
       (x: any) => {
         this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
+        this.isLoading = false;
         this.modalRef?.hide();
         this.stockInOutValue = 0;
         this.toastr.success('Inventory Updated.', 'System');
       },
-      (err) => this.toastr.error(err)
+      (err) => {
+        this.isLoading = false;
+        this.toastr.error(err);
+      }
     );
   }
 
@@ -78,11 +84,15 @@ export class InventoryViewComponent implements OnInit {
     this.itemService.updateSingleVariant(newVariant._id, newVariant).subscribe(
       (x: any) => {
         this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
+        this.isLoading = false;
         this.modalRef?.hide();
         this.stockInOutValue = 0;
         this.toastr.success('Inventory Updated.', 'System');
       },
-      (err) => this.toastr.error(err)
+      (err) => {
+        this.isLoading = false;
+        this.toastr.error(err);
+      }
     );
   }
 }
