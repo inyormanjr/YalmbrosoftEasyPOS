@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 
+const VariantSchema = new mongoose.Schema({
+  unitType: { type: String },
+  unitValue: { type: String },
+  unitCost: { type: Number },
+  unitPrice: { type: Number },
+  quantity: { type: Number },
+});
 const ItemSchema = new mongoose.Schema({
   company: { type: mongoose.Schema.ObjectId, ref: 'Company', required: true },
   category: { type: String },
@@ -10,17 +17,9 @@ const ItemSchema = new mongoose.Schema({
   },
   barcode: { type: String },
   itemCode: { type: String },
-  itemType: { type: String},
+  itemType: { type: String },
   description: { type: String },
-  variants:  [
-      {
-        unitType: { type: String },
-        unitValue: { type: String },
-        unitCost: { type: Number },
-        unitPrice: { type: Number },
-        quantity: {type: Number}
-      },
-    ],
+  variants: [VariantSchema],
   creator: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
@@ -33,7 +32,6 @@ const ItemSchema = new mongoose.Schema({
 });
 
 ItemSchema.pre(/^find/, function (next) {
-  console.log(this);
   next();
 });
 

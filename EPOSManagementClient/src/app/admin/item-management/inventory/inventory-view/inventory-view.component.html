@@ -14,28 +14,31 @@
       </div>
     </div>
     </div>
-
-    <div class="card-container container-fluid flex-fill">
-        <div class="row  ">
-          <div *ngFor="let item of items" class="col-3 mb-3">
-            <app-card>
-              <div content class="d-flex flex-column  align-items-center">
-                 <div  class="image mb-2">
-                  <img src="../../../../../assets/stockitemimage.jpeg" height="80" alt="" srcset="">
-                 </div>
-                 <div class="item-name">
-                  <strong>Item One</strong>
-                 </div>
-                 <div class="supplier-name">
-                  <small>(Supplier One)</small>
-                 </div>
-                  <div class="supplier-name">
-                    <small>QTY: 23</small> <a name="" id="" class="btn" href="#" role="button"><i class="bi bi-plus-circle "></i></a>
+          <ng-container *ngIf="inventory$ | async as inventories">
+              <div class="card-container container-fluid flex-fill">
+                <div class="row  ">
+                  <div *ngFor="let inventory of inventories" class="col-3 mb-3">
+                    <app-card>
+                      <div content class="d-flex flex-column  align-items-center">
+                        <div class="image mb-2">
+                          <img src="../../../../../assets/stockitemimage.jpeg" height="80" alt="" srcset="">
+                        </div>
+                        <div class="item-name">
+                          <strong>{{inventory.item.name}}</strong>
+                        </div>
+                        <div class="unit-name">
+                          <small>({{inventory.variant.unitType + ':' + inventory.variant.unitValue}})</small>
+                        </div>
+                        <div class="supplier-name">
+                          <small>QTY: {{inventory.variant.quantity}}</small> <a name="" id="" class="btn" href="#" role="button"><i
+                              class="bi bi-plus-circle "></i></a>
+                        </div>
+                      </div>
+                    </app-card>
                   </div>
+                </div>
               </div>
-            </app-card>
-          </div>
-        </div>
-    </div>
+          </ng-container>
+
   </section>
 </div>

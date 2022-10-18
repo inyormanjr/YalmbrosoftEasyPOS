@@ -89,10 +89,10 @@
           </div>
          </div>
 
-        <ng-container  formArrayName="variants" *ngIf="this.itemForm.controls.variants.value.length > 0">
-          <tabset>
+        <div  formArrayName="variants" *ngIf="this.itemForm.controls.variants.value.length > 0">
+          <tabset >
               <tab *ngFor="let item of this.itemForm.controls.variants.value; let itemIndex= index; trackBy: trackByFn"
-           [formGroupName]="itemIndex"  [id]=" itemIndex.toString()" customClass="text-white glassify">
+           [formGroupName]="itemIndex"  [id]=" itemIndex.toString()" customClass="tabCustomClass">
             <ng-template class="glassify" tabHeading>
               <span class=" text-dark ">{{'Variant-' + (itemIndex + 1)}}</span>
             </ng-template>
@@ -133,7 +133,7 @@
               </tab>
           </tabset>
 
-        </ng-container>
+        </div>
 
     </div>
   </form>

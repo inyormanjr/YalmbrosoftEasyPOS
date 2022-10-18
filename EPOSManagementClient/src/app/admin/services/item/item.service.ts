@@ -29,6 +29,17 @@ export class ItemService {
       .pipe(map((x: any) => x));
   }
 
+  getManyInventory(searchString?: string): Observable<any> {
+    let params = new HttpParams();
+      if (searchString) {
+        const test = JSON.stringify({ $regex: searchString });
+        params = params.append('name', test);
+      }
+      return this.httpClient
+        .get(this.baseURL + '/inventory', { params })
+        .pipe(map((x: any) => x));
+  }
+
   getById(id: string): Observable<any> {
     return this.httpClient
       .get(this.baseURL + `/${id}`)

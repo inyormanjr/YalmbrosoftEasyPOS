@@ -12,7 +12,10 @@ const Item = require('../models/item');
 router
   .route('/')
   .get(protect, advanceResult(Item), controller.getMany)
+
   .post(protect, controller.create);
+
+router.route('/inventory').get(protect, controller.getManyInventory);
 
 router
   .route('/:id')

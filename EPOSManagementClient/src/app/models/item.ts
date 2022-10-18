@@ -22,3 +22,8 @@ export interface Variants {
   unitPrice: Number;
   quantity: Number;
 }
+
+export interface Inventory {
+  item: Item;
+  variant: Variants
+}

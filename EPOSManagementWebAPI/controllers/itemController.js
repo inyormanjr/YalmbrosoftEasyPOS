@@ -8,6 +8,21 @@ exports.getMany = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
 });
 
+exports.getManyInventory = asyncHandler(async (req, res, next) => {
+  const itemsWithQuantity = await Item.find({
+    company: ObjectId(req.user.companyId),
+    'variants.quantity': { $ne: null },
+  });
+  variants = [];
+  itemsWithQuantity.forEach((item) => {
+    item.variants.forEach((variant) => {
+      variants.push({item ,  variant });
+    });
+  });
+
+  res.status(200).json({ success: true, data: variants });
+});
+
 exports.getById = asyncHandler(async (req, res, next) => {
   const item = await Item.findById(req.params.id);
   if (!item) {
@@ -23,6 +38,8 @@ exports.create = asyncHandler(async (req, res, next) => {
   
   req.body.company = new ObjectId(req.user.companyId);
   req.body.creator = new ObjectId(req.user._id);
+  
+  console.log(req.body);
   const item = await Item.create(req.body);
   res.status(201).json({
     success: true,
