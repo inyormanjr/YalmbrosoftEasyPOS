@@ -27,3 +27,20 @@ export interface Inventory {
   item: Item;
   variant: Variants
 }
+
+export enum StockMovementType {
+  StockIn,
+  StockOut
+}
+
+export interface InventoryTransaction {
+  _id: string;
+  type: string;
+  variant: Variants;
+  quantity: number;
+  newQuantity: number;
+  company: any;
+  creator: any;
+  dateCreated: Date;
+
+}

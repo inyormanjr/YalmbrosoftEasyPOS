@@ -1,3 +1,4 @@
+import { NgxModule } from 'src/app/shared/ngx-bootstrap/ngx/ngx.module';
 import { FormsModule } from '@angular/forms';
 import { AdminComponentsModule } from './../../admin-components/admin-components.module';
 import { NgModule } from '@angular/core';
@@ -18,6 +19,7 @@ const routes: Routes = [{path: '', component: InventoryViewComponent}];
   imports: [
     CommonModule,
     FormsModule,
+    NgxModule,
     RouterModule.forChild(routes),
     AdminComponentsModule,
     StoreModule.forFeature(from.inventoryFeatureKey, from.reducers),

@@ -14,7 +14,9 @@ router
   .get(protect, advanceResult(Item), controller.getMany)
 
   .post(protect, controller.create);
-
+router
+  .route('/inventory/stockmovement')
+  .get(protect, advanceResult(Item), controller.getStockMovement);
 router.route('/inventory').get(protect, controller.getManyInventory)
 router.route('/inventory/:id').put(protect, controller.updateSingleQuantity);
 

@@ -1,6 +1,6 @@
 
 import { ItemService } from 'src/app/admin/services/item/item.service';
-import { Inventory, Variants } from './../../../../models/item';
+import { Inventory, Variants, StockMovementType } from './../../../../models/item';
 import { map } from 'rxjs/operators';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -18,12 +18,14 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./inventory-view.component.css'],
 })
 export class InventoryViewComponent implements OnInit {
-  isStockIn = true;
+  stockMovementType: StockMovementType = StockMovementType.StockIn;
   isLoading = false;
   stockInOutValue = 0;
+  remarks = '';
   inventory$: Observable<Inventory[]> | undefined;
   modalRef?: BsModalRef | null;
   selectedInventory: Inventory | undefined;
+  StockMovementType: any;
   constructor(
     private inventoryStore: Store<InventoryState>,
     private itemService: ItemService,
@@ -38,13 +40,22 @@ export class InventoryViewComponent implements OnInit {
       InventorySelectorTypes.selectInventories
     );
   }
+
+  openModalAsStockIn(inventory: Inventory, template: TemplateRef<any>) {
+    this.openModal(StockMovementType.StockIn, inventory, template);
+  }
+
+  openModalAsStockOut(inventory: Inventory, template: TemplateRef<any>) {
+    this.openModal(StockMovementType.StockOut, inventory, template);
+  }
+
   openModal(
-    isStockIn: boolean,
+    stockMovementType: StockMovementType,
     inventory: Inventory,
     template: TemplateRef<any>
   ) {
     this.selectedInventory = inventory;
-    this.isStockIn = isStockIn;
+    this.stockMovementType = stockMovementType;
     this.modalRef = this.modalService.show(template, {
       class: 'modal-md mt-3',
     });
@@ -52,47 +63,27 @@ export class InventoryViewComponent implements OnInit {
 
   updateInventory() {
     this.isLoading = true;
-    if (this.isStockIn && this.selectedInventory) {
-      this.stockInInventory(this.selectedInventory?.variant);
-    }
-    else if (!this.isStockIn && this.selectedInventory) {
-      this.stockOutInventory(this.selectedInventory?.variant);
-    }
-  }
-
-  stockInInventory(variant: Variants) {
-    const newVariant = Object.assign({}, variant);
-    newVariant.quantity = variant.quantity + this.stockInOutValue;
-    this.itemService.updateSingleVariant(newVariant._id, newVariant).subscribe(
-      (x: any) => {
-        this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
-        this.isLoading = false;
-        this.modalRef?.hide();
-        this.stockInOutValue = 0;
-        this.toastr.success('Inventory Updated.', 'System');
-      },
-      (err) => {
-        this.isLoading = false;
-        this.toastr.error(err);
-      }
-    );
-  }
-
-  stockOutInventory(variant: Variants) {
-    const newVariant = Object.assign({}, variant);
-    newVariant.quantity = variant.quantity - this.stockInOutValue;
-    this.itemService.updateSingleVariant(newVariant._id, newVariant).subscribe(
-      (x: any) => {
-        this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
-        this.isLoading = false;
-        this.modalRef?.hide();
-        this.stockInOutValue = 0;
-        this.toastr.success('Inventory Updated.', 'System');
-      },
-      (err) => {
-        this.isLoading = false;
-        this.toastr.error(err);
-      }
-    );
+    if (this.selectedInventory)
+      this.itemService
+        .stockMovement(
+          this.selectedInventory.variant._id,
+          this.stockMovementType,
+          this.stockInOutValue,
+          this.selectedInventory,
+          this.remarks
+        )
+        .subscribe(
+          (x: any) => {
+            this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
+            this.isLoading = false;
+            this.modalRef?.hide();
+            this.stockInOutValue = 0;
+            this.toastr.success('Inventory Updated.', 'System');
+          },
+          (err) => {
+            this.isLoading = false;
+            this.toastr.error(err);
+          }
+        );
   }
 }

@@ -69,17 +69,47 @@ exports.update = asyncHandler(async (req, res, next) => {
 
 exports.updateSingleQuantity = asyncHandler(async (req, res, next) => { 
 
+  const { quantity, stockMovementType, inventory, remarks } = req.body;
 
-  const toBeUpdate = await Item.findOneAndUpdate(
-    {
-      "variants._id": req.params.id,
-    }, {
-      "$set": {
-        "variants.$": req.body
-      }
+  inventoryTransactionType = 'StockIn';
+  previousQuantity = inventory.variant.quantity;
+  
+  if (stockMovementType == 0) 
+    inventory.variant.quantity = inventory.variant.quantity + quantity;
+  else {
+    inventory.variant.quantity = inventory.variant.quantity - quantity;
+    inventoryTransactionType = 'StockOut';
+  }
+  
+      await Item.findOneAndUpdate(
+         {
+           'variants._id': req.params.id,
+         },
+         {
+           $set: {
+             'variants.$': inventory.variant
+           },
+         }
+      );
+  const newInventoryTrans = new InventoryTransaction({
+    type: inventoryTransactionType,
+    itemName: inventory.item.name,
+    variant: inventory.variant,
+    previousQuantity,
+    quantity,
+    newQuantity: inventory.variant.quantity,
+    company: req.user.companyId,
+    creator: req.user._id,
+    remarks: remarks ?? 'n/a',
   });
-  res.status(200).json({ success: true, data: {} });
+   await InventoryTransaction.create(newInventoryTrans);
 
+   res.status(200).json({ success: true, data: {} });
+
+});
+
+exports.getStockMovement = asyncHandler(async (req, res, next) => {
+  res.status(200).json(res.advancedResults);
 });
 
 exports.delete = asyncHandler(async (req, res, next) => {

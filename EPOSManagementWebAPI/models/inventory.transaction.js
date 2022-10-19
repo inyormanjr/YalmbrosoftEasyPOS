@@ -10,9 +10,16 @@ const VariantSchema = new mongoose.Schema({
 
 
 const InventoryTransactionSchema = new mongoose.Schema({
-  type: { type: [String], enum: ['StockIn', 'StockOut'] },
-  variantId: { type: mongoose.ObjectId },
+  type: { type: String, enum: ['StockIn', 'StockOut'] },
+  itemName: { type: String },
+    variant: {
+    unitType: { type: String },
+    unitValue: { type: String },
+    unitCost: { type: Number },
+    unitPrice: { type: Number },
+  },
   quantity: { type: Number },
+  previousQuantity: {type: Number},
   newQuantity: { type: Number },
   company: {
     type: mongoose.Schema.ObjectId,
@@ -24,6 +31,7 @@ const InventoryTransactionSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  remarks: { type: String },
   dateCreated: { type: Date, default: Date.now },
 });
 

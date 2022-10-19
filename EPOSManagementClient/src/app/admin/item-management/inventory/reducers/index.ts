@@ -1,4 +1,5 @@
-import { Inventory } from './../../../../models/item';
+import { loadStockMovementSuccess } from './../actions/inventory.actions';
+import { Inventory, InventoryTransaction } from './../../../../models/item';
 import {
   ActionReducer,
   ActionReducerMap,
@@ -13,11 +14,13 @@ import { InventoryActionTypes } from '../actions/inventory.action.types';
 export const inventoryFeatureKey = 'inventory';
 
 export interface InventoryState {
-  inventories: Inventory []
+  inventories: Inventory[],
+  inventoryTransactions: InventoryTransaction[],
 }
 
 export const inventoryInitialState: InventoryState = {
-  inventories: []
+  inventories: [],
+  inventoryTransactions: []
 };
 
 export const reducers = createReducer(inventoryInitialState,
@@ -26,6 +29,12 @@ export const reducers = createReducer(inventoryInitialState,
       ...state,
       inventories: action.data
    }
- })
+  }),
+  on(InventoryActionTypes.loadStockMovementSuccess, (state, action) => {
+    return {
+      ...state,
+      inventoryTransactions: action.data
+  }
+  }),
 );
 

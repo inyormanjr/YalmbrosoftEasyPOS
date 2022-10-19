@@ -1,4 +1,4 @@
-import { Variants } from './../../../models/item';
+import { Variants, StockMovementType, Inventory } from './../../../models/item';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -32,13 +32,21 @@ export class ItemService {
 
   getManyInventory(searchString?: string): Observable<any> {
     let params = new HttpParams();
-      if (searchString) {
-        const test = JSON.stringify({ $regex: searchString });
-        params = params.append('name', test);
-      }
-      return this.httpClient
-        .get(this.baseURL + '/inventory', { params })
-        .pipe(map((x: any) => x));
+    if (searchString) {
+      const test = JSON.stringify({ $regex: searchString });
+      params = params.append('name', test);
+    }
+    return this.httpClient
+      .get(this.baseURL + '/inventory', { params })
+      .pipe(map((x: any) => x));
+  }
+
+  getStockMovement(page?: any): Observable<any> {
+    let params = new HttpParams();
+    params = params.set('company', this.authService.companyId());
+     return this.httpClient
+       .get(this.baseURL + '/inventory/stockmovement', { params })
+       .pipe(map((x: any) => x));
   }
 
   updateSingleVariant(variantId: string, variant: Variants): Observable<any> {
@@ -46,6 +54,21 @@ export class ItemService {
       this.baseURL + `/inventory/${variantId}`,
       variant
     );
+  }
+
+  stockMovement(
+    variantId: string,
+    stockMovementType: StockMovementType,
+    quantity: number,
+    inventory: Inventory,
+    remarks?: string
+  ): Observable<any> {
+    return this.httpClient.put(this.baseURL + `/inventory/${variantId}`, {
+      quantity,
+      stockMovementType,
+      inventory,
+      remarks,
+    });
   }
 
   getById(id: string): Observable<any> {

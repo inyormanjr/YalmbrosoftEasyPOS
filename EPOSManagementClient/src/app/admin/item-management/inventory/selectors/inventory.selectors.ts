@@ -8,3 +8,5 @@ export const selectInventories = createSelector(
   selectProductFeature,
   (x) => x.inventories
 );
+
+export const selectInventoryTransactions = createSelector(selectProductFeature, (x) => x.inventoryTransactions);

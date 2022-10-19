@@ -1,57 +1,93 @@
-<div class="container-fluid p-4 h-100 d-flex flex-column">
+<div class="container-fluid pt-2 p-4 h-100 d-flex flex-column">
   <section class="sub-view-menu d-flex flex-row justify-content-between mb-3">
     <div class="title">
       <h5 class="display-5">Inventory</h5>
     </div>
   </section>
-  <section class="item-list flex-fill d-flex flex-column">
-    <div class="container-fluid ">
-    <div class="input-group mb-3">
-      <input style="width: 40px !important; background-color: transparent; color:white;" type="text" class="form-control"
-        placeholder="Search Product" aria-label="Recipient's username" aria-describedby="basic-addon2">
-      <div class="input-group-append">
-        <button class="btn btn-outline-light" type="button">Search</button>
-      </div>
-    </div>
-    </div>
+  <tabset>
+    <tab>
+      <ng-template class="glassify" tabHeading>
+        <span class=" text-dark ">Inventory Items</span>
+      </ng-template>
+        <section class="item-list flex-fill d-flex flex-column mt-3">
+          <div class="container-fluid ">
+            <div class="input-group mb-3">
+              <input style="width: 40px !important; background-color: transparent; color:white;" type="text"
+                class="form-control" placeholder="Search Product" aria-label="Recipient's username"
+                aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-outline-light" type="button">Search</button>
+              </div>
+            </div>
+          </div>
           <ng-container *ngIf="inventory$ | async as inventories">
-              <div class="card-container container-fluid flex-fill">
-                <div class="row  ">
-                  <div *ngFor="let inventory of inventories" class="col-3 mb-3">
-                    <app-card>
-                      <div content class="d-flex flex-column  align-items-center">
-                        <div class="image mb-2">
-                          <img src="../../../../../assets/stockitemimage.jpeg" height="80" alt="" srcset="">
-                        </div>
-                        <div class="item-name">
-                          <strong>{{inventory.item.name}}</strong>
-                        </div>
-                        <div class="unit-name">
-                          <small>({{inventory.variant.unitValue + '' + inventory.variant.unitType}})</small>
-                        </div>
-                          <div class="unit-name">
-                            <small>QTY: {{inventory.variant.quantity}}</small>
-                          </div>
-                        <div class="third-section d-flex flex-row justify-content-center align-items-center">
-
-                          <a name="" id="" class="btn card-button" (click)="openModal(true,inventory, template)" role="button"><i
-                              class="bi bi-plus-circle"></i></a>
-                              <a name="" id="" class="btn card-button" (click)="openModal(false, inventory,template)" role="button"><i
-                                  class="bi bi-dash-circle"></i></a>
-                        </div>
+            <div class="card-container container-fluid flex-fill">
+              <div class="row  ">
+                <div *ngFor="let inventory of inventories" class="col-2 mb-3">
+                  <app-card>
+                    <div content class="d-flex flex-column  align-items-center">
+                      <div class="image mb-2">
+                        <img src="../../../../../assets/stockitemimage.jpeg" height="80" alt="" srcset="">
                       </div>
-                    </app-card>
-                  </div>
+                      <div class="item-name">
+                        <strong>{{inventory.item.name}}</strong>
+                      </div>
+                      <div class="unit-name">
+                        <small>({{inventory.variant.unitValue + '' + inventory.variant.unitType}})</small>
+                      </div>
+                      <div class="unit-name">
+                        <small>QTY: {{inventory.variant.quantity}}</small>
+                      </div>
+                      <div class="third-section d-flex flex-row justify-content-center align-items-center">
+
+                        <a name="" id="" class="btn card-button" (click)="openModalAsStockIn(inventory, template)"
+                          role="button"><i class="bi bi-plus-circle"></i></a>
+                        <a name="" id="" class="btn card-button" (click)="openModalAsStockOut( inventory,template)"
+                          role="button"><i class="bi bi-dash-circle"></i></a>
+                      </div>
+                    </div>
+                  </app-card>
                 </div>
               </div>
+            </div>
           </ng-container>
-  </section>
+        </section>
+    </tab>
+    <tab>
+        <ng-template class="glassify" tabHeading>
+          <span class=" text-dark ">Inventory Transactions</span>
+        </ng-template>
+      <div class="table-responsive-md mt-3">
+        <table class="table ">
+          <thead>
+            <tr>
+              <th scope="col">Column 1</th>
+              <th scope="col">Column 2</th>
+              <th scope="col">Column 3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="">
+              <td scope="row">R1C1</td>
+              <td>R1C2</td>
+              <td>R1C3</td>
+            </tr>
+            <tr class="">
+              <td scope="row">Item</td>
+              <td>Item</td>
+              <td>Item</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </tab>
+  </tabset>
 </div>
 
 <ng-template #template>
   <div class="modal-header">
-    <h5 class="modal-title pull-left">{{isStockIn ? 'Stock-In Modal': 'Stock-Out Modal'}}</h5>
-
+    <h5 class="modal-title pull-left">{{stockMovementType == 0 ? 'Stock-In Modal': 'Stock-Out Modal'}}</h5>
    <div *ngIf="isLoading" class="spinner-border text-light" role="status">
      <span class="visually-hidden">Loading...</span>
    </div>
@@ -61,13 +97,11 @@
       <label for="" class="form-label">Item Name</label>
       <input type="text" readonly [(ngModel)]="selectedInventory.item.name" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
     </div>
-
     <div class="mb-2">
       <label for="" class="form-label">Variant</label>
       <input type="text" readonly [(ngModel)]="selectedInventory.variant.unitValue + '-' + selectedInventory.variant.unitType" class="form-control" name="" id=""
         aria-describedby="nameHelpId" placeholder="">
     </div>
-
     <div class="mb-2">
       <label for="" class="form-label">Current Quanity</label>
       <input type="text" readonly [(ngModel)]="selectedInventory.variant.quantity" class="form-control" name="" id=""
@@ -78,7 +112,11 @@
         <input type="number" [(ngModel)]="stockInOutValue"  class="form-control" name="" id="" aria-describedby="nameHelpId"
           placeholder="">
       </div>
-
+      <div class="mb-2">
+        <label for="" class="form-label">Remarks</label>
+        <input type="number" [(ngModel)]="remarks" class="form-control" name="" id="" aria-describedby="nameHelpId"
+          placeholder="">
+      </div>
   </div>
   <div class="modal-footer">
     <button type="button" [disabled]="isLoading"class="btn " (click)="updateInventory()">
