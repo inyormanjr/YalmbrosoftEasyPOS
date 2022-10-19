@@ -14,7 +14,6 @@ export class InventoryEffects {
       this.actions$.pipe(
         ofType(InventoryActionTypes.loadStockMovement),
         tap((action) => {
-          console.log('this is triggered');
           this.itemService
             .getStockMovement(action.page)
             .pipe(

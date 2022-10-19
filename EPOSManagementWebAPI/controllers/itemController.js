@@ -99,7 +99,7 @@ exports.updateSingleQuantity = asyncHandler(async (req, res, next) => {
     quantity,
     newQuantity: inventory.variant.quantity,
     company: req.user.companyId,
-    creator: req.user._id,
+    creator: req.user.username,
     remarks: remarks ?? 'n/a',
   });
    await InventoryTransaction.create(newInventoryTrans);

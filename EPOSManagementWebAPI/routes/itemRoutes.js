@@ -8,6 +8,7 @@ const { protect } = require('../middlewares/auth');
 const advanceResult = require('../middlewares/advancedResult');
 
 const Item = require('../models/item');
+const InventoryTransaction = require('../models/inventory.transaction');
 
 router
   .route('/')
@@ -16,7 +17,11 @@ router
   .post(protect, controller.create);
 router
   .route('/inventory/stockmovement')
-  .get(protect, advanceResult(Item), controller.getStockMovement);
+  .get(
+    protect,
+    advanceResult(InventoryTransaction),
+    controller.getStockMovement
+  );
 router.route('/inventory').get(protect, controller.getManyInventory)
 router.route('/inventory/:id').put(protect, controller.updateSingleQuantity);
 

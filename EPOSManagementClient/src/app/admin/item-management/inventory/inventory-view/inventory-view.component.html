@@ -7,7 +7,7 @@
   <tabset>
     <tab>
       <ng-template class="glassify" tabHeading>
-        <span class=" text-dark ">Inventory Items</span>
+        <span class=" text-dark "><i class="bi bi-list-ol text-dark me-2"></i> Inventory List</span>
       </ng-template>
         <section class="item-list flex-fill d-flex flex-column mt-3">
           <div class="container-fluid ">
@@ -55,27 +55,34 @@
     </tab>
     <tab>
         <ng-template class="glassify" tabHeading>
-          <span class=" text-dark ">Inventory Transactions</span>
+          <span class=" text-dark "><i class="bi bi-card-checklist text-dark me-2"></i> Inventory Transactions</span>
         </ng-template>
       <div class="table-responsive-md mt-3">
         <table class="table ">
           <thead>
             <tr>
-              <th scope="col">Column 1</th>
-              <th scope="col">Column 2</th>
-              <th scope="col">Column 3</th>
+              <th scope="col">Transaction Type</th>
+              <th scope="col">Item Name</th>
+              <th scope="col">Variant Details</th>
+              <th>Previous Quantity</th>
+              <th>Transaction Quanity</th>
+              <th>New Quantity</th>
+              <th>Remarks</th>
+              <th>Processed By</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="">
-              <td scope="row">R1C1</td>
-              <td>R1C2</td>
-              <td>R1C3</td>
-            </tr>
-            <tr class="">
-              <td scope="row">Item</td>
-              <td>Item</td>
-              <td>Item</td>
+            <tr *ngFor="let iT of inventoryTransaction$ | async; let itIndex=index" class="">
+              <td scope="row">{{iT.type}}</td>
+              <td>{{iT.itemName}}</td>
+              <td>{{iT.variant.unitType + '-' + iT.variant.unitValue}}</td>
+              <td>{{iT.previousQuantity}}</td>
+              <td>{{iT.quantity}}</td>
+              <td>{{iT.newQuantity}}</td>
+              <th>{{iT.remarks}}</th>
+              <th>{{iT.creator}}</th>
+              <td>{{iT.dateCreated | date: "MM/dd/yy h:mm a"}}</td>
             </tr>
           </tbody>
         </table>
@@ -114,7 +121,7 @@
       </div>
       <div class="mb-2">
         <label for="" class="form-label">Remarks</label>
-        <input type="number" [(ngModel)]="remarks" class="form-control" name="" id="" aria-describedby="nameHelpId"
+        <input type="text" [(ngModel)]="remarks" class="form-control" name="" id="" aria-describedby="nameHelpId"
           placeholder="">
       </div>
   </div>

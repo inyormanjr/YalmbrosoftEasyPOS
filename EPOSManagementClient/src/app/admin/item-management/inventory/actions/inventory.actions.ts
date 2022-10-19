@@ -8,7 +8,7 @@ export const loadInventorys = createAction(
 export const loadStockMovement = createAction('[Inventory] Load Stockmovement', props < {page?: any}>());
 
 export const loadStockMovementSuccess = createAction(
-  '[Inventory] Load Inventorys Success',
+  '[Inventory] Load Stockmovement Success',
   props<{ data: InventoryTransaction[] }>()
 );
 export const loadInventorysSuccess = createAction(

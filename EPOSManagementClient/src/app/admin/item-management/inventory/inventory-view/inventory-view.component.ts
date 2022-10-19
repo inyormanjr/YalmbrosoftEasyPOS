@@ -1,6 +1,6 @@
 
 import { ItemService } from 'src/app/admin/services/item/item.service';
-import { Inventory, Variants, StockMovementType } from './../../../../models/item';
+import { Inventory, Variants, StockMovementType, InventoryTransaction } from './../../../../models/item';
 import { map } from 'rxjs/operators';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -23,6 +23,7 @@ export class InventoryViewComponent implements OnInit {
   stockInOutValue = 0;
   remarks = '';
   inventory$: Observable<Inventory[]> | undefined;
+  inventoryTransaction$: Observable<InventoryTransaction[]> | undefined;
   modalRef?: BsModalRef | null;
   selectedInventory: Inventory | undefined;
   StockMovementType: any;
@@ -33,12 +34,16 @@ export class InventoryViewComponent implements OnInit {
     private toastr: ToastrService
   ) {
     this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
+    this.inventoryStore.dispatch(InventoryActionTypes.loadStockMovement({page: null}));
+
   }
 
   ngOnInit(): void {
     this.inventory$ = this.inventoryStore.select(
       InventorySelectorTypes.selectInventories
     );
+
+    this.inventoryTransaction$ = this.inventoryStore.select(InventorySelectorTypes.selectInventoryTransactions);
   }
 
   openModalAsStockIn(inventory: Inventory, template: TemplateRef<any>) {
@@ -75,6 +80,9 @@ export class InventoryViewComponent implements OnInit {
         .subscribe(
           (x: any) => {
             this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
+            this.inventoryStore.dispatch(
+              InventoryActionTypes.loadStockMovement({ page: null })
+            );
             this.isLoading = false;
             this.modalRef?.hide();
             this.stockInOutValue = 0;

@@ -27,9 +27,7 @@ const InventoryTransactionSchema = new mongoose.Schema({
     required: true,
   },
   creator: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    required: true,
+    type: String
   },
   remarks: { type: String },
   dateCreated: { type: Date, default: Date.now },

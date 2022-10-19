@@ -36,11 +36,14 @@ export enum StockMovementType {
 export interface InventoryTransaction {
   _id: string;
   type: string;
+  itemName: string;
   variant: Variants;
   quantity: number;
+  previousQuantity: number;
   newQuantity: number;
   company: any;
   creator: any;
+  remarks: string;
   dateCreated: Date;
 
 }
