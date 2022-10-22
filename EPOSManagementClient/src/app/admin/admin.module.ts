@@ -12,8 +12,9 @@ const route: Routes = [{
   path: '', component: AdminViewComponent, children: [
     { path: 'dashboard', loadChildren: () => import('../admin/home/home.module').then(x => x.HomeModule) },
     { path: 'item-management', loadChildren: () => import('../admin/item-management/item-management.module').then(x => x.ItemManagementModule)},
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full'}
-]}];
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: 'user-management', loadChildren: () => import('../admin/user-management/user-management.module').then(x => x.UserManagementModule)}
+    ]}];
 @NgModule({
   declarations: [
     AdminViewComponent,

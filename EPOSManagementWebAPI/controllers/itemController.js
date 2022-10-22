@@ -77,8 +77,8 @@ exports.update = asyncHandler(async (req, res, next) => {
         'StockIn',
         req.body.name,
         variant,
-        0,
         variant.quantity,
+        0,
         variant.quantity,
         req,
         'Initial'
@@ -122,9 +122,9 @@ exports.updateSingleQuantity = asyncHandler(async (req, res, next) => {
     inventoryTransactionType,
     inventory.item.name,
     inventory.variant,
+    quantity,
     previousQuantity,
     inventory.variant.quantity,
-    quantity,
     req,
     remarks
   );
@@ -133,19 +133,28 @@ exports.updateSingleQuantity = asyncHandler(async (req, res, next) => {
 
 });
 
-createInventoryTrans = async function (inventoryTransactionType, itemName, variant, previousQuantity,quantity,newQuantity,  req, remarks) {
+createInventoryTrans = async function (
+  inventoryTransactionType,
+  itemName,
+  variant,
+  quantity,
+  previousQuantity,
+  newQuantity,
+  req,
+  remarks
+) {
   const newInventoryTrans = new InventoryTransaction({
     type: inventoryTransactionType,
     itemName,
     variant,
-    previousQuantity,
     quantity,
+    previousQuantity,
     newQuantity,
     company: req.user.companyId,
     creator: req.user.username,
     remarks: remarks ?? 'n/a',
   });
-
+  console.log(newInventoryTrans);
   await InventoryTransaction.create(newInventoryTrans);
 };
 
