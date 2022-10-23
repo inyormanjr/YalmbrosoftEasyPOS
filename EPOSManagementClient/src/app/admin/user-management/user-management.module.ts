@@ -8,12 +8,14 @@ import { StoreModule } from '@ngrx/store';
 import * as fromStores from './reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { UserManagementEffects } from './effects/user-management.effects';
+import { UserModalComponent } from './user-modal/user-modal.component';
 
 
 const route: Routes = [{ path: '', component: UserManagementViewComponent}];
 @NgModule({
   declarations: [
-    UserManagementViewComponent
+    UserManagementViewComponent,
+    UserModalComponent
   ],
   imports: [
     CommonModule,

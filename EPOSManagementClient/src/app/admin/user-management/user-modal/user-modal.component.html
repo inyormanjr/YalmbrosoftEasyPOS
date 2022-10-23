@@ -1,0 +1,82 @@
+<div class="modal-header d-flex flex-row justify-content-between">
+  <h5 class="modal-title text-white"><i class="bi bi-people"></i> User Modal</h5>
+  <div *ngIf="isLoading" class="spinner-border text-light" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<div class="modal-body overflow-auto"
+  >
+    <form [formGroup]="registerForm">
+      <input type="hidden" name="csrftoken"
+        value="ea49375f43c7e6a59c77df1e4de562b3f1350124eeb70e5d5124e4ce3b5251c2b4d12e9aaf2a3ddc618c178c8dc4620b">
+
+      <div class="row mb-3">
+
+        <div class="form-group  col-md-4">
+          <label for="fname">Surname </label>
+          <input type="text" name="lname" formControlName="lastName" placeholder="Last Name" class="form-control" required="">
+        </div>
+        <div class="form-group  col-md-4">
+          <label for="fname">Given Name </label>
+          <input type="text" name="firstName" formControlName="firstName" placeholder="First Name" class="form-control"
+            required="">
+        </div>
+          <div class="form-group col-md-4">
+            <label for="fname">Middle Name </label>
+            <input type="text" name="lname" formControlName="middleName" placeholder="Middle Name" class="form-control" required="">
+          </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="form-group col-md-12">
+          <label for="fname">Address </label>
+          <input type="text" name="lname" formControlName="address" placeholder="Address..." class="form-control"
+            required="">
+        </div>
+      </div>
+
+      <div class="row mb-3 ">
+          <div class="form-group col-md-6">
+            <label for="fname">Contact </label>
+            <input type="text" name="mobileNumber" formControlName="mobileNumber" placeholder="Contact" class="form-control"
+              required="">
+          </div>
+        <div class="form-group col-md-6">
+          <label for="" class="">Gender</label>
+          <select class="form-select"  formControlName="gender" aria-label="Default select example">
+            <option [ngValue]="'Male'">Male</option>
+            <option [ngValue]="'Female'">Female</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="row mb-4 ">
+          <div class="form-group col-md-6">
+            <label for="emailaddress">Email </label>
+            <input type="email" name="email" formControlName="username" placeholder="Enter Email" class="form-control"
+              required="">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="password">Password</label>
+            <div class="input-group " id="show_hide_password">
+              <input [disabled]="initialItem" type="password" class="form-control" formControlName="password" id="password" value="" name="password"
+                placeholder="Enter Password" required="">
+            </div>
+          </div>
+      </div>
+      <div class="row mb-3">
+      <div class="form-group col-md-6">
+        <label for="" class="">Role</label>
+        <select class="form-select" formControlName="userType" aria-label="Default select example">
+          <option [ngValue]="'Owner'">Owner</option>
+          <option [ngValue]="'Admin'">Admin</option>
+          <option [ngValue]="'Cashier'">Cashier</option>
+        </select>
+      </div>
+      </div>
+    </form>
+</div>
+<div class="modal-footer">
+  <button [disabled]="isLoading" type="button" class="btn " (click)="saveUser()">Save</button>
+</div>

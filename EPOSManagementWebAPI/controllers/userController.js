@@ -29,6 +29,8 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 //@route    POST /api/v1/Users/
 //@access   private
 exports.createUser = asyncHandler(async (req, res, next) => {
+  req.body.companyId = req.user.companyId;
+  console.log(req.body);
     const user = await User.create(req.body);
     res.status(201).json({
       success: true,
@@ -40,7 +42,8 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 //@route    PUT /api/v1/Users/
 //@access   private
 exports.updateUser = asyncHandler(async (req, res, next) => {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    delete req.body.password;
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: false, runValidators: true });
     if (!user) {
       return res.status(400).json({ success: false });
     }

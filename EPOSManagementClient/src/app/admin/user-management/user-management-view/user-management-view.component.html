@@ -13,33 +13,44 @@
     </div>
     </div>
     <div class="buttons ">
-        <button type="button" class="btn btn-outline-light" >
+        <button type="button" class="btn btn-outline-light" (click)="showUserModal()">
           <i class="bi bi-file-earmark-plus "></i>
          Create User
         </button>
     </div>
   </div>
-
-  <div class="table-responsive-md">
-    <table class="table">
-      <thead class="">
-        <tr>
-          <th>Name</th>
-          <th>Username</th>
-          <th>Roles</th>
-        </tr>
+  <ng-container *ngIf="users$ | async as Users; else elseTemplate">
+    <div class="table-responsive-md">
+      <table class="table">
+        <thead class="">
+          <tr>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Roles</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody class="">
-          <tr class="" >
-            <td scope="row">Item</td>
-            <td>Item</td>
-            <td>Item</td>
+          <tr *ngFor="let user of Users" class="">
+            <td scope="row">{{user.lastName  + ',' + user.firstName}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.userType}}</td>
+            <td>
+              <a name="" id="" class="btn edit-button" (click)="showUserModal(user)"  role="button"><i
+                  class="bi bi-pencil-square"></i></a>
+            </td>
           </tr>
         </tbody>
         <tfoot>
 
         </tfoot>
-    </table>
-  </div>
+      </table>
+    </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+      Loading...
+  </ng-template>
+
+
 
 </div>

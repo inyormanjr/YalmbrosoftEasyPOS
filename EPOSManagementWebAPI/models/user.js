@@ -61,13 +61,13 @@ const UserSchema = new mongoose.Schema({
   confirmationTokenExpiry: Date,
   contact: String,
   userType: {
-    type: [String],
+    type: String,
     enum: [
-      'Administrator',
+      'Admin',
       'Owner',
-      'Employee',
+      'Cashier',
       ],
-        default: ['Owner']
+        default: 'Owner'
     },
     photoUrl: {
         type: String,
