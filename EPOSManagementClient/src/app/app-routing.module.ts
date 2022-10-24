@@ -18,12 +18,19 @@ const routes: Routes = [
       ),
   },
   { path: 'registration-complete', component: RegistrationCompleteComponent },
-  { path: 'confirmation/:id', component: ConfirmationComponent},
+  { path: 'confirmation/:id', component: ConfirmationComponent },
   {
     path: 'admin',
     loadChildren: () =>
       import('../app/admin/admin.module').then((x) => x.AdminModule),
     canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'pos',
+    loadChildren: () =>
+      import('../app/pos/pos.module').then((x) => x.PosModule),
+    canActivate: [],
   },
   { path: '**', redirectTo: 'admin', pathMatch: 'full' },
 ];

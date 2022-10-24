@@ -1,0 +1,136 @@
+<div class="d-flex flex-row h-100 ">
+   <div class="left-section h-100 d-flex p-3 pb-2 pt-2  flex-column justify-content-between " style="width: 70vw;">
+      <div class="left-top d-flex mb-2 flex-row justify-content-between align-items-center">
+        <div class="left-top-start ">
+        <h3 class="pb-0 mb-0">Simons's BBQ Team</h3>
+        <strong>Location ID#SIMON5143</strong>
+        </div>
+        <div class="left-top-end ">
+          <button type="button" class="btn  btn-sm btn-outline-default me-2"><i class="bi  bi-search"></i> Search</button>
+          <button type="button" class="btn  btn-sm btn-outline-default"><i class="bi bi-question-circle"></i> Help</button>
+        </div>
+      </div>
+      <div class="left-middle d-flex flex-column flex-fill overflow-auto ">
+       <div class="category-toggle hstack gap-1  mb-1 overflow-auto">
+        <input type="radio" [value]="''" [checked]="currentFilter === ''" (change)="onCategoryChanged('')" class="btn-check  checked" name="options" id="option1" autocomplete="off" checked>
+        <label class="btn btn-secondary glassify mb-2 curve  " for="option1">All Items</label>
+        <ng-container *ngFor="let category of categories$ | async; let i=index">
+            <input type="radio" (change)="onCategoryChanged(category.name)"  [value]="category.name" [checked]="currentFilter === category.name" class="btn-check" name="options" [id]="i" autocomplete="off">
+            <label class="btn btn-secondary mb-2 glassify curve " [for]="i">{{category.name}}</label>
+        </ng-container>
+        <input type="radio" (change)="onCategoryChanged('recent')" [value]="'recent'" [checked]="currentFilter === 'recent'" class="btn-check  checked" name="options" id="option2" autocomplete="off" >
+        <label class="btn btn-secondary glassify  mb-2 curve " for="option2">Recent</label>
+       </div>
+       <div class="item-section flex-fill container-fluid overflow-auto ">
+        <ng-container *ngIf="(products$ | async ) as Products ; else elseTemplate">
+          <div class="item-container row">
+            <div *ngFor="let product of Products" class="card-container g-2 col-md-4 mb-1">
+              <app-pos-product-card  [product]="product" (click)="addToOrder(product)"></app-pos-product-card>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <div class="item-section h-100 flex-fill container-fluid d-flex flex-column justify-content-center align-items-center">
+            <div class="spinner-border  text-light" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </ng-template>
+
+
+       </div>
+      </div>
+      <div class="left-bottom  p-2 ps-3 pe-3 glassify curve">
+        <div class="d-flex flex-row">
+            <div class="user w-50 hstack gap-3">
+              <div class="user-details text-center">
+              <h5 class="m-0 p-0">Yap, Ronilo</h5>
+              <small class="badge rounded-pill bg-success">Cashier</small>
+              </div>
+              <div class="link-unlink ms-auto">
+                <button type="button" class="btn btn-outline-default m-0">
+                  <i class="bi bi-box-arrow-in-left me-2"></i>
+                  Sign-Out</button>
+              </div>
+            </div>
+            <div class="vr me-2 ms-2 "></div>
+            <div class="user hstack gap-3 ">
+            <div class="link-unlink">
+              <button type="button" class="btn btn-outline-default m-0">Discount</button>
+            </div>
+            <div class="link-unlink">
+              <button type="button" class="btn btn-outline-default m-0">Return</button>
+            </div>
+            <div class="link-unlink">
+              <button type="button" class="btn btn-outline-default m-0">Unlink</button>
+            </div>
+              <div class="link-unlink">
+                <button type="button" class="btn btn-outline-default m-0">Transactions</button>
+              </div>
+            </div>
+        </div>
+      </div>
+   </div>
+   <div class="right-section p-3 pb-2  h-100 border-start border-1 border-light flex-fill d-flex flex-column justify-content-between">
+      <div class="right-top d-flex mb-3 flex-row justify-content-between align-items-center">
+        <div class="right-top-start ">
+          <h3 class="pb-0 mb-0">Current Orders </h3>
+        </div>
+        <div class="right-top-end  ">
+          <button type="button" class="btn  btn-sm btn-outline-default me-2" (click)="clearAll()">Clear All</button>
+            <button type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-gear"></i></button>
+        </div>
+      </div>
+        <div class="right-mid cart-list flex-column  d-flex flex-fill overflow-auto">
+          <div class="container-fluid ">
+            <div *ngFor="let posTransDetails of posTransaction?.posTransDetails; let i = index;" class="d-flex flex-row justify-content-around mb-3 text-right">
+              <div class="item-details flex-fill  d-flex flex-column  " style="width: 40%; max-width: 40%;">
+                  <small>{{posTransDetails.inventory.item.name}}</small>
+                  <small>({{posTransDetails.inventory.variant.unitValue + posTransDetails.inventory.variant.unitType}})</small>
+              </div>
+              <div class="actions hstack gap-4 "  >
+                  <button type="button" (click)="posTransDetails.orderQty > 1 ? minusQty(i, 1) : removeOrder(i)" class="btn btn-outline-primary ">
+                    <ng-container *ngIf="posTransDetails.orderQty > 1 ; else elseRemovable">
+                    <i class="bi bi-dash-lg"></i>
+                    </ng-container>
+                    <ng-template #elseRemovable>
+                      <i class="bi bi-trash"></i>
+                    </ng-template>
+                  </button>
+                  <small clas="m-0 p-0">{{posTransDetails.orderQty}}</small>
+                  <button type="button" (click)="addQty(i, 1)" class="btn btn-outline-primary "><i class="bi bi-plus-lg"></i></button>
+              </div>
+              <div class="itemTotal d-flex  flex-row align-items-center justify-content-end" style="width: 35%; max-width: 40%;">
+                  <strong>{{posTransDetails.orderQty * posTransDetails.unitPrice}}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right-bottom  d-flex flex-column justify-content-between " >
+           <div class=" glassify  mb-2  curve card p-3">
+             <div class="d-flex flex-row justify-content-between">Subtotal <small>${{posTransaction?.subTotal}}</small></div>
+             <div class="d-flex flex-row justify-content-between">Discount <small>${{'-' + posTransaction?.discount}}</small></div>
+             <div class="d-flex flex-row justify-content-between">Sales Tax <small>$0</small></div>
+              <div class="d-flex hr mb-3"></div>
+             <div class="d-flex flex-row justify-content-between"><h4>Total</h4><strong>${{posTransaction?.total}}</strong></div>
+           </div>
+          <div class=" glassify mb-2 d-flex flex-row justify-content-between align-items-center curve card p-3">
+            <div class="left d-flex flex-column">
+                <strong>Voucher Amount</strong>
+                <h5>{{posTransaction?.voucherAmount}}</h5>
+            </div>
+            <div class="d-flex flex-column right">
+              <button type="button" class="btn btn-outline-primary">Cancel</button>
+
+            </div>
+          </div>
+          <div class="d-flex flex-column  ">
+              <button type="button" class="btn btn-outline-primary col">Payment</button>
+          </div>
+          <div class="d-flex mt-2 ps-1 pe-2 flex-row justify-content-between">
+            <h5>Balance Due</h5>
+            <strong>$20.55</strong>
+          </div>
+        </div>
+   </div>
+</div>

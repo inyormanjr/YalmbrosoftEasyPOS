@@ -18,8 +18,8 @@ export interface Variants {
   _id: string;
   unitType: string;
   unitValue: string;
-  unitCost: Number;
-  unitPrice: Number;
+  unitCost: number;
+  unitPrice: number;
   quantity: number;
 }
 

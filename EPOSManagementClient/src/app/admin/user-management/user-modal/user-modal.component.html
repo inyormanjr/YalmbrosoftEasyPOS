@@ -57,10 +57,10 @@
             <input type="email" name="email" formControlName="username" placeholder="Enter Email" class="form-control"
               required="">
           </div>
-          <div class="form-group col-md-6">
-            <label for="password">Password</label>
+          <div class="form-group col-md-6" >
+            <label for="password">Password (Only Users can update)</label>
             <div class="input-group " id="show_hide_password">
-              <input [disabled]="initialItem" type="password" class="form-control" formControlName="password" id="password" value="" name="password"
+              <input [readonly]="initialItem != undefined" type="password" class="form-control" formControlName="password" id="password" value="" name="password"
                 placeholder="Enter Password" required="">
             </div>
           </div>
