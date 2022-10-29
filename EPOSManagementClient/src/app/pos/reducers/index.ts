@@ -19,7 +19,7 @@ export interface PosState {
   isLoading: boolean,
   categories: Category[],
   productList: Inventory[],
-  currentPosTrans?: PosTransaction,
+  currentPosTrans: PosTransaction,
 }
 
 export const posInitialState: PosState = {
@@ -27,7 +27,19 @@ export const posInitialState: PosState = {
   isLoading: false,
   categories: [],
   productList: [],
-  currentPosTrans: undefined
+  currentPosTrans: {
+    _id: '',
+    company: '',
+    creator: '',
+    subTotal: 0,
+    discount: 0,
+    voucher: { _id: '', code: '', amount: 0, used: false },
+    salesTax: 0,
+    total: 0,
+    totalBalance: 0,
+    payment: 0,
+    posTransDetails: [],
+  },
 };
 
 export const reducers = createReducer(

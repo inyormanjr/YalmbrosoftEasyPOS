@@ -11,3 +11,5 @@ router.route('/')
     .get(protect, advanceResult(PosTransaction), controller.getMany)
     .post(protect, controller.create)
     .put(protect, controller.update);
+
+module.exports = router;

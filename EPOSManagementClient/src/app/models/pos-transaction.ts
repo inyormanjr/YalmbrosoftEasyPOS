@@ -9,6 +9,7 @@ export interface PosTransaction {
   salesTax: number;
   total: number;
   totalBalance: number;
+  payment: number;
   posTransDetails: PosTransactionDetails[];
 }
 

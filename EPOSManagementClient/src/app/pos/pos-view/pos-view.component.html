@@ -118,9 +118,9 @@
         <div class="right-bottom  d-flex flex-column justify-content-between " >
            <div class=" glassify  mb-2  curve card p-3">
 
-             <div class="d-flex flex-row justify-content-between">Subtotal <small>${{posTransaction?.subTotal | currency}}</small></div>
-             <div class="d-flex flex-row justify-content-between">Discount <small>-${{posTransaction?.discount | currency}}</small></div>
-             <div class="d-flex flex-row justify-content-between">Sales Tax <small>{{this.posTransaction?.discount}}</small></div>
+             <div class="d-flex flex-row justify-content-between">Subtotal <small>{{posTransaction?.subTotal | currency}}</small></div>
+             <div class="d-flex flex-row justify-content-between">Discount <small>-{{posTransaction?.discount | currency}}</small></div>
+             <div class="d-flex flex-row justify-content-between">Sales Tax <small>{{this.posTransaction?.salesTax}}</small></div>
               <hr class="d-flex  mb-2 ">
              <div class="d-flex flex-row justify-content-between"><h5>Total</h5><strong>{{posTransaction?.total | currency}}</strong></div>
            </div>
@@ -141,7 +141,7 @@
             </div>
           </div>
           <div class="d-flex flex-column  ">
-              <button type="button" class="btn btn-outline-primary col">Payment</button>
+              <button type="button" class="btn btn-outline-primary col" [disabled]="!allowPayment()" (click)="showRefModal(paymentTemplate)">Payment</button>
           </div>
           <div class="d-flex mt-2 ps-1 pe-2 flex-row justify-content-between">
             <h5>Balance Due</h5>
@@ -194,6 +194,23 @@
   </div>
 </ng-template>
 
+<ng-template #amountTemplate>
+  <div class="modal-header" >
+    <h5 class="modal-title pull-left">Amount Entry Modal</h5>
+  </div>
+  <div class="modal-body">
+    <div class="mb-2">
+      <label for="" class="form-label">Amount</label>
+      <input type="text" [(ngModel)]="currentPaymentAmount"  class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="acceptAmount()" class="btn ">
+      Submit
+    </button>
+  </div>
+</ng-template>
+
 <ng-template #discountTemplate>
   <div class="modal-header">
     <h5 class="modal-title pull-left">Discount Modal</h5>
@@ -207,6 +224,73 @@
   <div class="modal-footer">
     <button type="button" [disabled]="currentDiscountAmount <= 0" (click)="processDiscount()" class="btn ">
       Submit
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #paymentTemplate>
+  <div class="modal-header d-flex flex-row justify-content-between">
+    <h5 class="modal-title pull-left"><i class="bi bi-cash"></i> Payment</h5>
+    <button type="button"  (click)="showAmountModal(amountTemplate)" class="btn  ">
+      Enter Amount
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="item-list-section" style="min-height: 30vh; max-height: 30vh; overflow-y: auto;">
+        <div class="table-responsive-sm">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Item</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let posTransDetails of posTransaction?.posTransDetails; let i = index;" class="">
+                <td>{{i + 1}}</td>
+                <td scope="row">
+                  <small>{{posTransDetails.inventory.item.name}}</small>
+                  <small>({{posTransDetails.inventory.variant.unitValue + posTransDetails.inventory.variant.unitType}})</small>
+                </td>
+                <td><small clas="m-0 p-0">x{{posTransDetails.orderQty}}</small></td>
+                <td><small clas="m-0 p-0">{{posTransDetails.unitPrice | currency}}</small></td>
+                <td class="text-start"><strong>{{posTransDetails.orderQty * posTransDetails.unitPrice | currency}}</strong>
+                <small *ngIf="posTransDetails.unitDiscount > 0">-({{posTransDetails.orderQty * posTransDetails.unitDiscount |
+                  currency}})</small></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+    </div>
+    <hr>
+    <div class="calculation-section container-fluid">
+        <div class="d-flex flex-row justify-content-between"><small>Sub-Total</small> <small>{{posTransaction?.subTotal | currency}}</small>
+        </div>
+          <div class="d-flex flex-row justify-content-between"><small>Discount</small> <small>(-{{posTransaction?.discount | currency}})</small>
+          </div>
+          <div class="d-flex flex-row justify-content-between"><small>Voucher</small> <small>(-{{posTransaction?.voucher?.amount| currency}})</small>
+          </div>
+          <div class="d-flex flex-row justify-content-between"><small>Sales Tax</small><small>(-{{this.posTransaction?.salesTax | currency}})</small></div>
+          <hr class="d-flex  mb-2 ">
+          <div class="d-flex flex-row justify-content-between">
+            <small>Total</small><small>{{posTransaction?.totalBalance| currency}}</small>
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <small>Payment</small><small>{{posTransaction?.payment | currency}}</small>
+          </div>
+          <div  class="d-flex flex-row justify-content-between">
+            <small>Change</small><small>{{change()| currency}}</small>
+          </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex flex-column w-100 ">
+
+    <button type="button" [disabled]="currentDiscountAmount <= 0" (click)="processDiscount()" class="btn  ">
+      Accept
     </button>
   </div>
 </ng-template>

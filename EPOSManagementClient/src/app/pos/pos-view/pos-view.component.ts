@@ -23,6 +23,7 @@ export class PosViewComponent implements OnInit {
   newOrderQty = 1;
   newOrderUnitDiscount = 0;
   currentDiscountAmount = 0;
+  currentPaymentAmount = 0;
   selectedInventory: Inventory | undefined;
   itemCart = [];
   currentFilter = '';
@@ -32,6 +33,7 @@ export class PosViewComponent implements OnInit {
   isFetching$: Observable<boolean> | undefined;
   posTransaction: PosTransaction | undefined;
   bsModalRef?: BsModalRef;
+  bsModalRef2?: BsModalRef;
   constructor(
     private posStore: Store<PosState>,
     private fB: FormBuilder,
@@ -72,6 +74,7 @@ export class PosViewComponent implements OnInit {
       salesTax: 0,
       total: 0,
       totalBalance: 0,
+      payment: 0,
       posTransDetails: [],
     };
   }
@@ -84,6 +87,24 @@ export class PosViewComponent implements OnInit {
 
   showRefModal(template: TemplateRef<any>) {
     this.bsModalRef = this.modalService.show(template);
+  }
+
+
+  showAmountModal(template: TemplateRef<any>) {
+    this.currentPaymentAmount = this.posTransaction?.totalBalance ?? 0;
+    this.bsModalRef2 = this.modalService.show(template);
+  }
+
+  allowPayment() {
+    return this.posTransaction?.payment ? true : false;
+  }
+
+  change() {
+    let change = 0;
+    if (this.posTransaction) {
+      change = this.posTransaction?.payment - this.posTransaction?.totalBalance;
+    }
+    return change;
   }
 
   processVoucher() {
@@ -126,6 +147,7 @@ export class PosViewComponent implements OnInit {
 
       this.posTransaction.totalBalance =
         this.posTransaction.total - this.posTransaction.voucher.amount ?? 0;
+        this.posTransaction.payment = this.posTransaction.totalBalance;
     }
   }
 
@@ -182,6 +204,13 @@ export class PosViewComponent implements OnInit {
       this.selectedInventory = undefined;
       this.bsModalRef?.hide();
     }
+  }
+
+  acceptAmount() {
+    this.calculateAmounts();
+    if(this.posTransaction)
+    this.posTransaction.payment = this.currentPaymentAmount;
+    this.bsModalRef2?.hide();
   }
 
   onCategoryChanged(value?: any) {

@@ -9,11 +9,11 @@ const sendEmail = async (options)  => {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-    secure:true,
+    port: process.env.SMTP_PORT,
+    secure: true,
     auth: {
       user: process.env.SMTP_USERNAME, // generated ethereal user
-      pass: process.env.SMTP_PASSWORD, // generated ethereal password
+      pass: 'drhqylxbwtesspej', // generated ethereal password
     },
   });
 

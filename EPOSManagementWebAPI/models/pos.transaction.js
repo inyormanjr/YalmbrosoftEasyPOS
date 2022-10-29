@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 
 const PosTransDetail = new mongoose.Schema({
-    inventory: { type: any },
-    orderQty: { type: Number },
-    unitDiscount: { type: Number },
-    unitPrice: { type: Number },
-    totalPrice: {type: String}
-
+  inventory: { type: mongoose.Schema.Types.Mixed },
+  orderQty: { type: Number },
+  unitDiscount: { type: Number },
+  unitPrice: { type: Number },
+  totalPrice: { type: String },
 });
 
 const PosTransaction = new mongoose.Schema({
@@ -22,17 +21,17 @@ const PosTransaction = new mongoose.Schema({
   },
   subTotal: { type: Number },
   discount: { type: Number },
-  voucher: { type: any },
+  voucher: { type: mongoose.Schema.Types.Mixed },
   salesTax: { type: Number },
   total: { type: Number },
   totalBalance: { type: Number },
   posTransDetails: [PosTransDetail],
   status: {
-        type: String,
-        enum: ['pending', 'complete', 'cancelled'],
-        default: 'complete'
+    type: String,
+    enum: ['pending', 'complete', 'cancelled'],
+    default: 'complete',
   },
-  dateCreated: {type: Date, default: Date.now}
+  dateCreated: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('PosTransaction', PosTransaction);
