@@ -5,14 +5,24 @@ export interface PosTransaction {
   creator: string;
   subTotal: number;
   discount: number;
-  voucherAmount: number;
+  voucher: Voucher;
+  salesTax: number;
   total: number;
+  totalBalance: number;
   posTransDetails: PosTransactionDetails[];
 }
 
 export interface PosTransactionDetails {
   inventory: Inventory;
   orderQty: number;
+  unitDiscount: number;
   unitPrice: number;
   totalPrice: number;
+}
+
+export interface Voucher {
+  _id: string;
+  code: string;
+  amount: number;
+  used: boolean;
 }

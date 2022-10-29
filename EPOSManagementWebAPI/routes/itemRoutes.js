@@ -22,7 +22,8 @@ router
     advanceResult(InventoryTransaction),
     controller.getStockMovement
   );
-router.route('/inventory').get(protect, controller.getManyInventory)
+router.route('/inventory').get(protect, controller.getManyInventory);
+router.route('/inventory/products').get(protect, controller.getProducts);
 router.route('/inventory/:id').put(protect, controller.updateSingleQuantity);
 
 router

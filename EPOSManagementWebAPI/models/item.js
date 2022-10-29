@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const VariantSchema = new mongoose.Schema({
+  barcode: { type: String },
+  name: {type: String},
   unitType: { type: String },
   unitValue: { type: String },
   unitCost: { type: Number },
@@ -16,7 +18,6 @@ const ItemSchema = new mongoose.Schema({
     type: String,
     require: [true, 'Item name is required'],
   },
-  barcode: { type: String },
   itemCode: { type: String },
   itemType: { type: String },
   description: { type: String },

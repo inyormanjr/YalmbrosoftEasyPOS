@@ -1,9 +1,9 @@
-<div class="d-flex flex-row h-100 ">
+<div class="d-flex flex-row h-100  border-1">
+
    <div class="left-section h-100 d-flex p-3 pb-2 pt-2  flex-column justify-content-between " style="width: 70vw;">
       <div class="left-top d-flex mb-2 flex-row justify-content-between align-items-center">
-        <div class="left-top-start ">
-        <h3 class="pb-0 mb-0">Simons's BBQ Team</h3>
-        <strong>Location ID#SIMON5143</strong>
+        <div class="left-top-start mb-2">
+        <h3 class="pb-0 mb-0">{{currentCompany}}</h3>
         </div>
         <div class="left-top-end ">
           <button type="button" class="btn  btn-sm btn-outline-default me-2"><i class="bi  bi-search"></i> Search</button>
@@ -11,62 +11,70 @@
         </div>
       </div>
       <div class="left-middle d-flex flex-column flex-fill overflow-auto ">
-       <div class="category-toggle hstack gap-1  mb-1 overflow-auto">
+       <div class="category-toggle hstack gap-2 mb-1">
         <input type="radio" [value]="''" [checked]="currentFilter === ''" (change)="onCategoryChanged('')" class="btn-check  checked" name="options" id="option1" autocomplete="off" checked>
         <label class="btn btn-secondary glassify mb-2 curve  " for="option1">All Items</label>
         <ng-container *ngFor="let category of categories$ | async; let i=index">
             <input type="radio" (change)="onCategoryChanged(category.name)"  [value]="category.name" [checked]="currentFilter === category.name" class="btn-check" name="options" [id]="i" autocomplete="off">
             <label class="btn btn-secondary mb-2 glassify curve " [for]="i">{{category.name}}</label>
         </ng-container>
-        <input type="radio" (change)="onCategoryChanged('recent')" [value]="'recent'" [checked]="currentFilter === 'recent'" class="btn-check  checked" name="options" id="option2" autocomplete="off" >
-        <label class="btn btn-secondary glassify  mb-2 curve " for="option2">Recent</label>
        </div>
        <div class="item-section flex-fill container-fluid overflow-auto ">
-        <ng-container *ngIf="(products$ | async ) as Products ; else elseTemplate">
-          <div class="item-container row">
-            <div *ngFor="let product of Products" class="card-container g-2 col-md-4 mb-1">
-              <app-pos-product-card  [product]="product" (click)="addToOrder(product)"></app-pos-product-card>
-            </div>
-          </div>
+        <ng-container *ngIf="(isFetching$  | async) == false; else fetchingProduct">
+          <ng-container *ngIf="products$ | async as Products">
+              <ng-container *ngIf="Products.length > 0; else elseNoItemFound">
+                <div class="item-container row">
+                  <div *ngFor="let product of Products" class="card-container g-2 col-md-4 mb-1">
+                    <app-pos-product-card [product]="product" (click)="showNeworderModal(product, qtyTemplate)"></app-pos-product-card>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-template #elseNoItemFound>
+                <div class="h-100 d-flex flex-column justify-content-center align-items-center">
+                  <h5>No Item Found</h5>
+                </div>
+              </ng-template>
+          </ng-container>
         </ng-container>
-        <ng-template #elseTemplate>
+        <ng-template #fetchingProduct>
           <div class="item-section h-100 flex-fill container-fluid d-flex flex-column justify-content-center align-items-center">
             <div class="spinner-border  text-light" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
         </ng-template>
-
-
        </div>
       </div>
-      <div class="left-bottom  p-2 ps-3 pe-3 glassify curve">
+      <div class="left-bottom  p-2 ps-3 pe-3 glassify curve" style="float: bottom;">
         <div class="d-flex flex-row">
             <div class="user w-50 hstack gap-3">
               <div class="user-details text-center">
-              <h5 class="m-0 p-0">Yap, Ronilo</h5>
-              <small class="badge rounded-pill bg-success">Cashier</small>
+              <small class="badge rounded-pill bg-success me-2">Cashier</small>
+              <strong class="m-0 p-0">{{currentUser}}</strong>
               </div>
               <div class="link-unlink ms-auto">
                 <button type="button" class="btn btn-outline-default m-0">
-                  <i class="bi bi-box-arrow-in-left me-2"></i>
-                  Sign-Out</button>
+                  <i class="bi bi-box-arrow-in-left "></i>
+                  </button>
               </div>
             </div>
-            <div class="vr me-2 ms-2 "></div>
-            <div class="user hstack gap-3 ">
-            <div class="link-unlink">
-              <button type="button" class="btn btn-outline-default m-0">Discount</button>
+            <div class="vr me-auto ms-2 "></div>
+            <div class="user hstack gap-3">
+            <div class="link-unlink ">
+              <button type="button" (click)="showRefModal(discountTemplate)" class="btn btn-outline-default discount-button m-0"><i class="bi bi-percent"></i></button>
             </div>
             <div class="link-unlink">
-              <button type="button" class="btn btn-outline-default m-0">Return</button>
-            </div>
-            <div class="link-unlink">
-              <button type="button" class="btn btn-outline-default m-0">Unlink</button>
+              <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-box-arrow-in-down"></i></button>
             </div>
               <div class="link-unlink">
-                <button type="button" class="btn btn-outline-default m-0">Transactions</button>
+                <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-list-ol"></i></button>
               </div>
+            <div class="link-unlink">
+              <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-card-text"></i></button>
+            </div>
+            <div class="link-unlink">
+              <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-cart-plus"></i></button>
+            </div>
             </div>
         </div>
       </div>
@@ -74,7 +82,7 @@
    <div class="right-section p-3 pb-2  h-100 border-start border-1 border-light flex-fill d-flex flex-column justify-content-between">
       <div class="right-top d-flex mb-3 flex-row justify-content-between align-items-center">
         <div class="right-top-start ">
-          <h3 class="pb-0 mb-0">Current Orders </h3>
+          <h3 class="pb-0 mb-0">Orders</h3>
         </div>
         <div class="right-top-end  ">
           <button type="button" class="btn  btn-sm btn-outline-default me-2" (click)="clearAll()">Clear All</button>
@@ -89,7 +97,7 @@
                   <small>({{posTransDetails.inventory.variant.unitValue + posTransDetails.inventory.variant.unitType}})</small>
               </div>
               <div class="actions hstack gap-4 "  >
-                  <button type="button" (click)="posTransDetails.orderQty > 1 ? minusQty(i, 1) : removeOrder(i)" class="btn btn-outline-primary ">
+                  <button type="button"  (click)="posTransDetails.orderQty > 1 ? minusQty(i, 1) : removeOrder(i)" class="btn btn-outline-primary ">
                     <ng-container *ngIf="posTransDetails.orderQty > 1 ; else elseRemovable">
                     <i class="bi bi-dash-lg"></i>
                     </ng-container>
@@ -100,28 +108,36 @@
                   <small clas="m-0 p-0">{{posTransDetails.orderQty}}</small>
                   <button type="button" (click)="addQty(i, 1)" class="btn btn-outline-primary "><i class="bi bi-plus-lg"></i></button>
               </div>
-              <div class="itemTotal d-flex  flex-row align-items-center justify-content-end" style="width: 35%; max-width: 40%;">
-                  <strong>{{posTransDetails.orderQty * posTransDetails.unitPrice}}</strong>
+              <div class="itemTotal d-flex  flex-column align-items-end justify-content-center" style="width: 35%; max-width: 40%;">
+                  <strong>{{posTransDetails.orderQty * posTransDetails.unitPrice  | currency}}</strong>
+                  <small *ngIf="posTransDetails.unitDiscount > 0">-({{posTransDetails.orderQty * posTransDetails.unitDiscount | currency}})</small>
               </div>
             </div>
           </div>
         </div>
         <div class="right-bottom  d-flex flex-column justify-content-between " >
            <div class=" glassify  mb-2  curve card p-3">
-             <div class="d-flex flex-row justify-content-between">Subtotal <small>${{posTransaction?.subTotal}}</small></div>
-             <div class="d-flex flex-row justify-content-between">Discount <small>${{'-' + posTransaction?.discount}}</small></div>
-             <div class="d-flex flex-row justify-content-between">Sales Tax <small>$0</small></div>
-              <div class="d-flex hr mb-3"></div>
-             <div class="d-flex flex-row justify-content-between"><h4>Total</h4><strong>${{posTransaction?.total}}</strong></div>
+
+             <div class="d-flex flex-row justify-content-between">Subtotal <small>${{posTransaction?.subTotal | currency}}</small></div>
+             <div class="d-flex flex-row justify-content-between">Discount <small>-${{posTransaction?.discount | currency}}</small></div>
+             <div class="d-flex flex-row justify-content-between">Sales Tax <small>{{this.posTransaction?.discount}}</small></div>
+              <hr class="d-flex  mb-2 ">
+             <div class="d-flex flex-row justify-content-between"><h5>Total</h5><strong>{{posTransaction?.total | currency}}</strong></div>
            </div>
           <div class=" glassify mb-2 d-flex flex-row justify-content-between align-items-center curve card p-3">
             <div class="left d-flex flex-column">
                 <strong>Voucher Amount</strong>
-                <h5>{{posTransaction?.voucherAmount}}</h5>
+                <small>-{{posTransaction?.voucher?.amount | currency}}</small>
             </div>
             <div class="d-flex flex-column right">
-              <button type="button" class="btn btn-outline-primary">Cancel</button>
-
+              <ng-container *ngIf="posTransaction; ">
+                <ng-container *ngIf="posTransaction?.voucher && posTransaction.voucher.amount > 0; else VoucherelseTemplate">
+               <button type="button" class="btn btn-outline-primary">Cancel</button>
+                </ng-container>
+                <ng-template #VoucherelseTemplate>
+                <button type="button" class="btn btn-sm btn-outline-primary" (click)="showRefModal(voucherTemplate)">Add</button>
+                </ng-template>
+              </ng-container>
             </div>
           </div>
           <div class="d-flex flex-column  ">
@@ -129,8 +145,69 @@
           </div>
           <div class="d-flex mt-2 ps-1 pe-2 flex-row justify-content-between">
             <h5>Balance Due</h5>
-            <strong>$20.55</strong>
+            <small>
+              {{posTransaction?.totalBalance | currency}}
+            </small>
           </div>
         </div>
    </div>
 </div>
+
+<ng-template #qtyTemplate>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Quantity Entry Modal</h5>
+  </div>
+  <div class="modal-body" >
+    <div class="mb-2">
+      <label for="" class="form-label">Quantity</label>
+      <input type="text" [(ngModel)]="newOrderQty" class="form-control" name="" id=""
+        aria-describedby="nameHelpId" placeholder="">
+    </div>
+    <div class="mb-2">
+      <label for="" class="form-label">Discount(Per Unit)</label>
+      <input type="number" pattern="^\d*(\.\d{0,2})?$" [(ngModel)]="newOrderUnitDiscount" class="form-control" name="" id="" aria-describedby="nameHelpId"
+        placeholder="">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="addToOrder()" class="btn ">
+      Accept
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #voucherTemplate>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Voucher Entry Modal</h5>
+  </div>
+  <div class="modal-body">
+    <div class="mb-2">
+      <label for="" class="form-label">Voucher Code</label>
+      <input type="text"  class="form-control" name="" id="" aria-describedby="nameHelpId"
+        placeholder="">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="processVoucher()" class="btn ">
+      Submit
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #discountTemplate>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Discount Modal</h5>
+  </div>
+  <div class="modal-body">
+    <div class="mb-2">
+      <label for="" class="form-label">Amount</label>
+      <input type="number" [(ngModel)]="currentDiscountAmount" pattern="^\d*(\.\d{0,2})?$" class="form-control" name="" id="" aria-describedby="nameHelpId" placeholder="">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" [disabled]="currentDiscountAmount <= 0" (click)="processDiscount()" class="btn ">
+      Submit
+    </button>
+  </div>
+</ng-template>
+

@@ -38,7 +38,7 @@ export class PosEffectEffects {
         ofType(PosActionTypes.loadPosProducts),
         tap((action) => {
           this.itemService
-            .getManyInventory()
+            .getManyProducts(action.data)
             .pipe(
               map((data: any) => {
                 this.posStore.dispatch(

@@ -15,6 +15,7 @@ import { PosActionTypes } from '../actions/pos-actions.types';
 export const posStoreFeatureKey = 'posStore';
 
 export interface PosState {
+  isFetchingProduct: boolean,
   isLoading: boolean,
   categories: Category[],
   productList: Inventory[],
@@ -22,6 +23,7 @@ export interface PosState {
 }
 
 export const posInitialState: PosState = {
+  isFetchingProduct: false,
   isLoading: false,
   categories: [],
   productList: [],
@@ -30,6 +32,13 @@ export const posInitialState: PosState = {
 
 export const reducers = createReducer(
   posInitialState,
+  on(PosActionTypes.loadPosProducts, (state, action) => {
+    return {
+      ...state,
+      isLoading: false,
+      isFetchingProduct: true,
+    };
+  }),
   on(PosActionTypes.loadPosActionssSuccess, (state, action) => {
     return {
       ...state,
@@ -46,6 +55,7 @@ export const reducers = createReducer(
     return {
       ...state,
       productList: action.data,
+      isFetchingProduct: false
     };
   })
 );

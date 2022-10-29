@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/login/services/auth.service';
 import { Item } from 'src/app/models/item';
 import { environment } from 'src/environments/environment';
+import { SearchParams } from 'src/app/shared/_models/search.params';
 
 @Injectable({
   providedIn: 'root',
@@ -30,23 +31,32 @@ export class ItemService {
       .pipe(map((x: any) => x));
   }
 
-  getManyInventory(searchString?: string): Observable<any> {
+  getManyInventory(searchParam?: SearchParams): Observable<any> {
     let params = new HttpParams();
-    if (searchString) {
-      const test = JSON.stringify({ $regex: searchString });
-      params = params.append('name', test);
+    if (searchParam) {
+      params = params.set(searchParam.key, searchParam.value);
     }
     return this.httpClient
-      .get(this.baseURL + '/inventory', { params })
+      .get(this.baseURL + '/inventory', { params: params })
+      .pipe(map((x: any) => x));
+  }
+
+  getManyProducts(searchParam?: SearchParams): Observable<any> {
+    let params = new HttpParams();
+    if (searchParam) {
+      params = params.set(searchParam.key, searchParam.value);
+    }
+    return this.httpClient
+      .get(this.baseURL + '/inventory/products', { params: params })
       .pipe(map((x: any) => x));
   }
 
   getStockMovement(page?: any): Observable<any> {
     let params = new HttpParams();
     params = params.set('company', this.authService.companyId());
-     return this.httpClient
-       .get(this.baseURL + '/inventory/stockmovement', { params })
-       .pipe(map((x: any) => x));
+    return this.httpClient
+      .get(this.baseURL + '/inventory/stockmovement', { params })
+      .pipe(map((x: any) => x));
   }
 
   updateSingleVariant(variantId: string, variant: Variants): Observable<any> {

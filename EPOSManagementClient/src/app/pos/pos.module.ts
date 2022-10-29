@@ -1,3 +1,5 @@
+import { FormsModule } from '@angular/forms';
+import { NgxModule } from 'src/app/shared/ngx-bootstrap/ngx/ngx.module';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,6 +20,8 @@ const routes: Routes = [{path: '', component: PosViewComponent}];
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    FormsModule,
+    NgxModule,
     StoreModule.forFeature(fromPosStore.posStoreFeatureKey, fromPosStore.reducers),
     EffectsModule.forFeature([PosEffectEffects])
   ]

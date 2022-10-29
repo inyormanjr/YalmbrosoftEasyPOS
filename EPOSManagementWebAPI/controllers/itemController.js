@@ -9,11 +9,38 @@ exports.getMany = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.advancedResults);
 });
 
-exports.getManyInventory = asyncHandler(async (req, res, next) => {
-  const itemsWithQuantity = await Item.find({
-    company: ObjectId(req.user.companyId),
-    'variants.quantity': { $ne: null },
+exports.getProducts = asyncHandler(async (req, res, next) => {
+  let itemsWithQuantity;
+  if (req.query.category) {
+    itemsWithQuantity = await Item.find({
+      company: ObjectId(req.user.companyId),
+      category: { $regex: `^${req.query.category}.*`, $options: 'si' },
+      'variants.unitPrice': { $ne: null },
+    });
+  } else {
+    itemsWithQuantity = await Item.find({
+      company: ObjectId(req.user.companyId),
+      'variants.unitPrice': { $ne: null },
+    });
+  }
+  variants = [];
+  itemsWithQuantity.forEach((item) => {
+    item.variants.forEach((variant) => {
+      variants.push({ item, variant });
+    });
   });
+
+  res.status(200).json({ success: true, data: variants });
+});
+
+exports.getManyInventory = asyncHandler(async (req, res, next) => {
+  let itemsWithQuantity;
+
+     itemsWithQuantity = await Item.find({
+      company: ObjectId(req.user.companyId),
+      'variants.quantity': { $ne: null },
+    });
+  
   variants = [];
   itemsWithQuantity.forEach((item) => {
     item.variants.forEach((variant) => {
@@ -154,7 +181,6 @@ createInventoryTrans = async function (
     creator: req.user.username,
     remarks: remarks ?? 'n/a',
   });
-  console.log(newInventoryTrans);
   await InventoryTransaction.create(newInventoryTrans);
 };
 

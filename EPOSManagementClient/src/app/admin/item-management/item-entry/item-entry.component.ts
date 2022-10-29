@@ -70,6 +70,8 @@ export class ItemEntryComponent implements OnInit {
     return this.fB.group(
       {
         _id: [],
+        barcode: [''],
+        name: [''],
         unitType: [''],
         unitValue: [''],
         unitCost: [0.0],

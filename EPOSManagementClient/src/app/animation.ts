@@ -15,7 +15,7 @@ export const slideInAnimation = trigger('slideInAnimation', [
     // Config object with optional set to true to handle when element not yet added to the DOM
     query(
       ':enter, :leave',
-      style({ position: 'fixed', width: '100%', zIndex: 2 }),
+      style({ position: 'fixed', height: '100%', width: '100%', zIndex: 2 }),
       { optional: true }
     ),
     // group block executes in parallel
@@ -24,7 +24,7 @@ export const slideInAnimation = trigger('slideInAnimation', [
         ':enter',
         [
           style({ transform: 'translateX(100%)' }),
-          animate('0.5s ease-out', style({ transform: 'translateX(0%)' })),
+          animate('0.8s ease-out', style({ transform: 'translateX(0%)' })),
         ],
         { optional: true }
       ),
@@ -32,7 +32,7 @@ export const slideInAnimation = trigger('slideInAnimation', [
         ':leave',
         [
           style({ transform: 'translateX(0%)' }),
-          animate('0.5s ease-out', style({ transform: 'translateX(-100%)' })),
+          animate('0.8s ease-out', style({ transform: 'translateX(-100%)' })),
         ],
         { optional: true }
       ),

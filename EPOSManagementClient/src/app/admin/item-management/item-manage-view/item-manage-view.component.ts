@@ -1,4 +1,4 @@
-import { slideInAnimation } from './../../../animation';
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({

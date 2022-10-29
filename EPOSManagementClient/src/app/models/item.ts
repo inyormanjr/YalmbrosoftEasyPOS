@@ -16,6 +16,8 @@ export interface Item {
 
 export interface Variants {
   _id: string;
+  barcode: string;
+  name: string;
   unitType: string;
   unitValue: string;
   unitCost: number;
