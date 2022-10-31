@@ -11,6 +11,8 @@ export interface PosTransaction {
   totalBalance: number;
   payment: number;
   posTransDetails: PosTransactionDetails[];
+  createdAt?: Date,
+  updatedAt?: Date
 }
 
 export interface PosTransactionDetails {

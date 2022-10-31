@@ -49,7 +49,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 state: { error: error.error },
               };
               //this.router.navigateByUrl('/server-error', navigationExtras);
-              console.log(500);
+              console.log(error.error);
               break;
 
             default:

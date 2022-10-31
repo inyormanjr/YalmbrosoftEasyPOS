@@ -19,7 +19,6 @@ const UserSchema = new mongoose.Schema({
   },
   middleName: {
     type: String,
-    required: [true, 'first name is required'],
     unique: false,
     trim: true,
     maxlength: [50, 'Name can not be more than 50 characters'],

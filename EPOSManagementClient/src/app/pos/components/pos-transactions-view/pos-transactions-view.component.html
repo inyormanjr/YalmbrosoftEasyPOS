@@ -1,0 +1,101 @@
+<div class="modal-header">
+  <h5 class="modal-title pull-left">POS Transactions</h5>
+</div>
+<div class="modal-body">
+  <div class="table-responsive" style="max-height: 50vh; overflow-y: auto;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Items</th>
+        <th scope="col">Total Balance</th>
+        <th scope="col">Payment</th>
+        <th scope="col">Process By</th>
+        <th scope="col">createdAt</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let trans of posTransactions$ | async" scope="row">
+          <td>
+           {{trans.posTransDetails.length}}
+          </td>
+          <td>{{trans.totalBalance | currency}}</td>
+          <td>{{trans.payment | currency}}</td>
+          <td>{{trans.creator}}</td>
+          <td>{{trans.createdAt | date: "MM/dd/yy h:mm a"}}</td>
+          <td><button type="button" (click)="showTransactionView(transactionViewTemplate, trans)" class="btn btn-sm btn-outline-primary">View</button>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+ </div>
+</div>
+<div class="modal-footer">
+  <button (click)="bsModalRef.hide()" class="btn ">
+    Close
+  </button>
+</div>
+
+<ng-template #transactionViewTemplate>
+  <div class="modal-header d-flex flex-row justify-content-between mt-1">
+    <h5 class="modal-title pull-left"><i class="bi bi-cash"></i> Transaction</h5>
+
+  </div>
+  <div class="modal-body">
+    <div class="item-list-section" style="min-height: 30vh; max-height: 30vh; overflow-y: auto;">
+      <div class="table-responsive-sm">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Item</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Unit Price</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let posTransDetails of selectedTransaction?.posTransDetails; let i = index;" class="">
+              <td>{{i + 1}}</td>
+              <td scope="row">
+                <small>{{posTransDetails.inventory.item.name}}</small>
+                <small>({{posTransDetails.inventory.variant.unitValue +
+                  posTransDetails.inventory.variant.unitType}})</small>
+              </td>
+              <td><small clas="m-0 p-0">x{{posTransDetails.orderQty}}</small></td>
+              <td><small clas="m-0 p-0">{{posTransDetails.unitPrice | currency}}</small></td>
+              <td class="text-start"><strong>{{posTransDetails.orderQty * posTransDetails.unitPrice |
+                  currency}}</strong>
+                <small *ngIf="posTransDetails.unitDiscount > 0">-({{posTransDetails.orderQty *
+                  posTransDetails.unitDiscount |
+                  currency}})</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <hr>
+    <div class="calculation-section container-fluid">
+      <div class="d-flex flex-row justify-content-between"><small>Sub-Total</small> <small>{{selectedTransaction?.subTotal |
+          currency}}</small>
+      </div>
+      <div class="d-flex flex-row justify-content-between"><small>Discount</small> <small>(-{{selectedTransaction?.discount |
+          currency}})</small>
+      </div>
+      <div class="d-flex flex-row justify-content-between"><small>Voucher</small>
+        <small>(-{{selectedTransaction?.voucher?.amount| currency}})</small>
+      </div>
+      <div class="d-flex flex-row justify-content-between"><small>Sales
+          Tax</small><small>(-{{this.selectedTransaction?.salesTax | currency}})</small></div>
+      <hr class="d-flex  mb-2 ">
+      <div class="d-flex flex-row justify-content-between">
+        <small>Total</small><small>{{selectedTransaction?.totalBalance| currency}}</small>
+      </div>
+      <div class="d-flex flex-row justify-content-between">
+        <small>Payment</small><small>{{selectedTransaction?.payment | currency}}</small>
+      </div>
+    </div>
+  </div>
+</ng-template>

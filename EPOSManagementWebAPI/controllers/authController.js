@@ -5,19 +5,22 @@ const asyncHandler = require('../middlewares/async');
 const sendEmail = require('../utils/sendEmail');
 const Company = require('../models/company');
 const User = require('../models/user');
+const PosConfig = require('../models/pos.config');
 var ObjectId = require('mongoose').Types.ObjectId;
 
 //@desc     Register User
 //@route    GET /api/v1/auth/register
 //@access   public
 exports.register = asyncHandler(async (req, res, next) => {
+    
      Company.findOrCreate({
       companyName: req.body.companyName,
      },  async (err, result) => {
-    req.body.companyId = new ObjectId(result._id);
+       req.body.companyId = new ObjectId(result._id);
          const user = await User.create(req.body);
         const confirmationToken = user.getConfirmationToken();
-        await user.save({ validateBeforeSave: false });
+         await user.save({ validateBeforeSave: false }); 
+         await PosConfig.create({companyId: req.body.companyId, cashOnDrawer: 0, salesTaxPercentage: 12});
          const confirmationURL = `${req.protocol}://${req.get(
            'host'
          )}/confirmation/${confirmationToken}`;
@@ -61,6 +64,17 @@ exports.login = asyncHandler(async (req, res, next) => {
 
     
     const returnUser = await User.findOne({ username }).populate('companyId');
+    
+    const _posConfig = await PosConfig.findOne({
+       companyId: returnUser.companyId._id
+    });
+    if (_posConfig == null) {
+        await PosConfig.create({
+          companyId: returnUser.companyId._id,
+          cashOnDrawer: 0,
+          salesTaxPercentage: 12,
+        });
+    } 
     sendTokenResponse(returnUser, 200, res)
 });
 
@@ -119,7 +133,6 @@ exports.confirmation = asyncHandler(async (req, res, next) => {
        .createHash('sha256')
        .update(req.params.confirmationToken)
        .digest('hex');
-    console.log(confirmationToken);
       const user = await User.findOne({
         confirmationToken
       });

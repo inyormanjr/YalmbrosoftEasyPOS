@@ -10,6 +10,15 @@ const PosTransaction = require('../models/pos.transaction');
 router.route('/')
     .get(protect, advanceResult(PosTransaction), controller.getMany)
     .post(protect, controller.create)
-    .put(protect, controller.update);
+
+router.route('/transactions').get(protect, controller.getTransactionsByDate);
+
+router
+  .route('/config')
+  .get(protect, controller.getPosConfigByCompany)
+  
+router.route('/config/:id').put(protect, controller.updatePosConfig);
+
+    
 
 module.exports = router;

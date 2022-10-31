@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const InventoryTransaction = require('./inventory.transaction');
 const VariantSchema = new mongoose.Schema({
   barcode: { type: String },
   name: {type: String},
@@ -37,6 +38,73 @@ ItemSchema.pre(/^find/, function (next) {
   next();
 });
 
+ItemSchema.methods.createSingleInventoryTrans = async function (
+  inventoryTransactionType,
+  itemName,
+  variant,
+  quantity,
+  previousQuantity,
+  newQuantity,
+  company,
+  creator,
+  remarks
+) {
+  const newInventoryTrans = new InventoryTransaction({
+    type: inventoryTransactionType,
+    itemName,
+    variant,
+    quantity,
+    previousQuantity,
+    newQuantity,
+    company: company,
+    creator: creator,
+    remarks: remarks ?? 'n/a',
+  });
+  await InventoryTransaction.create(newInventoryTrans);
+  return;
+};
+
+ItemSchema.methods.createManyInventoryTrans = async function (transList) {
+  await InventoryTransaction.insertMany(transList);
+  return;
+}
+
+ItemSchema.methods.updateVariantQtyById = async function (id, variant){
+  return await this.findOneAndUpdate(
+    {
+      'variants._id': id,
+    },
+    {
+      $set: {
+        'variants.$': variant,
+      },
+    }
+  );
+}
+
+ItemSchema.methods.newInventoryTransModel =  function (
+  inventoryTransactionType,
+  itemName,
+  variant,
+  quantity,
+  previousQuantity,
+  newQuantity,
+  company,
+  creator,
+  remarks
+) {
+  return new InventoryTransaction({
+    type: inventoryTransactionType,
+    itemName,
+    variant,
+    quantity,
+    previousQuantity,
+    newQuantity,
+    company: company,
+    creator: creator,
+    remarks: remarks ?? 'n/a',
+  });;
+};
 
 
 module.exports = mongoose.model('Item', ItemSchema);

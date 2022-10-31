@@ -1,0 +1,25 @@
+
+    <div class="modal-header">
+      <h5 class="modal-title pull-left">Pos Config</h5>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="posConfigForm">
+      <div class="mb-2">
+        <label for="" class="form-label">Cash in Drawer </label>
+        <input type="number" formControlName="cashOnDrawer" pattern="^\d*(\.\d{0,2})?$" class="form-control" name="" id="" aria-describedby="nameHelpId"
+          placeholder="">
+      </div>
+      <div class="mb-2">
+        <label for="" class="form-label">Sales Tax Percentage</label>
+        <input type="number" formControlName="salesTaxPercentage" pattern="^\d*(\.\d{0,2})?$" class="form-control" name="" id="" aria-describedby="nameHelpId"
+          placeholder="">
+      </div>
+    </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" (click)="update()" class="btn ">
+        Update
+      </button>
+    </div>
+
+

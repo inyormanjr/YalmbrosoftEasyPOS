@@ -1,3 +1,5 @@
+import { posInitialState } from './../reducers/index';
+import { PosService } from './../services/pos.service';
 import { CategoryService } from './../../admin/services/category/category.service';
 import { ItemService } from 'src/app/admin/services/item/item.service';
 import { Injectable } from '@angular/core';
@@ -12,6 +14,26 @@ import { noop } from 'rxjs';
 
 @Injectable()
 export class PosEffectEffects {
+  fetchPosConfig$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(PosActionTypes.loadPosConfig),
+        tap((action) => {
+          this.posService
+            .getPosConfig()
+            .pipe(
+              map((data: any) => {
+                this.posStore.dispatch(
+                  PosActionTypes.loadPosConfigSuccess({ data: data })
+                );
+              })
+            )
+            .subscribe(noop, (error) => {});
+        })
+      ),
+    { dispatch: false }
+  );
+
   fetchCategories$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -20,9 +42,9 @@ export class PosEffectEffects {
           this.categoryService
             .getMany()
             .pipe(
-              map((data: any) => {
+              map((result: any) => {
                 this.posStore.dispatch(
-                  PosActionTypes.loadPosCategoriesSuccess({ data: data.data })
+                  PosActionTypes.loadPosCategoriesSuccess({ data: result.data })
                 );
               })
             )
@@ -40,9 +62,9 @@ export class PosEffectEffects {
           this.itemService
             .getManyProducts(action.data)
             .pipe(
-              map((data: any) => {
+              map((result: any) => {
                 this.posStore.dispatch(
-                  PosActionTypes.loadPosProductsSuccess({ data: data.data })
+                  PosActionTypes.loadPosProductsSuccess({ data: result.data })
                 );
               })
             )
@@ -56,6 +78,7 @@ export class PosEffectEffects {
     private actions$: Actions,
     private categoryService: CategoryService,
     private itemService: ItemService,
-    private posStore: Store<PosState>
+    private posStore: Store<PosState>,
+    private posService: PosService
   ) {}
 }

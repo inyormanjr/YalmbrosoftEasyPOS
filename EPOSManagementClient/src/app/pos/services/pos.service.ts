@@ -1,5 +1,7 @@
+import { PosConfig } from './../../models/pos.config';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { PosTransaction } from './../../models/pos-transaction';
-import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/login/services/auth.service';
@@ -13,5 +15,19 @@ export class PosService extends BaseService<PosTransaction> {
   constructor(public httpClient: HttpClient, public authService: AuthService) {
     super(httpClient, authService);
     this.baseURL += this.serviceRoute;
+  }
+
+  getCurrentTransactions(): Observable<PosTransaction[]> {
+    return this.httpClient.get(this.baseURL + '/transactions').pipe(map((x: any) => x.data));
+  }
+
+  getPosConfig(): Observable<PosConfig> {
+    return this.httpClient.get<PosConfig>(this.baseURL + '/config').pipe(map((x: any) => x.data));
+  }
+
+  updatePosConfig(id: any, config: any): Observable<any> {
+    return this.httpClient
+      .put(this.baseURL + '/config/' + id, config)
+      .pipe(map((x: any) => x.data));
   }
 }

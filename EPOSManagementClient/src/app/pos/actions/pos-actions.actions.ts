@@ -14,9 +14,18 @@ export const loadPosActionssFailure = createAction(
   props<{ error: any }>()
 );
 
+export const loadPosConfig = createAction('[PosActions] Load PosConfig');
+
+export const loadPosConfigSuccess = createAction(
+  '[PosActions] Load PosConfig Successful',
+  props<{ data: any }>()
+);
+
 export const loadPosCategories= createAction(
   '[PosActions] Load Categories'
 );
+
+
 
 export const loadPosCategoriesSuccess = createAction(
   '[PosActions] Load Categories Successful',

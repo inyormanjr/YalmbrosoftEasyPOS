@@ -16,3 +16,8 @@ export const selectPosIsLoading = createSelector(
 export const selectCategories = createSelector(selectPoFeature, (x) => x.categories);
 
 export const selectProducts = createSelector(selectPoFeature, (x) => x.productList);
+
+export const selectPosConfig = createSelector(
+  selectPoFeature,
+  (x) => x.posConfig
+);

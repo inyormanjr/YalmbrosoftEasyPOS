@@ -1,9 +1,9 @@
 <div class="d-flex flex-row h-100  border-1">
 
    <div class="left-section h-100 d-flex p-3 pb-2 pt-2  flex-column justify-content-between " style="width: 70vw;">
-      <div class="left-top d-flex mb-2 flex-row justify-content-between align-items-center">
+      <div class="left-top d-flex mb-3 flex-row justify-content-between align-items-center">
         <div class="left-top-start mb-2">
-        <h3 class="pb-0 mb-0">{{currentCompany}}</h3>
+        <h5 class="pb-0 mb-0">{{currentCompany}}</h5>
         </div>
         <div class="left-top-end ">
           <button type="button" class="btn  btn-sm btn-outline-default me-2"><i class="bi  bi-search"></i> Search</button>
@@ -60,20 +60,22 @@
             </div>
             <div class="vr me-auto ms-2 "></div>
             <div class="user hstack gap-3">
-            <div class="link-unlink ">
-              <button type="button" (click)="showRefModal(discountTemplate)" class="btn btn-outline-default discount-button m-0"><i class="bi bi-percent"></i></button>
-            </div>
+
             <div class="link-unlink">
               <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-box-arrow-in-down"></i></button>
             </div>
               <div class="link-unlink">
-                <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-list-ol"></i></button>
+                <button type="button" (click)="showPosTransactions()" class="btn btn-outline-default m-0"><i class="bi bi-list-ol"></i></button>
               </div>
             <div class="link-unlink">
               <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-card-text"></i></button>
             </div>
+            <div class="link-unlink ">
+              <button type="button" (click)="showRefModal(discountTemplate)" class="btn btn-outline-default discount-button m-0"><i
+                  class="bi bi-percent"></i></button>
+            </div>
             <div class="link-unlink">
-              <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-cart-plus"></i></button>
+              <button type="button" (click)="createNewTransaction()" class="btn btn-outline-default m-0"><i class="bi bi-cart-plus"></i></button>
             </div>
             </div>
         </div>
@@ -86,7 +88,9 @@
         </div>
         <div class="right-top-end  ">
           <button type="button" class="btn  btn-sm btn-outline-default me-2" (click)="clearAll()">Clear All</button>
-            <button type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-gear"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-primary"
+            (click)="showPosConfig()"
+            ><i class="bi bi-gear"></i></button>
         </div>
       </div>
         <div class="right-mid cart-list flex-column  d-flex flex-fill overflow-auto">
@@ -141,7 +145,7 @@
             </div>
           </div>
           <div class="d-flex flex-column  ">
-              <button type="button" class="btn btn-outline-primary col" [disabled]="!allowPayment()" (click)="showRefModal(paymentTemplate)">Payment</button>
+              <button type="button" class="btn btn-outline-primary col" [disabled]="!allowPayment()" (click)="showPaymentModal(paymentTemplate)">Payment</button>
           </div>
           <div class="d-flex mt-2 ps-1 pe-2 flex-row justify-content-between">
             <h5>Balance Due</h5>
@@ -287,11 +291,20 @@
           </div>
     </div>
   </div>
-  <div class="modal-footer d-flex flex-column w-100 ">
-
-    <button type="button" [disabled]="currentDiscountAmount <= 0" (click)="processDiscount()" class="btn  ">
+  <div class="modal-footer d-flex flex-row justify-content-center w-100 ">
+    <ng-container *ngIf="isSavingTransaction; else elseIsSavingTransTemplate">
+      <div class="spinner-border text-light" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </ng-container>
+    <ng-template #elseIsSavingTransTemplate>
+    <button type="button" (click)="saveTransaction()" class="btn  ">
       Accept
     </button>
+    <button type="button" (click)="this.bsModalRef?.hide()" class="btn  ">
+      Cancel
+    </button>
+    </ng-template>
+
   </div>
 </ng-template>
-

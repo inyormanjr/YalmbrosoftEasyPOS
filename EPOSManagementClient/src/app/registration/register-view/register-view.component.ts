@@ -24,12 +24,12 @@ export class RegisterViewComponent implements OnInit {
       companyName: [''],
       companyId: [''],
       firstName: [''],
-      middleName: [''],
+      middleName: [' '],
       lastName: [''],
       gender: ['Female'],
       username: [''],
       password: [''],
-      userType: [['Owner']],
+      userType: ['Owner'],
     });
   }
   openModalMessage(title: string, message: string) {

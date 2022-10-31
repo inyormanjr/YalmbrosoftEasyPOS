@@ -1,3 +1,4 @@
+import { PosConfig } from './../../models/pos.config';
 import { PosTransaction } from './../../models/pos-transaction';
 import { Category } from 'src/app/models/category';
 import { Inventory } from './../../models/item';
@@ -20,6 +21,7 @@ export interface PosState {
   categories: Category[],
   productList: Inventory[],
   currentPosTrans: PosTransaction,
+  posConfig: PosConfig
 }
 
 export const posInitialState: PosState = {
@@ -40,10 +42,17 @@ export const posInitialState: PosState = {
     payment: 0,
     posTransDetails: [],
   },
+  posConfig: {_id: '', companyId: null, cashOnDrawer: 0, salesTaxPercentage: 0, posConfigTransactions: []}
 };
 
 export const reducers = createReducer(
   posInitialState,
+  on(PosActionTypes.loadPosConfigSuccess, (state, action) => {
+    return {
+      ...state,
+      posConfig: action.data
+    }
+  }),
   on(PosActionTypes.loadPosProducts, (state, action) => {
     return {
       ...state,

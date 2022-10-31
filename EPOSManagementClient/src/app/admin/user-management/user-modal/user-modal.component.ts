@@ -39,7 +39,6 @@ export class UserModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.initialItem);
     this.registerForm.patchValue(this.initialItem);
   }
 
@@ -56,7 +55,8 @@ export class UserModalComponent implements OnInit {
       },
       (err) => {
         this.isLoading = false;
-        this.toastr.error(err.error);
+        console.log(err.error);
+        this.toastr.error('Something went wrong. Please check information.', 'Saving Failed');
       }
     );
     else
@@ -70,7 +70,10 @@ export class UserModalComponent implements OnInit {
         },
         (err) => {
           this.isLoading = false;
-          this.toastr.error(err.error);
+          this.toastr.error(
+            'Something went wrong. Please check information.',
+            'Updating Failed'
+          );
         }
       );
   }
