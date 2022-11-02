@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DashboardTransactionLineComponent implements OnInit {
   @Input() transDetails = '';
-  @Input() trasnDate = '';
+  @Input() trasnDate: Date | undefined;
   constructor() { }
 
   ngOnInit(): void {

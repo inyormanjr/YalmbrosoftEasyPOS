@@ -16,6 +16,7 @@ import { PosSelectorTypes } from '../selectors/pos-selector.types';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { map } from 'rxjs/operators';
 import { PosConfig } from 'src/app/models/pos.config';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pos-view',
@@ -41,11 +42,13 @@ export class PosViewComponent implements OnInit {
   posTransaction: PosTransaction | undefined;
   bsModalRef?: BsModalRef;
   bsModalRef2?: BsModalRef;
+  salesTaxPercentage: number = 0;
   constructor(
     private posStore: Store<PosState>,
     private toastR: ToastrService,
     private modalService: BsModalService,
-    private posService: PosService
+    private posService: PosService,
+    private router: Router
   ) {
     const currentUser = localStorage.getItem('username');
     const company = localStorage.getItem('company');
@@ -71,6 +74,10 @@ export class PosViewComponent implements OnInit {
     this.isFetching$ = this.posStore.select(
       PosSelectorTypes.selectIsFetchingProduct
     );
+
+    this.posConfig$.subscribe(
+      (x) => (this.salesTaxPercentage = x.salesTaxPercentage)
+    );
   }
 
   createNewPosTrans() {
@@ -87,7 +94,7 @@ export class PosViewComponent implements OnInit {
       payment: 0,
       posTransDetails: [],
       createdAt: undefined,
-      updatedAt: undefined
+      updatedAt: undefined,
     };
   }
 
@@ -102,18 +109,16 @@ export class PosViewComponent implements OnInit {
   }
 
   showPaymentModal(template: TemplateRef<any>) {
-     const config = {
-       ignoreBackdropClick: true,
-     };
-     this.bsModalRef = this.modalService.show(template, config);
+    const config = {
+      ignoreBackdropClick: true,
+    };
+    this.bsModalRef = this.modalService.show(template, config);
   }
 
   showAmountModal(template: TemplateRef<any>) {
     this.currentPaymentAmount = this.posTransaction?.totalBalance ?? 0;
     this.bsModalRef2 = this.modalService.show(template);
   }
-
-
 
   allowPayment() {
     return this.posTransaction?.payment ? true : false;
@@ -164,7 +169,10 @@ export class PosViewComponent implements OnInit {
 
       this.posTransaction.total =
         this.posTransaction.subTotal - this.posTransaction.discount ?? 0;
-
+      this.posTransaction.salesTax =
+        this.posTransaction.total * (this.salesTaxPercentage / 100);
+      this.posTransaction.total =
+        this.posTransaction.total + this.posTransaction.salesTax;
       this.posTransaction.totalBalance =
         this.posTransaction.total - this.posTransaction.voucher.amount ?? 0;
       this.posTransaction.payment = this.posTransaction.totalBalance;
@@ -246,54 +254,69 @@ export class PosViewComponent implements OnInit {
   }
 
   showConfirmModal(message?: string) {
-      const initialState: ModalOptions = {
-        initialState: {
-          message: message ?? 'Proceed transaction?',
-          confirmBtnName: 'Proceed',
-          cancelBtnName: 'Cancel',
-          result: false
-        },
-      };
-    this.bsModalRef2 = this.modalService.show(ConfirmDialogComponent, initialState);
+    const initialState: ModalOptions = {
+      initialState: {
+        message: message ?? 'Proceed transaction?',
+        confirmBtnName: 'Proceed',
+        cancelBtnName: 'Cancel',
+        result: false,
+      },
+    };
+    this.bsModalRef2 = this.modalService.show(
+      ConfirmDialogComponent,
+      initialState
+    );
     return this.bsModalRef2;
   }
 
   showPosConfig() {
-    this.bsModalRef = this.modalService.show(PosConfigViewComponent, {class: 'modal-md'});
+    this.bsModalRef = this.modalService.show(PosConfigViewComponent, {
+      class: 'modal-md',
+    });
   }
 
   showPosTransactions() {
-    this.bsModalRef = this.modalService.show(PosTransactionsViewComponent, {class: 'modal-lg'});
+    this.bsModalRef = this.modalService.show(PosTransactionsViewComponent, {
+      class: 'modal-lg',
+    });
   }
 
-   createNewTransaction() {
-     this.showConfirmModal('Create new transaction?').onHide?.subscribe(x => {
-       if (x === true)
-       {
-         this.posTransaction = this.createNewPosTrans();
-        }
-    })
+  createNewTransaction() {
+    this.showConfirmModal('Create new transaction?').onHide?.subscribe((x) => {
+      if (x === true) {
+        this.posTransaction = this.createNewPosTrans();
+      }
+    });
   }
 
   saveTransaction() {
-
-    this.showConfirmModal().onHide?.subscribe(x => {
+    this.showConfirmModal().onHide?.subscribe((x) => {
       if (x === true) {
-         if (this.posTransaction) {
-           this.isSavingTransaction = true;
-           this.posService.Create(this.posTransaction).subscribe(
-             (x: any) => {
-               this.toastR.success('Transaction complete');
-               this.posTransaction = this.createNewPosTrans();
-               this.bsModalRef?.hide();
-               this.isSavingTransaction = false;
-             },
-             (erro) => {
-               this.isSavingTransaction = false;
-               this.toastR.error('Something weng wrong.');
-             }
-           );
-         }
+        if (this.posTransaction) {
+          this.isSavingTransaction = true;
+          this.posService.Create(this.posTransaction).subscribe(
+            (x: any) => {
+              this.toastR.success('Transaction complete');
+              this.posStore.dispatch(PosActionTypes.loadPosConfig());
+              this.posTransaction = this.createNewPosTrans();
+              this.bsModalRef?.hide();
+              this.isSavingTransaction = false;
+            },
+            (erro) => {
+              this.isSavingTransaction = false;
+              this.toastR.error('Something weng wrong.');
+            }
+          );
+        }
+      }
+    });
+  }
+
+  logOut() {
+    this.showConfirmModal('Sign-Out?').onHide?.subscribe((x) => {
+      if (x === true) {
+       localStorage.clear();
+       this.router.navigateByUrl('login');
       }
     });
   }

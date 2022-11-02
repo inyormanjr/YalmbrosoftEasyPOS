@@ -24,13 +24,19 @@ const routes: Routes = [
     loadChildren: () =>
       import('../app/admin/admin.module').then((x) => x.AdminModule),
     canActivate: [AuthGuard],
+    data: {
+      roles: ['Owner', 'Admin'],
+    },
   },
 
   {
     path: 'pos',
     loadChildren: () =>
       import('../app/pos/pos.module').then((x) => x.PosModule),
-    canActivate: [],
+    canActivate: [AuthGuard],
+    data: {
+      roles: ['Owner', 'Admin', 'Cashier'],
+    },
   },
   { path: '**', redirectTo: 'admin', pathMatch: 'full' },
 ];

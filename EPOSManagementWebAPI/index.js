@@ -24,6 +24,7 @@ const supplierRoute = require('./routes/supplierRoutes');
 const categoryRoute = require('./routes/categoryRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const posRoutes = require('./routes/posRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 
 const app = express();
@@ -46,6 +47,7 @@ app.use('/api/v1/suppliers', supplierRoute);
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/items', itemRoutes);
 app.use('/api/v1/pos', posRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
 
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'public/'));

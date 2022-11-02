@@ -68,7 +68,7 @@ exports.update = asyncHandler(async (req, res, next) => {
 exports.getPosConfigByCompany = asyncHandler(async (req, res, next) => { 
     const companyId = req.user.companyId;
     const config = await PosConfig.findOne({ companyId: ObjectId(companyId) });
-    console.log(config);
+    
     res.status(200).json({
         success: true,
         data: config

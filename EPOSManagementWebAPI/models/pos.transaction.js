@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Item = require('../models/item');
 const moment = require('moment');
+const PosConfig = require('./pos.config');
  const today = moment().startOf('day');
 const PosTransDetail = new mongoose.Schema({
   inventory: { type: mongoose.Schema.Types.Mixed },
@@ -39,38 +40,42 @@ const PosTransaction = new mongoose.Schema(
 
 PosTransaction.pre('save', async function (done) {
     for (const posTransDetails of this.posTransDetails) {
-        console.log(posTransDetails.inventory.variant.quantity);
-       if (posTransDetails.inventory.variant.quantity != undefined) {
-         const previousQuantity = posTransDetails.inventory.variant.quantity;
-         posTransDetails.inventory.variant.quantity =
-           posTransDetails.inventory.variant.quantity -
-           posTransDetails.orderQty;
-           inventoryTransactionType = 'StockOut';
-           console.log(posTransDetails.inventory.variant);
-         const item = await Item.findOneAndUpdate(
-           {
-             'variants._id': posTransDetails.inventory.variant._id,
-           },
-           {
-             $set: {
-               'variants.$': posTransDetails.inventory.variant,
-             },
-           }
-         );
-           await item.createSingleInventoryTrans(
-               inventoryTransactionType,
-               posTransDetails.inventory.item.name,
-               posTransDetails.inventory.variant,
-               posTransDetails.orderQty,
-               previousQuantity,
-               posTransDetails.inventory.variant.quantity,
-               this.companyId,
-               this.creator,
-           'Pos Transaction'
-         );
-       }
+        if (posTransDetails.inventory.variant.quantity != undefined) {
+            const previousQuantity = posTransDetails.inventory.variant.quantity;
+            posTransDetails.inventory.variant.quantity =
+                posTransDetails.inventory.variant.quantity -
+                posTransDetails.orderQty;
+            inventoryTransactionType = 'StockOut';
+            const item = await Item.findOneAndUpdate(
+                {
+                    'variants._id': posTransDetails.inventory.variant._id,
+                },
+                {
+                    $set: {
+                        'variants.$': posTransDetails.inventory.variant,
+                    },
+                }
+            );
+            await item.createSingleInventoryTrans(
+                inventoryTransactionType,
+                posTransDetails.inventory.item.name,
+                posTransDetails.inventory.variant,
+                posTransDetails.orderQty,
+                previousQuantity,
+                posTransDetails.inventory.variant.quantity,
+                this.companyId,
+                this.creator,
+                'Pos Transaction'
+            );
+        }
     }
-        done();
+    done();
+});
+
+PosTransaction.post('save', async function (done) {
+    const posConfig = await PosConfig.findOne({ companyId: this.companyId });
+    posConfig.cashOnDrawer += this.totalBalance;
+    posConfig.save();
 })
 
 

@@ -1,61 +1,88 @@
-<div class="container pt-4">
+<ng-container *ngIf="dashboardInfo$ | async as dashboardInfo ; else elseTemplate">
+<div class="container pt-4" >
   <app-page-title [title]="'Dashboard'"></app-page-title>
-  <div class="row mt-5">
+  <div class="row mt-3">
     <div class="col-md-9">
       <div class="container">
         <div class="row mb-3">
-          <div class="col-md-4">
-          <app-card [title]="'Items'" [biIcon]="'bi bi-card-list'">
-            <div title>Users</div>
-            <app-dashboard-counter content [count]="55"></app-dashboard-counter>
-          </app-card>
+          <div class="col-md-3">
+            <app-card [title]="'Items'" [biIcon]="'bi bi-card-list'">
+              <div title>Users</div>
+              <app-dashboard-counter content [count]="dashboardInfo.itemCount"></app-dashboard-counter>
+            </app-card>
           </div>
-          <div class="col-md-4">
-          <app-card [title]="'Users'" [biIcon]="'bi bi-people-fill'">
-            <app-dashboard-counter content [count]="5"></app-dashboard-counter>
-          </app-card>
+          <div class="col-md-3">
+            <app-card [title]="'Users'" [biIcon]="'bi bi-people-fill'">
+              <app-dashboard-counter content [count]="dashboardInfo.userCount"></app-dashboard-counter>
+            </app-card>
           </div>
-          <div class="col-md-4">
-          <app-card [title]="'Sales'" [biIcon]="'bi bi-bar-chart-line-fill'">
-            <app-dashboard-counter content [count]="2150" [isCurrency]="true"></app-dashboard-counter>
-          </app-card>
+          <div class="col-md-3">
+            <app-card [title]="'Sales (Today)'" [biIcon]="'bi bi-bar-chart-line-fill'">
+              <app-dashboard-counter content [count]="dashboardInfo.currentSales" [isCurrency]="true">
+              </app-dashboard-counter>
+            </app-card>
+          </div>
+          <div class="col-md-3">
+            <app-card [title]="'Cash on Drawer'" [biIcon]="'bi bi bi-cash'">
+              <app-dashboard-counter content [count]="dashboardInfo.cashOnDrawer" [isCurrency]="true">
+              </app-dashboard-counter>
+            </app-card>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <app-card [title]="'Transactions'" [biIcon]="'bi bi-file-earmark'">
-              <app-dashboard-transaction-line content [transDetails]="'User One Updated Inventory'" [trasnDate]="'21-04-22'"></app-dashboard-transaction-line>
-              <app-dashboard-transaction-line content [transDetails]="'User One Logged In'" [trasnDate]="'21-04-22'">
-              </app-dashboard-transaction-line>
-              <app-dashboard-transaction-line content [transDetails]="'User One added new item'" [trasnDate]="'21-04-22'">
-              </app-dashboard-transaction-line>
-              <app-dashboard-transaction-line content [transDetails]="'User One Updated Inventory'" [trasnDate]="'21-04-22'">
-              </app-dashboard-transaction-line>
-              <app-dashboard-transaction-line content [transDetails]="'User One Updated Inventory'" [trasnDate]="'21-04-22'">
-              </app-dashboard-transaction-line>
-              <app-dashboard-transaction-line content [transDetails]="'User One Updated Inventory'" [trasnDate]="'21-04-22'">
-              </app-dashboard-transaction-line>
+            <app-card [title]="'Inventory Transactions'" [biIcon]="'bi bi-file-earmark'">
+              <ng-container content *ngIf=" dashboardInfo.inventoryTransactions.length > 0; else elseHaveInvTrans">
+                <app-dashboard-transaction-line *ngFor="let trans of dashboardInfo.inventoryTransactions"
+                  [transDetails]="inventoryTransDetailsBuilder(trans)" [trasnDate]="trans.dateCreated">
+                </app-dashboard-transaction-line>
+              </ng-container>
+              <ng-template content #elseHaveInvTrans>
+                  <div class="d-flex flex-column  justify-content-center align-items-center"  style="min-height: 40vh;">
+                      <h5>No Transactions yet.</h5>
+                  </div>
+              </ng-template>
+
+
             </app-card>
           </div>
         </div>
       </div>
     </div>
     <div class="col-md-3">
-       <div class="container">
+      <div class="container">
         <div class="row">
           <div class="col-md-12">
             <app-card [title]="'Notifications'" [biIcon]="'bi bi-bell'">
-              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
-              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
-              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
-              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
-              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
-              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
-              <app-dashboard-notification-item content [details]="'Product One quantity is low'"></app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'">
+              </app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'">
+              </app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'">
+              </app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'">
+              </app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'">
+              </app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'">
+              </app-dashboard-notification-item>
+              <app-dashboard-notification-item content [details]="'Product One quantity is low'">
+              </app-dashboard-notification-item>
             </app-card>
           </div>
         </div>
-       </div>
+      </div>
     </div>
   </div>
 </div>
+</ng-container>
+<ng-template #elseTemplate>
+ <div class="container d-flex h-100 flex-column justify-content-center align-items-center">
+  <h5>Fetching Data</h5>
+   <div class="spinner-border text-light" role="status">
+     <span class="visually-hidden">Loading...</span>
+   </div>
+ </div>
+</ng-template>
+
+

@@ -50,6 +50,7 @@ export class LoginViewComponent implements OnInit {
         (x) => {
           localStorage.setItem('token', x.token);
           localStorage.setItem('username', x.data.username);
+          localStorage.setItem('role', x.data.userType);
           localStorage.setItem('company', x.data.companyId.companyName);
           this.router.navigateByUrl('/admin');
           this.isLoading = false;

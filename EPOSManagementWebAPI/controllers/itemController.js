@@ -78,8 +78,8 @@ exports.create = asyncHandler(async (req, res, next) => {
         'StockIn',
         item.name,
         variant,
-        0,
         variant.quantity,
+        0,
         variant.quantity,
         req,
         'Initial'

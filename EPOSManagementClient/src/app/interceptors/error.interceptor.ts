@@ -37,6 +37,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
             case 401:
               console.log(error.statusText);
+              this.router.navigateByUrl('/login');
               break;
 
             case 404:
