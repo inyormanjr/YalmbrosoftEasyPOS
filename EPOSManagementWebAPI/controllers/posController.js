@@ -3,6 +3,8 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middlewares/async');
 const PosTransaction = require('../models/pos.transaction');
 const PosConfig = require('../models/pos.config');
+const CashOutCategory = require('../models/cashInOutCategory');
+const CashInOut = require('../models/cashout');
 const moment = require('moment');
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -83,5 +85,63 @@ exports.updatePosConfig = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: posConfig,
+  });
+});
+
+exports.createCashOutCategory = asyncHandler(async (req, res, next) => {
+  try {
+    req.body.company = new ObjectId(req.user.companyId);
+    delete req.body._id;
+    const cashOutCategory = await CashOutCategory.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: cashOutCategory,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+exports.updateCashOutCategory = asyncHandler(async (req, res, next) => {
+  const cashOutCategory = await CashOutCategory.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  res.status(200).json({
+    success: true,
+    data: cashOutCategory,
+  });
+});
+
+exports.getCashOutCategories = asyncHandler(async (req, res, next) => {
+   const companyId = req.user.companyId;
+  const cashOutCategories = await CashOutCategory.find({company: companyId});
+  res.status(200).json({
+    success: true,
+    data: cashOutCategories,
+  });
+});
+
+exports.createCashInOut = asyncHandler(async (req, res, next) => {
+   req.body.creator = new ObjectId(req.user._id);
+   req.body.company = new ObjectId(req.user.companyId);
+  const newCashInOut = await CashInOut.create(req.body);
+  
+   res.status(200).json({
+     success: true,
+     data: newCashInOut,
+   });
+})
+
+exports.getCashInOut = asyncHandler(async (req, res, next) => {
+  const companyId = req.user.companyId;
+  const cashInOutList = await CashInOut.find({ company: companyId }).sort({createdAt: -1});
+  res.status(200).json({
+    success: true,
+    data: cashInOutList,
   });
 });

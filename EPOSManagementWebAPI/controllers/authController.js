@@ -35,6 +35,29 @@ exports.register = asyncHandler(async (req, res, next) => {
     });
 });
 
+exports.changePassword = asyncHandler(async (req, res, next) => {
+    const { currentPassword, newPassword } = req.body;
+    const username = req.user.username;
+    const user = await User.findOne({ username }).select('+password');
+      if (!user) {
+        return next(new ErrorResponse('Invalid credentials', 401));
+      }
+    
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch) {
+      return next(new ErrorResponse('Invalid credentials', 401));
+    }
+
+    user.password = newPassword;
+    await user.save({ validateBeforeSave: false });
+
+     res.status(200).json({
+       success: true,
+       data: user,
+     });
+
+
+})
 
 //@desc     Login User
 //@route    GET /api/v1/auth/login

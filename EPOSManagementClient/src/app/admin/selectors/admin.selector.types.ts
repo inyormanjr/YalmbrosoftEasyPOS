@@ -1,3 +1,3 @@
-import * as DashboardSelectorTypes from './admin.selectors';
+import * as adminSelectorTypes from './admin.selectors';
 
-export { DashboardSelectorTypes};
+export { adminSelectorTypes};

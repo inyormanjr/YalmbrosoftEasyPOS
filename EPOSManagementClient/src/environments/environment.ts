@@ -7,6 +7,7 @@ export const environment = {
   baseApiURL: 'http://localhost:5001/api/v1/',
   allowedDomain: 'localhost:5001',
   disallowedRoutes: 'localhost:5001/api/v1/auth',
+  baseProfilePhotoURL: 'http://localhost:5001/image/profiles/',
 };
 
 /*

@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { _company, _role, _token, _username, _userObj } from 'src/app/constant_var';
 @Component({
   selector: 'app-login-view',
   templateUrl: './login-view.component.html',
@@ -48,10 +49,12 @@ export class LoginViewComponent implements OnInit {
       .login(credentials.username, credentials.password)
       .subscribe(
         (x) => {
-          localStorage.setItem('token', x.token);
-          localStorage.setItem('username', x.data.username);
-          localStorage.setItem('role', x.data.userType);
-          localStorage.setItem('company', x.data.companyId.companyName);
+          localStorage.setItem(_token, x.token);
+          localStorage.setItem(_username, x.data.username);
+          localStorage.setItem(_role, x.data.userType);
+          localStorage.setItem(_company, x.data.companyId.companyName);
+          console.log(x.data);
+          localStorage.setItem(_userObj, JSON.stringify(x.data));
           this.router.navigateByUrl('/admin');
           this.isLoading = false;
         },

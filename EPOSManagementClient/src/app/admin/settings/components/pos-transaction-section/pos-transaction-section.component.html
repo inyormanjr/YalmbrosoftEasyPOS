@@ -1,0 +1,54 @@
+<section class="Pos-Transaction mb-3">
+  <div class="section-title mb-2">
+    <h5>POS Transactions</h5>
+  </div>
+  <div class="container">
+    <div class="section-input-area row ">
+          <div class="mb-3 col-md-12  container">
+            <div class="row">
+                <div class=" col-md-6 ">
+                  <input [(ngModel)]="newCategoryName" type="text" class="form-control" placeholder="New Category Name">
+                </div>
+                <div class="col-md-6">
+                  <label for="exampleFormControlInput1" class="form-label me-2 ">Type</label>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="type" [(ngModel)]="type" [value]="'In'" id="" checked>
+                    <label class="form-check-label" for="">Cash-In</label>
+                  </div>
+                  <div class="form-check col-auto form-check-inline">
+                    <input class="form-check-input" type="radio" name="type" [(ngModel)]="type" [value]="'Out'" id="">
+                    <label class="form-check-label" for="">Cash-Out</label>
+                  </div>
+                    <button type="button" [disabled]="newCategoryName.length == 0" class="btn " (click)="create()">Save
+                      Category</button>
+                </div>
+            </div>
+          </div>
+      <div class="mb-3 col-md-12">
+        <label for="exampleFormControlInput1" class="form-label">Cash-Out Category</label>
+        <ul class="list-group" *ngIf="cashOutCategories.length > 0; else elseTemplate">
+          <li *ngFor="let category of cashOutCategories" class="list-group-item text-white glassify d-flex justify-content-between">
+            <div class="category-name ">
+              {{category.name}}
+            </div>
+            <div class="actions w-50 d-flex justify-content-end">
+                 <span class="badge bg-primary me-2"
+                 [ngClass]="category.type == 'In' ? 'bg-success': 'bg-danger'"
+                 >Cash-{{category.type}}</span>
+
+              <div class="form-check form-switch">
+                <input [(ngModel)]="category.isEnabled" (change)="statusChanged(category)" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ng-template #elseTemplate>
+          <div class="no-data d-flex glassify curve justify-content-center align-items-center h-100">
+              <strong>No data found yet. Why dont you create one?</strong>
+          </div>
+        </ng-template>
+      </div>
+
+    </div>
+  </div>
+</section>

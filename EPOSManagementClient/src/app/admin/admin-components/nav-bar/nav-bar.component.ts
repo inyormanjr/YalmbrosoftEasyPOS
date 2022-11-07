@@ -3,7 +3,7 @@ import { selectAppIsNavigating } from './../../../reducers/index';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DashboardSelectorTypes } from '../../selectors/admin.selector.types';
+import { adminSelectorTypes } from '../../selectors/admin.selector.types';
 import { AdminModel } from '../../stateModels/admin.model';
 import { AppState } from 'src/app/reducers';
 
@@ -19,8 +19,8 @@ export class NavBarComponent implements OnInit {
   isNavigating$: Observable<boolean>;
   constructor(private appStore: Store<AppState>, private adminStore: Store<AdminModel>, private router: Router) {
     this.isNavigating$ = appStore.select(selectAppIsNavigating);
-    this.currentUser$ = adminStore.select(DashboardSelectorTypes.selectCurrentUser);
-    this.company$ = adminStore.select(DashboardSelectorTypes.selectCompanyName);
+    this.currentUser$ = adminStore.select(adminSelectorTypes.selectCurrentUser);
+    this.company$ = adminStore.select(adminSelectorTypes.selectCompanyName);
   }
 
   ngOnInit(): void { }

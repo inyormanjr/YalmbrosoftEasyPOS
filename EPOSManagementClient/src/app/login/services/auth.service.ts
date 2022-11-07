@@ -21,6 +21,12 @@ export class AuthService {
     return this.httpClient.post(this.baseURL + '/login', { username, password }).pipe(map((x: any) => x));
   }
 
+  changePassword(changePassObj: any): Observable<any> {
+    return this.httpClient
+      .put(this.baseURL + '/changePassword', changePassObj)
+      .pipe(map((x: any) => x.data));;
+  }
+
   confirmation(token: String): Observable<any> {
     return this.httpClient.put(this.baseURL + '/confirmation/'+ token, {}).pipe(map((x: any) => x));
   }

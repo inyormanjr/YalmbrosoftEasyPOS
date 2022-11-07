@@ -1,0 +1,91 @@
+<div class="container-fluid p-3" *ngIf="(currentUserProfile$ | async) as userProfile">
+    <div class="page-title">
+      <h3>Profile</h3>
+    </div>
+    <hr>
+    <div class="sections glassify curve p-3 ps-4 pe-4 mb-3">
+      <h4 class="mb-4">Basic Info</h4>
+      <div class="container">
+      <!-- <div [hidden]="true" class="row">
+        <div (click)="showManagePhotoModal()" class="col-md-12 pt-2 pb-2 d-flex flex-row justify-content-between align-items-center">
+          <h5>Photo</h5>
+          <h5>Personalize your profile, change your photo.</h5>
+          <div class="image-section" >
+              <img [src]="ppBaseURL + userProfile.photoUrl" class="img-fluid  rounded-circle" style="border-radius: 30px; border: solid 1px white;  width: 60px; height: 60px;" alt="image desc">
+          </div>
+        </div>
+        <hr>
+      </div> -->
+      <div class="row ">
+        <div (click)="showManageNameModal()" class="col-md-12 pt-2 pb-2 d-flex flex-row justify-content-between align-items-center">
+          <h5>Name</h5>
+          <h5>{{userProfile.firstName + ' ' + userProfile.middleName  + ' ' + userProfile.lastName }}</h5>
+          <div class="action">
+            <h4><i class="bi bi-caret-right"></i> </h4>
+          </div>
+        </div>
+        <hr>
+      </div>
+          <div class="row ">
+            <div (click)="showManageAddressModal()" class="col-md-12 pt-2 pb-2 d-flex flex-row justify-content-between align-items-center">
+              <h5>Address</h5>
+            <h5>{{userProfile.address}}</h5>
+              <div class="action">
+                <h4><i class="bi bi-caret-right"></i> </h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="row ">
+            <div (click)="showManageGenderModal()" class="col-md-12 pt-2 pb-2 d-flex flex-row justify-content-between align-items-center">
+              <h5>Gender</h5>
+              <h5>{{userProfile.gender}}</h5>
+              <div class="action">
+                <h4><i class="bi bi-caret-right"></i> </h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+      </div>
+    </div>
+    <div class="sections glassify curve p-3 ps-4 pe-4 mb-3">
+      <h4 class="mb-4">Contact Info</h4>
+      <div class="container">
+        <div class="row ">
+          <div (click)="showManageEmailModal()" class="col-md-12 pt-2 pb-2 d-flex flex-row justify-content-between align-items-center">
+            <h5>Email</h5>
+            <h5>{{userProfile.username}}</h5>
+            <div class="action">
+              <h4><i class="bi bi-caret-right"></i> </h4>
+            </div>
+          </div>
+          <hr>
+        </div>
+          <div class="row ">
+            <div (click)="showManagePhoneModal()" class="col-md-12 pt-2 pb-2 d-flex flex-row justify-content-between align-items-center">
+              <h5>Phone</h5>
+              <h5>{{userProfile.mobileNumber}}</h5>
+              <div class="action">
+                <h4><i class="bi bi-caret-right"></i> </h4>
+              </div>
+            </div>
+            <hr>
+          </div>
+      </div>
+    </div>
+    <div class="sections glassify curve p-3 ps-4 pe-4">
+      <h4 class="mb-4">Security</h4>
+      <div class="container">
+        <div class="row ">
+          <div (click)="showManageChangePasswordModal()" class="col-md-12 pt-2 pb-2 d-flex flex-row justify-content-between align-items-center">
+            <h5>Password</h5>
+            <h5>Update your password regularly for security.</h5>
+            <div class="action">
+              <h4><i class="bi bi-caret-right"></i> </h4>
+            </div>
+          </div>
+          <hr>
+        </div>
+      </div>
+    </div>
+</div>

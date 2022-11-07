@@ -1,4 +1,6 @@
-import { loadAdminsSuccess } from './../actions/admin.actions';
+import { loadUserManagements } from './../user-management/actions/user-management.actions';
+import { User } from 'src/app/models/user';
+import { loadAdminsSuccess, loadUserProfileSuccess } from './../actions/admin.actions';
 
 import { AdminModel } from './../stateModels/admin.model';
 import {
@@ -13,11 +15,18 @@ export const adminFeatureKey = 'admin';
 export const adminInitialState: AdminModel = {
   isLoading: false,
   currentUser: 'jryap20@gmail.com',
-  companyName: 'Company One'
+  companyName: 'Company One',
+  userProfile: undefined,
 };
 
 export const adminReducer = createReducer(
   adminInitialState,
+  on(loadUserProfileSuccess, (state, action) => {
+    return {
+      ...state,
+      userProfile: action.data
+    }
+  }),
   on(loadAdmins, (state, action) => {
     return {
       ...state,
@@ -28,7 +37,8 @@ export const adminReducer = createReducer(
     return {
       ...state,
       currentUser: action.data.currentUser,
-      companyName: action.data.companyName
+      companyName: action.data.companyName,
+      userProfile: action.data.userProfile
     }
   })
 );

@@ -1,9 +1,11 @@
+import { User } from 'src/app/models/user';
 import { slideInAnimation } from './../../animation';
 
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AdminActionTypes } from '../actions/admin.action.types';
 import { AdminModel } from '../stateModels/admin.model';
+import { _username, _company, _userObj } from 'src/app/constant_var';
 
 @Component({
   selector: 'app-admin-view',
@@ -18,18 +20,24 @@ export class AdminViewComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const currentUser = localStorage.getItem('username');
-    const company = localStorage.getItem('company');
-    if (currentUser && company)
+    const currentUser = localStorage.getItem(_username);
+    const company = localStorage.getItem(_company);
+    const obj = localStorage.getItem(_userObj);
+
+
+    if (currentUser && company && obj) {
+      const currentUserProfile = JSON.parse(obj);
       this.adminStore.dispatch(
         AdminActionTypes.loadAdminsSuccess({
           data: {
             isLoading: false,
             currentUser: currentUser,
-            companyName: company
+            companyName: company,
+            userProfile: currentUserProfile as User
           },
         })
       );
+    }
   }
 
 }

@@ -1,0 +1,33 @@
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Name</h5>
+        <button (click)="bsModalRef.hide()" type="button" class="btn-close"  aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="userForm">
+        <div class="mb-3">
+          <label for="" class="form-label">Surname</label>
+          <input formControlName="lastName" type="text" class="form-control" name="" id="" aria-describedby="emailHelpId" >
+
+        </div>
+        <div class="mb-3">
+          <label for="" class="form-label">Given Name</label>
+          <input formControlName="firstName" type="text" class="form-control" name="" id="" aria-describedby="emailHelpId" >
+
+        </div>
+        <div class="mb-3">
+          <label for="" class="form-label">Middle Name</label>
+          <input formControlName="middleName" type="text" class="form-control" name="" id="" aria-describedby="emailHelpId" >
+        </div>
+        </form>
+      </div>
+
+      <div class="info container pe-3 ps-3">
+        <strong>Who can see your name</strong>
+        <p><i class="bi bi-people-fill "></i> Anyone can see this information within your company services</p>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" (click)="save()" class="btn btn-outline">Save changes</button>
+      </div>
+    </div>

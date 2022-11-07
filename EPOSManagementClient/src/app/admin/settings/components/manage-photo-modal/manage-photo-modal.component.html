@@ -1,0 +1,50 @@
+<div [hidden]="imageSelectionMode" class="view">
+  <div class="modal-header">
+    <h5 class="modal-title text-center">Profile Picture</h5>
+    <button type="button" class="btn-close" (click)="bsModalRef?.hide()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <p>A picture helps people to recognise you and lets you know when you’re signed in to your account</p>
+    <p><i class="bi bi-person-circle"></i> Visible across Company services.</p>
+    <hr>
+    <div class="image-section  d-flex justify-content-center">
+      <img src="http://localhost:5001/image/profiles/no-photo.png" class="img-fluid  rounded-circle"
+        style="border-radius: 30px; border: solid 1px white;  width: 20vw; height: 30vh;" alt="image desc">
+    </div>
+  </div>
+  <div class="modal-footer border-0 mt-3 container-fluid d-flex justify-content-center hstack g-2">
+    <button type="button" class="btn btn-outline " (click)="goToImageSelectionImage()"><i class="bi bi-pencil"></i>
+      Change</button>
+
+    <button type="button" class="btn btn-outline "><i class="bi bi-trash"></i> Remove</button>
+  </div>
+
+</div>
+<div [hidden]="!imageSelectionMode" class="view">
+  <div class="modal-header d-flex flex-row justify-content-start text-center">
+    <a type="button" class="btn border-0" (click)="goToImageSelectionImage()" aria-label="Close"><i
+        class="bi bi-arrow-left "></i></a>
+    <h5 class="modal-title text-center">Change Profile</h5>
+  </div>
+  <div class="modal-body d-flex flex-column align-items-center justify-content-center" style="min-height: 50vh;">
+    <div class="action d-flex flex-column justify-content-center text-center">
+      <ng-container *ngIf="currentSelectedPhoto; else elseNoImage">
+        <img [src]="currentSelectedPhoto" class="img-fluid  rounded-circle"
+          style="border-radius: 30px; border: solid 1px white;  width: 20vw; height: 30vh;" alt="image desc">
+      </ng-container>
+      <ng-template #elseNoImage>
+        <h1 class="display-2"><i class="bi bi-image-fill"></i></h1>
+        <h5>Select Image to upload.</h5>
+      </ng-template>
+
+      </div>
+  </div>
+  <div class="modal-footer border-0 mt-3 mb-3 container-fluid d-flex justify-content-center ">
+    <div class="input-group">
+      <input type="file" [(ngModel)]="currentSelectedPhoto" (change)="onFileChanged($event)" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+        aria-label="Upload">
+      <button class="btn btn-outline-secondary" (click)="uploadPhoto()" type="button" id="inputGroupFileAddon04">Upload</button>
+    </div>
+  </div>
+
+</div>

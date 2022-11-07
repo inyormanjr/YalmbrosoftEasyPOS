@@ -19,6 +19,14 @@ router
   
 router.route('/config/:id').put(protect, controller.updatePosConfig);
 
-    
+router.route('/config/cashoutcategory')
+  .get(protect, controller.getCashOutCategories)
+  .post(protect, controller.createCashOutCategory);
+
+router.route('/config/cashoutcategory/:id').put(protect, controller.updateCashOutCategory);
+
+router.route('/config/cashinout')
+  .get(protect, controller.getCashInOut)
+  .post(protect, controller.createCashInOut)
 
 module.exports = router;

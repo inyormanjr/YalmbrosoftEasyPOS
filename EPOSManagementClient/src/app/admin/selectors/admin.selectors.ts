@@ -18,3 +18,5 @@ export const selectCompanyName = createSelector(
   selectDashboardFeature,
   (x) => x.companyName
 );
+
+export const selectCurrentUserProfile = createSelector(selectDashboardFeature, (x) => x.userProfile);

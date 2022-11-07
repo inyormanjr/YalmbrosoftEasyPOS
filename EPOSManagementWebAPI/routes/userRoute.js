@@ -23,6 +23,6 @@ router
   .get(protect, getUser)
   .put(protect, updateUser)
   .delete(protect, deleteUser);
-router.route('/:id/photo').put(protect, userPhotoUpload);
+router.route('/photo').post(protect, userPhotoUpload);
 
 module.exports = router;

@@ -5,7 +5,8 @@ const {
   getMe,
   forgotPassword,
   resetPassword,
-  confirmation
+  confirmation,
+  changePassword
 } = require('../controllers/authController');
 
 
@@ -14,6 +15,7 @@ const router = express.Router();
 const { protect } = require('../middlewares/auth');
 
 router.post('/register', register);
+router.put('/changePassword', protect, changePassword);
 router.post('/login', login);
 router.get('/getMe', protect, getMe);
 router.post('/forgotPassword', forgotPassword);

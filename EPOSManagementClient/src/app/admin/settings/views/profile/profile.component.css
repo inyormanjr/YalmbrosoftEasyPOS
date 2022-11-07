@@ -1,0 +1,9 @@
+.col-md-12 h5  {
+  font-size: 2vh;
+}
+
+.sections .container .row .col-md-12:hover{
+  background-color: rgb(11, 44, 72);
+  border-radius: 10px;
+  cursor: pointer;
+}

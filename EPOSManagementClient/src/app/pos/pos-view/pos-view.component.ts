@@ -1,3 +1,4 @@
+import { CashInOutViewComponent } from './../components/cash-in-out-view/cash-in-out-view.component';
 import { PosTransactionsViewComponent } from './../components/pos-transactions-view/pos-transactions-view.component';
 import { PosConfigViewComponent } from './../components/pos-config-view/pos-config-view.component';
 import { ConfirmDialogComponent } from './../components/confirm-dialog/confirm-dialog.component';
@@ -273,6 +274,10 @@ export class PosViewComponent implements OnInit {
     this.bsModalRef = this.modalService.show(PosConfigViewComponent, {
       class: 'modal-md',
     });
+  }
+
+  showCashInOutModal() {
+    this.bsModalRef = this.modalService.show(CashInOutViewComponent, { class: 'modal-lg' });
   }
 
   showPosTransactions() {
