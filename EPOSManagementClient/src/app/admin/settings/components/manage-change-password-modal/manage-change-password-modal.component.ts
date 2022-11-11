@@ -44,7 +44,6 @@ export class ManageChangePasswordModalComponent implements OnInit {
   save() {
     console.log(this.changePasswordForm.value);
     this.authService.changePassword(this.changePasswordForm.value).subscribe(((x: any) => {
-      console.log(x);
       this.toastR.success('Password changed successfully');
       this.bsModalRef.hide();
     }), err => this.toastR.error(err.error));

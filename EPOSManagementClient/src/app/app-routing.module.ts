@@ -38,7 +38,7 @@ const routes: Routes = [
       roles: ['Owner', 'Admin', 'Cashier'],
     },
   },
-  { path: '**', redirectTo: 'admin', pathMatch: 'full' },
+  { path: '', redirectTo: 'admin', pathMatch: 'full' },
 ];
 
 @NgModule({

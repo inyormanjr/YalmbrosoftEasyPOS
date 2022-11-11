@@ -32,6 +32,7 @@ export class AuthGuard implements CanActivate {
     if (authKey) {
       const userRole = localStorage.getItem('role');
       if (route.data.roles && route.data.roles.indexOf(userRole) === -1) {
+        console.log(route.data.roles.indexOf(userRole));
         this.router.navigate(['pos']);
         return false;
       }
