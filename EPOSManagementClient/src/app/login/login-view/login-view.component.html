@@ -12,19 +12,32 @@
       <form [formGroup]="loginForm">
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input formControlName="username" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <input
+           [ngClass]="[(f.username.dirty || f.username.touched) && f.username.errors ? 'is-invalid': '',
+                              (f.username.dirty || f.username.touched) && !f.username.errors ? 'is-valid': '']"
+          formControlName="username" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <small class="text-danger" *ngIf="(f.username.dirty || f.username.touched)
+                                            && f.username.errors
+                                            && f.username.errors.required">Required</small>
           <div id="emailHelp" class="form-text text-white">We'll never share your email with anyone else.</div>
         </div>
         <div class="mb-3">
           <label for="exampleInputPassword1" class="form-label">Password</label>
-          <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
+          <input
+            [ngClass]="[(f.password.dirty || f.password.touched) && f.password.errors ? 'is-invalid': '',
+                              (f.password.dirty || f.password.touched) && !f.password.errors ? 'is-valid': '']"
+          formControlName="password" type="password" class="form-control" id="exampleInputPassword1">
+            <small class="text-danger" *ngIf="(f.password.dirty || f.password.touched)
+                                                                              && f.password.errors
+                                                                              && f.password.errors.required">Required</small>
         </div>
         <div>
+
           <p class="m-0 p-0 mb-3">Not yet a user? <a  class="btn m-0 p-0 text-white " [routerLink]="'/register'">Register</a></p>
         </div>
 
 
-        <button [disabled]="isLoading" type="button" (click)="login()" class="btn">
+        <button [disabled]="(isLoading || !loginForm.valid)" type="button" (click)="login()" class="btn">
             <ng-container *ngIf="isLoading; else elseNotLoading">
               Please wait
             </ng-container>

@@ -1,6 +1,6 @@
 import { ModalMessageComponent } from '../../shared/components/modal-message/modal-message.component';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
@@ -21,10 +21,12 @@ export class LoginViewComponent implements OnInit {
     private modalService: BsModalService
   ) {
     this.loginForm = fB.group({
-      username: [''],
-      password: [''],
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
+
+  get f() { return this.loginForm.controls };
 
   openModalMessage(message: string) {
     const initialState: ModalOptions = {

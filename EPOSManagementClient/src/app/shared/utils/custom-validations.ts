@@ -1,6 +1,11 @@
+import { map } from 'rxjs/operators';
+import { AuthService } from 'src/app/login/services/auth.service';
+
+import { Observable } from 'rxjs';
 import { AbstractControl, ValidatorFn, FormGroup } from '@angular/forms';
 
 export default class Validation {
+
  static mustMatch(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
       const control = formGroup.controls[controlName];

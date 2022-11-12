@@ -1,5 +1,5 @@
 <div class="container d-flex h-100 overflow-auto">
-  <div class="container mt-3 pt-5 mb-5">
+  <div class="container mt-2 pt-4 mb-5">
     <div class="row justify-content-center">
       <div class="col-md-6 col-lg-6 col-xl-6">
         <div class="card glassify">
@@ -9,7 +9,7 @@
             </div>
             <form [formGroup]="registerForm">
               <input type="hidden" name="csrftoken">
-              <div class="form-group mb-3">
+              <div class="form-group mb-2">
                 <label for="fname">Company Name
                 </label>
                 <input type="text" name="companyName" formControlName="companyName" placeholder="Company"
@@ -22,9 +22,12 @@
                 <small class="text-danger" *ngIf="(f.companyName.dirty || f.companyName.touched)
                                                             && f.companyName.errors
                                                             && f.companyName.errors.minlength">Too short</small>
+                <small class="text-danger" *ngIf="(f.companyName.dirty || f.companyName.touched)
+                                                            && f.companyName.errors
+                                                            && f.companyName.errors.notavailable">Not available</small>
               </div>
               <div class="row">
-                <div class="form-group mb-3 col-md-4">
+                <div class="form-group mb-2 col-md-4 ">
                   <label for="firstName">Given Name </label>
                   <input type="text" name="firstName" formControlName="firstName" placeholder="First Name"
                     class="form-control"
@@ -53,7 +56,7 @@
                                                                  && f.middleName.errors
                                                                 && f.middleName.errors.Empty">Invalid</small>
                 </div>
-                <div class="form-group mb-3 col-md-4">
+                <div class="form-group mb-2 col-md-4">
                   <label for="lastName">Surname </label>
                   <input type="text" name="lastName" formControlName="lastName" placeholder="Last Name"
                    [ngClass]="[(f.lastName.dirty || f.lastName.touched) && f.lastName.errors ? 'is-invalid': '',
@@ -84,7 +87,7 @@
                                                             && f.username.errors
                                                             && f.username.errors.email">Not a valid Email format</small>
               </div>
-              <div class="form-group mb-3">
+              <div class="form-group mb-2">
                 <label for="password">Password</label>
                 <div class="input-group " id="show_hide_password">
                   <input type="password" class="form-control" formControlName="password" id="password" value=""
@@ -101,7 +104,7 @@
                                                                        && f.password.errors.minlength">Too
                     short</small>
               </div>
-              <div class="form-group mb-4">
+              <div class="form-group mb-2">
                 <label for="password">Confirm Password</label>
                 <div class="input-group " id="show_hide_password">
                   <input type="password" class="form-control" id="confirm-password" value="" name="confirmPassword" formControlName="confirmPassword"
@@ -120,7 +123,7 @@
                     does not match</small>
               </div>
               <div class="form-group mb-0 d-flex justify-content-between">
-                <button [disabled]="(!isLoading && !registerForm.valid)" class="btn  btn-block" type="button" (click)="register()" name="submit"
+                <button [disabled]="(isLoading || !registerForm.valid)" class="btn  btn-block" type="button" (click)="register()" name="submit"
                   id="submit">Sign Up </button>
                 <p class="muted pt-2">Back to <a [routerLink]="'/login'" class="text-white">Log In →</a></p>
               </div>

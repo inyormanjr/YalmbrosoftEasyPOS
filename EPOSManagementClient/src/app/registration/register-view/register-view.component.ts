@@ -4,7 +4,8 @@ import { AuthService } from './../../login/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ModalMessageComponent } from 'src/app/shared/components/modal-message/modal-message.component';
-import Validation from 'src/app/shared/utils/confirm-password-validation';
+import Validation from 'src/app/shared/utils/custom-validations';
+import { companyNameValidator } from 'src/app/shared/utils/company-name.validator';
 
 @Component({
   selector: 'app-register-view',
@@ -24,7 +25,12 @@ export class RegisterViewComponent implements OnInit {
 
     this.registerForm = fB.group(
       {
-        companyName: ['', [Validators.required, Validators.minLength(5)]],
+        companyName: ['', {
+          validators: [
+          Validators.required, Validators.minLength(5)],
+          asyncValidators: [companyNameValidator(this.authService)],
+          updateOn:'blur'
+        }],
         companyId: [''],
         firstName: ['', Validators.required],
         middleName: ['', Validators.required],

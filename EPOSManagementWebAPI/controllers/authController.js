@@ -12,12 +12,14 @@ var ObjectId = require('mongoose').Types.ObjectId;
 //@route    GET /api/v1/auth/register
 //@access   public
 exports.register = asyncHandler(async (req, res, next) => {
+
   const companyName = req.body.companyName;
-     Company.findOrCreate(
+    const  result = await  Company.findOrCreate(
        {
          companyName: req.body.companyName.toUpperCase(),
        },
-       async (err, result) => {
+      async (err, result) => {
+         
          req.body.companyId = new ObjectId(result._id);
          const user = await User.create(req.body);
          const confirmationToken = user.getConfirmationToken();
@@ -39,7 +41,7 @@ exports.register = asyncHandler(async (req, res, next) => {
          });
          sendTokenResponse(user, 200, res);
        }
-     );
+    );
 });
 
 exports.checkCompanyExist = asyncHandler(async (req, res, next) => {
