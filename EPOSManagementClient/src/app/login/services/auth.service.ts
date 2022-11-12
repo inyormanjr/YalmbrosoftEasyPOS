@@ -31,6 +31,12 @@ export class AuthService {
     return this.httpClient.put(this.baseURL + '/confirmation/'+ token, {}).pipe(map((x: any) => x));
   }
 
+  checkExistCompany(companyName: string): Observable<any> {
+    return this.httpClient
+      .get(this.baseURL + '/companyCheck/' + companyName)
+      .pipe(map((x: any) => x.data));
+  }
+
   companyId() {
     let token = localStorage.getItem('token');
     if (token) {
@@ -41,6 +47,5 @@ export class AuthService {
     else {
       return null;
     }
-
   }
 }

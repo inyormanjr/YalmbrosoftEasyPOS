@@ -16,5 +16,24 @@ export default class Validation {
         matchingControl.setErrors(null);
       }
     }
+ }
+
+  static mustNotEmptyString(controlNames: string[]) {
+    return (formGroup: FormGroup) => {
+      if (controlNames.length > 0) {
+        controlNames.forEach(((x: any) => {
+          const control = formGroup.controls[x];
+          if (control.errors && !control.errors.Empty) {
+            return
+          }
+          if (control.value.trim().length === 0) {
+            control.setErrors({Empty: true});
+          }
+          else {
+             control.setErrors(null);
+          }
+        }))
+      }
+    }
   }
 }

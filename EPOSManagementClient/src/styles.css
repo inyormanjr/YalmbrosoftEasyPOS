@@ -62,3 +62,11 @@ background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
 :root ul.nav li.active a {
   color: red !important;
 }
+
+:root .text-danger {
+  color: maroon !important;
+}
+
+:root input.is-invalid {
+  border-color: maroon !important;
+}

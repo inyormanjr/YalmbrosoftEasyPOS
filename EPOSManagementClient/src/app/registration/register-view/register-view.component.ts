@@ -2,8 +2,9 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { AuthService } from './../../login/services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ModalMessageComponent } from 'src/app/shared/components/modal-message/modal-message.component';
+import Validation from 'src/app/shared/utils/confirm-password-validation';
 
 @Component({
   selector: 'app-register-view',
@@ -20,18 +21,30 @@ export class RegisterViewComponent implements OnInit {
     private modalService: BsModalService,
     private router: Router
   ) {
-    this.registerForm = fB.group({
-      companyName: [''],
-      companyId: [''],
-      firstName: [''],
-      middleName: [' '],
-      lastName: [''],
-      gender: ['Female'],
-      username: [''],
-      password: [''],
-      userType: ['Owner'],
-    });
+
+    this.registerForm = fB.group(
+      {
+        companyName: ['', [Validators.required, Validators.minLength(5)]],
+        companyId: [''],
+        firstName: ['', Validators.required],
+        middleName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        gender: ['Female'],
+        username: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(5)]],
+        confirmPassword: ['', Validators.required],
+        userType: ['Owner'],
+      },
+      {
+        validators: [Validation.mustMatch('password', 'confirmPassword'),
+        Validation.mustNotEmptyString(['firstName', 'middleName', 'lastName'])],
+      }
+    );
   }
+
+  get f() { return this.registerForm.controls };
+
+
   openModalMessage(title: string, message: string) {
     const initialState: ModalOptions = {
       initialState: {
@@ -47,19 +60,19 @@ export class RegisterViewComponent implements OnInit {
 
   }
 
+
+
   ngOnInit(): void {}
 
   register() {
     const user = Object.assign({}, this.registerForm.value);
     this.isLoading = true;
-
     this.authService.register(user).subscribe(
       (x) => {
         this.isLoading = false;
         this.router.navigate(['registration-complete']);
       },
       (error) => {
-        console.log(error);
         this.openModalMessage('Registration Failed',error.error.error);
         this.isLoading = false;
       }

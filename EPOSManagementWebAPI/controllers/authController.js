@@ -12,28 +12,50 @@ var ObjectId = require('mongoose').Types.ObjectId;
 //@route    GET /api/v1/auth/register
 //@access   public
 exports.register = asyncHandler(async (req, res, next) => {
-    
-     Company.findOrCreate({
-      companyName: req.body.companyName,
-     },  async (err, result) => {
-       req.body.companyId = new ObjectId(result._id);
+  const companyName = req.body.companyName;
+     Company.findOrCreate(
+       {
+         companyName: req.body.companyName.toUpperCase(),
+       },
+       async (err, result) => {
+         req.body.companyId = new ObjectId(result._id);
          const user = await User.create(req.body);
-        const confirmationToken = user.getConfirmationToken();
-         await user.save({ validateBeforeSave: false }); 
-         await PosConfig.create({companyId: req.body.companyId, cashOnDrawer: 0, salesTaxPercentage: 12});
+         const confirmationToken = user.getConfirmationToken();
+         await user.save({ validateBeforeSave: false });
+         await PosConfig.create({
+           companyId: req.body.companyId,
+           cashOnDrawer: 0,
+           salesTaxPercentage: 12,
+         });
          const confirmationURL = `${req.protocol}://${req.get(
            'host'
          )}/confirmation/${confirmationToken}`;
          const message = `  Welcome to EPOS Management System, you are receiving this email to confirm your registration. Please click the link below to proceed confirmation. \n
          ${confirmationURL} `;
-          await sendEmail({
-            email: `${user.username}`,
-            subject: 'Email Confirmation',
-            message,
-          });
+         await sendEmail({
+           email: `${user.username}`,
+           subject: 'Email Confirmation',
+           message,
+         });
          sendTokenResponse(user, 200, res);
-    });
+       }
+     );
 });
+
+exports.checkCompanyExist = asyncHandler(async (req, res, next) => {
+  const companyName = req.params.companyName.toUpperCase();
+  const company = await Company.findOne({ companyName });
+  var isAvailable = false;
+  if (!company)
+    {
+    isAvailable = true;
+    }
+  
+     res.status(200).json({
+       success: true,
+       data: isAvailable,
+     });
+})
 
 exports.changePassword = asyncHandler(async (req, res, next) => {
     const { currentPassword, newPassword } = req.body;

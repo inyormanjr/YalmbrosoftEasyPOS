@@ -1,50 +1,133 @@
 <div class="container d-flex h-100 overflow-auto">
   <div class="container mt-3 pt-5 mb-5">
     <div class="row justify-content-center">
-       <div class="col-md-6 col-lg-6 col-xl-6">
-          <div class="card glassify">
-              <div class="card-body">
-                  <div class="text-center m-auto">
-                     <h4 class="text-uppercase text-center">CREATE ACCOUNT</h4>
-                  </div>
-                  <form [formGroup]="registerForm">
-                     <input type="hidden" name="csrftoken" value="ea49375f43c7e6a59c77df1e4de562b3f1350124eeb70e5d5124e4ce3b5251c2b4d12e9aaf2a3ddc618c178c8dc4620b">
-                      <div class="form-group mb-3">
-                        <label for="fname">Company Name</label>
-                        <input type="text" name="companyName" formControlName="companyName"  placeholder="Company" class="form-control" required="">
-                      </div>
-                     <div class="form-group mb-3">
-                        <label for="fname">FIRST NAME </label>
-                        <input type="text" name="firstName" formControlName="firstName" placeholder="First Name" class="form-control" required="">
-                     </div>
-                     <div class="form-group mb-3">
-                        <label for="fname">LAST NAME </label>
-                        <input type="text" name="lname" formControlName="lastName" placeholder="Last Name" class="form-control" required="">
-                     </div>
-                     <div class="form-group mb-3">
-                        <label for="emailaddress">EMAIL </label>
-                        <input type="email" name="email" formControlName="username" placeholder="Enter Email" class="form-control" required="">
-                     </div>
-                     <div class="form-group mb-3">
-                        <label for="password">PASSWORD</label>
-                        <div class="input-group " id="show_hide_password">
-                           <input type="password" class="form-control" formControlName="password" id="password" value="" name="password" placeholder="Enter Password" required="">
-                        </div>
-                     </div>
-                     <div class="form-group mb-4">
-                        <label for="password">CONFIRM PASSWORD</label>
-                        <div class="input-group " id="show_hide_password">
-                           <input type="password" class="form-control" id="confirm-password" value="" name="password" placeholder="Confirm Password" required="">
-                        </div>
-                     </div>
-                     <div class="form-group mb-0 d-flex justify-content-between">
-                        <button [disabled]="isLoading" class="btn  btn-block" type="button" (click)="register()" name="submit" id="submit">Sign Up </button>
-                        <p class="muted pt-2">Back to <a [routerLink]="'/login'" class="text-white">Log In  →</a></p>
-                     </div>
-                  </form>
-               </div>
+      <div class="col-md-6 col-lg-6 col-xl-6">
+        <div class="card glassify">
+          <div class="card-body">
+            <div class="text-center m-auto">
+              <h4 class="text-uppercase text-center">CREATE ACCOUNT</h4>
+            </div>
+            <form [formGroup]="registerForm">
+              <input type="hidden" name="csrftoken">
+              <div class="form-group mb-3">
+                <label for="fname">Company Name
+                </label>
+                <input type="text" name="companyName" formControlName="companyName" placeholder="Company"
+                   [ngClass]="[(f.companyName.dirty || f.companyName.touched) && f.companyName.errors ? 'is-invalid': '',
+                              (f.companyName.dirty || f.companyName.touched) && !f.companyName.errors ? 'is-valid': '']"
+                  class="form-control" required="true">
+                <small class="text-danger" *ngIf="(f.companyName.dirty || f.companyName.touched)
+                        && f.companyName.errors
+                        && f.companyName.errors.required">Required</small>
+                <small class="text-danger" *ngIf="(f.companyName.dirty || f.companyName.touched)
+                                                            && f.companyName.errors
+                                                            && f.companyName.errors.minlength">Too short</small>
+              </div>
+              <div class="row">
+                <div class="form-group mb-3 col-md-4">
+                  <label for="firstName">Given Name </label>
+                  <input type="text" name="firstName" formControlName="firstName" placeholder="First Name"
+                    class="form-control"
+                    [ngClass]="[(f.firstName.dirty || f.firstName.touched) && f.firstName.errors ? 'is-invalid': '',
+                              (f.firstName.dirty || f.firstName.touched) && !f.firstName.errors ? 'is-valid': '']"
+                    required="">
+                    <small class="text-danger" *ngIf="(f.firstName.dirty || f.firstName.touched)
+                                            && f.firstName.errors
+                                            && f.firstName.errors.required">Required</small>
+                    <small class="text-danger" *ngIf="(f.firstName.dirty || f.firstName.touched)
+                                                                                && f.firstName.errors
+                                                                                && f.firstName.errors.Empty">Invalid</small>
+                </div>
+                <div class="form-group mb-3 col-md-4">
+                  <label for="middleName">Middle Name </label>
+                  <input type="text" name="middleName" formControlName="middleName"
+                    [ngClass]="[(f.middleName.dirty || f.middleName.touched) && f.middleName.errors ? 'is-invalid': '',
+                              (f.middleName.dirty || f.middleName.touched) && !f.middleName.errors ? 'is-valid': '']"
+                  placeholder="Middle Name"
+                    class="form-control" required="">
+                    <small class="text-danger" *ngIf="(f.middleName.dirty || f.middleName.touched)
+                                                                && f.middleName.errors
+                                                                && f.middleName.errors.required">Required</small>
+                    <small class="text-danger"
+                      *ngIf="(f.middleName.dirty || f.middleName.touched)
+                                                                 && f.middleName.errors
+                                                                && f.middleName.errors.Empty">Invalid</small>
+                </div>
+                <div class="form-group mb-3 col-md-4">
+                  <label for="lastName">Surname </label>
+                  <input type="text" name="lastName" formControlName="lastName" placeholder="Last Name"
+                   [ngClass]="[(f.lastName.dirty || f.lastName.touched) && f.lastName.errors ? 'is-invalid': '',
+                              (f.lastName.dirty || f.lastName.touched) && !f.lastName.errors ? 'is-valid': '']"
+                    class="form-control" required="">
+                      <small class="text-danger" *ngIf="(f.lastName.dirty || f.lastName.touched)
+                                                                                      && f.lastName.errors
+                                                                                      && f.lastName.errors.required">Required</small>
+                      <small class="text-danger" *ngIf="(f.lastName.dirty || f.lastName.touched)
+                                                                                       && f.lastName.errors
+                                                                                      && f.lastName.errors.Empty">Invalid</small>
+                </div>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="emailaddress">Email </label>
+                <input type="email" name="email" formControlName="username"
+                [ngClass]="[(f.username.dirty || f.username.touched) && f.username.errors ? 'is-invalid': '',
+                              (f.username.dirty || f.username.touched) && !f.username.errors ? 'is-valid': '']"
+                placeholder="Enter Email"
+                  class="form-control" required="">
+                          <small class="text-danger"
+                            *ngIf="(f.username.dirty || f.username.touched)
+                                                                     && f.username.errors
+                                                                       && f.username.errors.required">Required</small>
+                          <small class="text-danger"
+                            *ngIf="(f.username.dirty || f.username.touched)
+                                                            && f.username.errors
+                                                            && f.username.errors.email">Not a valid Email format</small>
+              </div>
+              <div class="form-group mb-3">
+                <label for="password">Password</label>
+                <div class="input-group " id="show_hide_password">
+                  <input type="password" class="form-control" formControlName="password" id="password" value=""
+                   [ngClass]="[(f.password.dirty || f.password.touched) && f.password.errors ? 'is-invalid': '',
+                              (f.password.dirty || f.password.touched) && !f.password.errors ? 'is-valid': '']"
+                    name="password" placeholder="Enter Password" required="">
+
+                </div>
+                  <small class="text-danger" *ngIf="(f.password.dirty || f.password.touched)
+                                                                && f.password.errors
+                                                                && f.password.errors.required ">Required</small>
+                  <small class="text-danger" *ngIf="(f.password.dirty || f.password.touched)
+                                                                       && f.password.errors
+                                                                       && f.password.errors.minlength">Too
+                    short</small>
+              </div>
+              <div class="form-group mb-4">
+                <label for="password">Confirm Password</label>
+                <div class="input-group " id="show_hide_password">
+                  <input type="password" class="form-control" id="confirm-password" value="" name="confirmPassword" formControlName="confirmPassword"
+                   [ngClass]="[(f.confirmPassword.dirty || f.confirmPassword.touched) && f.confirmPassword.errors ? 'is-invalid': '',
+                              (f.confirmPassword.dirty || f.confirmPassword.touched) && !f.confirmPassword.errors ? 'is-valid': '']"
+                    placeholder="Confirm Password" required="">
+
+                </div>
+                  <small class="text-danger"
+                    *ngIf="(f.confirmPassword.dirty || f.confirmPassword.touched)
+                                                                                      && f.confirmPassword.errors
+                                                                                      && f.confirmPassword.errors.required ">Required</small>
+                  <small class="text-danger" *ngIf="(f.confirmPassword.dirty || f.confirmPassword.touched)
+                                                                                       && f.confirmPassword.errors
+                                                                                       && f.confirmPassword.errors.MustMatch">Password
+                    does not match</small>
+              </div>
+              <div class="form-group mb-0 d-flex justify-content-between">
+                <button [disabled]="(!isLoading && !registerForm.valid)" class="btn  btn-block" type="button" (click)="register()" name="submit"
+                  id="submit">Sign Up </button>
+                <p class="muted pt-2">Back to <a [routerLink]="'/login'" class="text-white">Log In →</a></p>
+              </div>
+            </form>
           </div>
-       </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
