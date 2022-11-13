@@ -6,7 +6,7 @@
         <h5 class="pb-0 mb-0">{{currentCompany}}</h5>
         </div>
         <div class="left-top-end ">
-          <button type="button" class="btn  btn-sm btn-outline-default me-2"><i class="bi  bi-search"></i> Search</button>
+          <button type="button" class="btn  btn-sm btn-outline-default me-2"><i class="bi bi-upc-scan"></i> Barcode</button>
           <button type="button" class="btn  btn-sm btn-outline-default"><i class="bi bi-question-circle"></i> Help</button>
         </div>
       </div>
@@ -61,9 +61,6 @@
             <div class="vr me-auto ms-2 "></div>
             <div class="user hstack gap-3">
 
-            <div class="link-unlink">
-              <button type="button" class="btn btn-outline-default m-0"><i class="bi bi-box-arrow-in-down"></i></button>
-            </div>
               <div class="link-unlink">
                 <button type="button" (click)="showPosTransactions()" class="btn btn-outline-default m-0"><i class="bi bi-list-ol"></i></button>
               </div>
@@ -71,7 +68,7 @@
               <button type="button" (click)="showCashInOutModal()" class="btn btn-outline-default m-0"><i class="bi bi-cash-coin"></i></button>
             </div>
             <div class="link-unlink ">
-              <button type="button" (click)="showRefModal(discountTemplate)" class="btn btn-outline-default discount-button m-0"><i
+              <button type="button" [disabled]="posTransaction && posTransaction.subTotal <= 0" (click)="showRefModal(discountTemplate)" class="btn btn-outline-default discount-button m-0"><i
                   class="bi bi-percent"></i></button>
             </div>
             <div class="link-unlink">
