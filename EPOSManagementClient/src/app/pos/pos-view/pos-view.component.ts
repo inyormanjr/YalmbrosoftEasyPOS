@@ -1,3 +1,4 @@
+import { HelpModalComponent } from './../components/help-modal/help-modal.component';
 import { CashInOutViewComponent } from './../components/cash-in-out-view/cash-in-out-view.component';
 import { PosTransactionsViewComponent } from './../components/pos-transactions-view/pos-transactions-view.component';
 import { PosConfigViewComponent } from './../components/pos-config-view/pos-config-view.component';
@@ -268,6 +269,10 @@ export class PosViewComponent implements OnInit {
       initialState
     );
     return this.bsModalRef2;
+  }
+
+  showHelpModal() {
+    this.bsModalRef = this.modalService.show(HelpModalComponent, { class: 'modal-lg' });
   }
 
   showPosConfig() {

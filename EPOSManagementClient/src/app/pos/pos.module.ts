@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { PosConfigViewComponent } from './components/pos-config-view/pos-config-view.component';
 import { PosTransactionsViewComponent } from './components/pos-transactions-view/pos-transactions-view.component';
 import { CashInOutViewComponent } from './components/cash-in-out-view/cash-in-out-view.component';
+import { HelpModalComponent } from './components/help-modal/help-modal.component';
 
 
 const routes: Routes = [{path: '', component: PosViewComponent}];
@@ -23,7 +24,8 @@ const routes: Routes = [{path: '', component: PosViewComponent}];
     ConfirmDialogComponent,
     PosConfigViewComponent,
     PosTransactionsViewComponent,
-    CashInOutViewComponent
+    CashInOutViewComponent,
+    HelpModalComponent
   ],
   imports: [
     CommonModule,
