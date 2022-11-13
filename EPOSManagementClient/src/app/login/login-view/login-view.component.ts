@@ -21,7 +21,7 @@ export class LoginViewComponent implements OnInit {
     private modalService: BsModalService
   ) {
     this.loginForm = fB.group({
-      username: ['', [Validators.required]],
+      username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
   }

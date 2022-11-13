@@ -152,5 +152,5 @@
   <button [disabled]="isProcessing" type="button" class="btn " (click)="addNewVariant()">
 
     Add Variant</button>
-  <button [disabled]="isProcessing" type="button" class="btn " (click)="save()">{{saveButtonText}}</button>
+  <button [disabled]="isProcessing || !itemForm.valid" type="button" class="btn " (click)="save()">{{saveButtonText}}</button>
 </div>

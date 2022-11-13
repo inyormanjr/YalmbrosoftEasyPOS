@@ -21,12 +21,12 @@ export class HomeViewComponent implements OnInit {
 
   inventoryTransDetailsBuilder(invTrans: InventoryTransaction) {
 
-    const d1 = invTrans.creator;
-    const d2 = invTrans.type;
-    const d3 = invTrans.itemName;
-    const d4 = invTrans.quantity;
-    const d5 = invTrans.variant.unitValue + invTrans.variant.unitType;
-    return d2 + ' ' + d4 + ' of ' + d3 + ' ' + d5 + ' by ' + d1;
+    const creator = invTrans.creator;
+    const transType = invTrans.type;
+    const transItemName = invTrans.itemName;
+    const transQty = invTrans.quantity;
+    const transVariant = invTrans.variant.unitValue + invTrans.variant.unitType;
+    return transType + ' ' + transQty + ' of ' + transItemName + ' ' + transVariant ;
   }
 
 }
