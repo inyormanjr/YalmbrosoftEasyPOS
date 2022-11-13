@@ -5,14 +5,12 @@ const advanceResults = (model, populate) => async (req, res, next) => {
     const removeFields = ['select', 'sort', 'limit'];
 
     removeFields.forEach((param) => delete reqQuery[param]);
-
     let queryStr = JSON.stringify(reqQuery);
 
     queryStr = queryStr.replace(
         /\b(gt|gte|lt|lte|in)\b/,
         (match) => `$${match}`
     );
-
 
     query = model.find(JSON.parse(queryStr));
 

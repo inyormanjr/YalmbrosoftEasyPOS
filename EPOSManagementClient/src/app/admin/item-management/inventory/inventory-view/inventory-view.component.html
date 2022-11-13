@@ -13,10 +13,10 @@
           <div class="container-fluid ">
             <div class="input-group mb-3">
               <input style="width: 40px !important; background-color: transparent; color:white;" type="text"
-                class="form-control" placeholder="Search Product" aria-label="Recipient's username"
+                class="form-control" placeholder="Search Product" [(ngModel)]="searchString"
                 aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-outline-light" type="button">Search</button>
+                <button class="btn btn-outline-light" (click)="search()" type="button">Search</button>
               </div>
             </div>
           </div>
