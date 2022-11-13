@@ -25,25 +25,35 @@ export class RegisterViewComponent implements OnInit {
 
     this.registerForm = fB.group(
       {
-        companyName: ['', {
-          validators: [
-          Validators.required, Validators.minLength(5)],
-          asyncValidators: [companyNameValidator(this.authService)],
-          updateOn:'blur'
-        }],
+        companyName: [
+          '',
+          {
+            validators: [Validators.required, Validators.minLength(5)],
+            asyncValidators: [companyNameValidator(this.authService)],
+            updateOn: 'blur',
+          },
+        ],
         companyId: [''],
         firstName: ['', Validators.required],
         middleName: ['', Validators.required],
         lastName: ['', Validators.required],
-        gender: ['Female'],
+        gender: [null],
+        address: [''],
+        mobileNumber: [''],
         username: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(5)]],
         confirmPassword: ['', Validators.required],
         userType: ['Owner'],
       },
       {
-        validators: [Validation.mustMatch('password', 'confirmPassword'),
-        Validation.mustNotEmptyString(['firstName', 'middleName', 'lastName'])],
+        validators: [
+          Validation.mustMatch('password', 'confirmPassword'),
+          Validation.mustNotEmptyString([
+            'firstName',
+            'middleName',
+            'lastName',
+          ]),
+        ],
       }
     );
   }
