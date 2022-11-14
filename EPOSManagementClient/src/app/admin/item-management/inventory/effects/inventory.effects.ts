@@ -37,7 +37,7 @@ export class InventoryEffects {
         ofType(InventoryActionTypes.loadInventorys),
         tap((action) => {
           this.itemService
-            .getManyInventory()
+            .getManyInventory(action.search)
             .pipe(
               map((data: any) => {
                 this.inventoryStore.dispatch(

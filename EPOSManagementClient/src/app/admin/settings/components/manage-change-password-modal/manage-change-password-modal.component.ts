@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { AdminModel } from 'src/app/admin/stateModels/admin.model';
-import Validation from 'src/app/shared/utils/confirm-password-validation';
+import Validation from 'src/app/shared/utils/custom-validations';
 
 @Component({
   selector: 'app-manage-change-password-modal',

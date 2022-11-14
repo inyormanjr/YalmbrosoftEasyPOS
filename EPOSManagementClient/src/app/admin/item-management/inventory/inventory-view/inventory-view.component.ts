@@ -1,13 +1,11 @@
 
 import { ItemService } from 'src/app/admin/services/item/item.service';
-import { Inventory, Variants, StockMovementType, InventoryTransaction } from './../../../../models/item';
-import { map } from 'rxjs/operators';
+import { Inventory,  StockMovementType, InventoryTransaction } from './../../../../models/item';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { InventoryActionTypes } from '../actions/inventory.action.types';
 import { InventoryState } from '../reducers';
 import { Observable } from 'rxjs';
-import { Item } from 'src/app/models/item';
 import { InventorySelectorTypes } from '../selectors/inventory.selector.types';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
@@ -27,15 +25,20 @@ export class InventoryViewComponent implements OnInit {
   modalRef?: BsModalRef | null;
   selectedInventory: Inventory | undefined;
   StockMovementType: any;
+  searchString = '';
   constructor(
     private inventoryStore: Store<InventoryState>,
     private itemService: ItemService,
     private modalService: BsModalService,
     private toastr: ToastrService
   ) {
-    this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
+    this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys({}));
     this.inventoryStore.dispatch(InventoryActionTypes.loadStockMovement({page: null}));
 
+  }
+
+  search() {
+     this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys({search: this.searchString}));
   }
 
   ngOnInit(): void {
@@ -79,7 +82,7 @@ export class InventoryViewComponent implements OnInit {
         )
         .subscribe(
           (x: any) => {
-            this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys());
+            this.inventoryStore.dispatch(InventoryActionTypes.loadInventorys({}));
             this.inventoryStore.dispatch(
               InventoryActionTypes.loadStockMovement({ page: null })
             );

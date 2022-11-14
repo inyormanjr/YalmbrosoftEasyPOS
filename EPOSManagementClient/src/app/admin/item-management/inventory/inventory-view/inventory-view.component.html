@@ -1,9 +1,9 @@
 <div class="container-fluid pt-2 p-4 h-100 d-flex flex-column">
-  <section class="sub-view-menu d-flex flex-row justify-content-between mb-3">
+  <!-- <section class="sub-view-menu d-flex flex-row justify-content-between mb-3">
     <div class="title">
       <h5 class="display-5"><i class="bi bi-list-check me-3"></i> Inventory</h5>
     </div>
-  </section>
+  </section> -->
   <tabset>
     <tab>
       <ng-template class="glassify" tabHeading>
@@ -13,10 +13,10 @@
           <div class="container-fluid ">
             <div class="input-group mb-3">
               <input style="width: 40px !important; background-color: transparent; color:white;" type="text"
-                class="form-control" placeholder="Search Product" aria-label="Recipient's username"
+                class="form-control" placeholder="Search Product" [(ngModel)]="searchString"
                 aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-outline-light" type="button">Search</button>
+                <button class="btn btn-outline-light" (click)="search()" type="button">Search</button>
               </div>
             </div>
           </div>

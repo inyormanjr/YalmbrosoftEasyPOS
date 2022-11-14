@@ -2,8 +2,8 @@ import { Inventory, InventoryTransaction } from './../../../../models/item';
 import { createAction, props } from '@ngrx/store';
 
 export const loadInventorys = createAction(
-  '[Inventory] Load Inventorys'
-);
+  '[Inventory] Load Inventorys',
+  props < {search?: any}>());
 
 export const loadStockMovement = createAction('[Inventory] Load Stockmovement', props < {page?: any}>());
 

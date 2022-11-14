@@ -1,6 +1,6 @@
 import { Item, Variants } from './../../../models/item';
 import { ProductsState } from './../products/reducers/index';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Supplier } from 'src/app/models/supplier';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -37,13 +37,13 @@ export class ItemEntryComponent implements OnInit {
 
       this.itemForm = this.fB.group({
         _id: [],
-        name: [''],
+        name: ['', [Validators.required]],
         company: [''],
-        category: [''],
+        category: ['', [Validators.required]],
         supplier: [],
-        description: [''],
+        description: ['', [Validators.required]],
         itemCode: [''],
-        itemType: [],
+        itemType: [null, [Validators.required]],
         barcode: [''],
         variants: this.fB.array([]),
         creator: [''],
@@ -53,13 +53,13 @@ export class ItemEntryComponent implements OnInit {
   createForm() {
     this.itemForm = this.fB.group({
       _id: [],
-      name: [''],
+      name: ['', [Validators.required]],
       company: [''],
-      category: [''],
+      category: ['', [Validators.required]],
       supplier: [],
-      description: [''],
+      description: ['', [Validators.required]],
       itemCode: [''],
-      itemType: [],
+      itemType: [null, [Validators.required]],
       barcode: [''],
       variants: this.fB.array([]),
       creator: [''],
@@ -67,18 +67,16 @@ export class ItemEntryComponent implements OnInit {
   }
 
   get createVariantDetailsControl(): FormGroup {
-    return this.fB.group(
-      {
-        _id: [],
-        barcode: [''],
-        name: [''],
-        unitType: [''],
-        unitValue: [''],
-        unitCost: [0.0],
-        unitPrice: [0.0],
-        quantity: []
-      },
-    );
+    return this.fB.group({
+      _id: [],
+      barcode: [''],
+      name: [''],
+      unitType: ['', [Validators.required]],
+      unitValue: ['', [Validators.required]],
+      unitCost: [0.0],
+      unitPrice: [0.0],
+      quantity: [],
+    });
   }
 
   get variantControl(): FormArray {

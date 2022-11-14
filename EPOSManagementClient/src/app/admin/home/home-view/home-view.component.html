@@ -1,6 +1,6 @@
 <ng-container *ngIf="dashboardInfo$ | async as dashboardInfo ; else elseTemplate">
-<div class="container pt-4" >
-  <app-page-title [title]="'Dashboard'"></app-page-title>
+<div class="container pt-3" >
+  <app-page-title [bIcon]="'bi bi-house'" [title]="'Dashboard'"></app-page-title>
   <div class="row mt-3">
     <div class="col-md-12">
       <div class="container">
@@ -30,6 +30,10 @@
           </div>
         </div>
         <div class="row">
+          <!-- <div class="col-md-7">
+
+            <app-card [title]="'Progress'" [biIcon]="'bi bi-graph-up-arrow'"></app-card>
+          </div> -->
           <div class="col-md-12">
             <app-card [title]="'Inventory Transactions'" [biIcon]="'bi bi-file-earmark'">
               <ng-container content *ngIf=" dashboardInfo.inventoryTransactions.length > 0; else elseHaveInvTrans">

@@ -35,11 +35,13 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
 
 exports.getManyInventory = asyncHandler(async (req, res, next) => {
   let itemsWithQuantity;
-
+  var value = Object.values(req.query)[0];
+  var re = new RegExp(value, 'i');
      itemsWithQuantity = await Item.find({
-      company: ObjectId(req.user.companyId),
-      'variants.quantity': { $ne: null },
-    });
+       company: ObjectId(req.user.companyId),
+       name: re,
+       'variants.quantity': { $ne: null },
+     });
   
   variants = [];
   itemsWithQuantity.forEach((item) => {

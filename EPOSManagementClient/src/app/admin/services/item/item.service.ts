@@ -23,18 +23,17 @@ export class ItemService {
     params = params.set('company', this.authService.companyId());
 
     if (searchString) {
-      const test = JSON.stringify({ $regex: searchString });
-      params = params.append('name', test);
+      params = params.append('name', searchString);
     }
     return this.httpClient
       .get(this.baseURL, { params })
       .pipe(map((x: any) => x));
   }
 
-  getManyInventory(searchParam?: SearchParams): Observable<any> {
+  getManyInventory(searchString?: any): Observable<any> {
     let params = new HttpParams();
-    if (searchParam) {
-      params = params.set(searchParam.key, searchParam.value);
+    if (searchString) {
+      params = params.set('name', searchString);
     }
     return this.httpClient
       .get(this.baseURL + '/inventory', { params: params })
