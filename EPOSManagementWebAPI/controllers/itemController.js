@@ -10,46 +10,45 @@ exports.getMany = asyncHandler(async (req, res, next) => {
 });
 
 exports.getProducts = asyncHandler(async (req, res, next) => {
-  let itemsWithQuantity;
-  if (req.query.category) {
-    itemsWithQuantity = await Item.find({
-      company: ObjectId(req.user.companyId),
-      category: { $regex: `^${req.query.category}.*`, $options: 'si' },
-      'variants.unitPrice': { $ne: null },
-    });
-  } else {
-    itemsWithQuantity = await Item.find({
-      company: ObjectId(req.user.companyId),
-      'variants.unitPrice': { $ne: null },
-    });
-  }
-  variants = [];
-  itemsWithQuantity.forEach((item) => {
-    item.variants.forEach((variant) => {
-      variants.push({ item, variant });
-    });
-  });
+ const { companyId } = req.user;
 
-  res.status(200).json({ success: true, data: variants });
+ let itemsQuery = { company: companyId, 'variants.unitPrice': { $ne: null } };
+ if (req.query.category) {
+   itemsQuery.category = { $regex: `^${req.query.category}.*`, $options: 'si' };
+ }
+
+ const items = await Item.find(itemsQuery).select('variants name category');
+
+ const variants = items.flatMap((item) =>
+   item.variants.map((variant) => ({
+     item: { _id: item._id, name: item.name, category: item.category },
+     variant,
+   }))
+ );
+
+ res.status(200).json({ success: true, data: variants });
 });
 
 exports.getManyInventory = asyncHandler(async (req, res, next) => {
-  let itemsWithQuantity;
-  var value = Object.values(req.query)[0];
-  var re = new RegExp(value, 'i');
-     itemsWithQuantity = await Item.find({
-       company: ObjectId(req.user.companyId),
-       name: re,
-       'variants.quantity': { $ne: null },
-     });
-  
-  variants = [];
-  itemsWithQuantity.forEach((item) => {
-    item.variants.forEach((variant) => {
-      variants.push({item ,  variant });
-    });
-  });
-
+  const { companyId } = req.user;
+  const { category, name } = req.query;
+  const filters = {
+    company: ObjectId(companyId),
+    'variants.quantity': { $ne: null },
+  };
+  if (category) {
+    filters.category = { $regex: `^${category}.*`, $options: 'si' };
+  }
+  if (name) {
+    filters.name = { $regex: `^${name}.*`, $options: 'si' };
+  }
+  const items = await Item.find(filters).select('variants name category');
+  const variants = items.flatMap((item) =>
+    item.variants.map((variant) => ({
+      item: { _id: item._id, name: item.name, category: item.category },
+      variant,
+    }))
+  );
   res.status(200).json({ success: true, data: variants });
 });
 
@@ -132,41 +131,34 @@ exports.update = asyncHandler(async (req, res, next) => {
 
 exports.updateSingleQuantity = asyncHandler(async (req, res, next) => { 
 
-  const { quantity, stockMovementType, inventory, remarks } = req.body;
+ const { quantity, stockMovementType, inventory, remarks } = req.body;
 
-  inventoryTransactionType = 'StockIn';
-  previousQuantity = inventory.variant.quantity;
-  
-  if (stockMovementType == 0) 
-    inventory.variant.quantity = inventory.variant.quantity + quantity;
-  else {
-    inventory.variant.quantity = inventory.variant.quantity - quantity;
-    inventoryTransactionType = 'StockOut';
-  }
-  
-     const item = await Item.findOneAndUpdate(
-         {
-           'variants._id': req.params.id,
-         },
-         {
-           $set: {
-             'variants.$': inventory.variant
-           },
-         }
-      );
-  await item.createSingleInventoryTrans(
-    inventoryTransactionType,
-    inventory.item.name,
-    inventory.variant,
-    quantity,
-    previousQuantity,
-    inventory.variant.quantity,
-    req.user.companyId,
-    req.user.username,
-    remarks
-  );
+ const isStockOut = stockMovementType !== 0;
+ const inventoryTransactionType = isStockOut ? 'StockOut' : 'StockIn';
+ const previousQuantity = inventory.variant.quantity;
 
-   res.status(200).json({ success: true, data: {} });
+ inventory.variant.quantity = isStockOut
+   ? inventory.variant.quantity - quantity
+   : inventory.variant.quantity + quantity;
+
+ const item = await Item.findOneAndUpdate(
+   { 'variants._id': req.params.id },
+   { $set: { 'variants.$': inventory.variant } }
+ );
+
+ await item.createSingleInventoryTrans(
+   inventoryTransactionType,
+   inventory.item.name,
+   inventory.variant,
+   quantity,
+   previousQuantity,
+   inventory.variant.quantity,
+   req.user.companyId,
+   req.user.username,
+   remarks
+ );
+
+ res.status(200).json({ success: true, data: {} });
 
 });
 

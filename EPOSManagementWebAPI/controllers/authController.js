@@ -64,12 +64,12 @@ exports.changePassword = asyncHandler(async (req, res, next) => {
     const username = req.user.username;
     const user = await User.findOne({ username }).select('+password');
       if (!user) {
-        return next(new ErrorResponse('Invalid credentials', 401));
+        return next(new ErrorResponse('Invalid credentials', 501));
       }
     
     const isMatch = await user.matchPassword(currentPassword);
     if (!isMatch) {
-      return next(new ErrorResponse('Invalid credentials', 401));
+      return next(new ErrorResponse('Invalid credentials', 501));
     }
 
     user.password = newPassword;
